@@ -1,0 +1,21 @@
+.frame-nav {
+  padding: 0.5rem;
+
+  .nav-button {
+    padding: 0.75rem;
+    border-radius: 9999px;
+
+    &:hover {
+      background-color: #f7f7f7;
+    }
+  }
+
+  .user-detail {
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+
+    &:hover {
+      background-color: #f7f7f7;
+    }
+  }
+}

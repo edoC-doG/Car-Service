@@ -16,8 +16,10 @@ const MainLayout = () => {
     currentColor,
     themeSettings,
     setThemeSettings,
+    screenSize,
   } = useStateContext();
-
+  console.log(screenSize);
+  console.log(activeMenu);
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -48,9 +50,23 @@ const MainLayout = () => {
               <Sidebar />
             </div>
           ) : (
-            <div className="dark:bg-secondary-dark-bg bg-white small-sidebar">
+            <>
+              {screenSize <= 1200 ? (
+                <div>
+                  <div className="w-0">
+                    <Sidebar />
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white small-sidebar">
+                  <Sidebar />
+                </div>
+              )}
+
+              {/* <div className="dark:bg-secondary-dark-bg bg-white small-sidebar">
               <Sidebar />
-            </div>
+            </div> */}
+            </>
           )}
           <div
             className={
@@ -63,6 +79,8 @@ const MainLayout = () => {
               className={
                 activeMenu
                   ? "fixed md:fixed  dark:bg-main-dark-bg navbarr size"
+                  : screenSize <= 1200
+                  ? "fixed md:fixed  dark:bg-main-dark-bg navbarr w-full"
                   : "fixed md:fixed  dark:bg-main-dark-bg navbarr size1"
               }
             >

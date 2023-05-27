@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Customers from "./pages/Customer/Customers";
 import MainLayout from "./pages/MainLayout";
 import Review from "./pages/Customer/Review";
+import CustomerDetail from "./pages/Customer/CustomerDetail";
 import Wallet from "./pages/Customer/Wallet";
 import AddOwner from "./pages/Onwer/AddOwner";
 import Onwers from "./pages/Onwer/Onwers";
@@ -38,13 +39,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignIn />} />
-          <Route path="admin/*" element={<MainLayout />}>
+          <Route path="/admin" element={<MainLayout />}>
             <Route path="" element={<Dashboard />} />
             {/* CUSTOMER */}
             <Route path="list-customer" element={<Customers />} />
+            <Route path="customer/view/:id" element={<CustomerDetail />} />
             <Route path="review-list-customer" element={<Review />} />
             <Route path="customer-wallet-report" element={<Wallet />} />
             <Route path="wallet" element={<Wallet />} />
+
             {/* ONWER */}
             <Route path="owner" element={<AddOwner />} />
             <Route path="owner-list" element={<Onwers />} />

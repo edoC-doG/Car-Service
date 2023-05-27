@@ -23,7 +23,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const handleCloseSideBar = () => {
-    if (activeMenu !== undefined && screenSize <= 900) {
+    if (activeMenu !== undefined && screenSize <= 1200) {
       setActiveMenu(false);
     }
   };
@@ -37,7 +37,7 @@ const Sidebar = () => {
         <>
           <div className="flex justify-between items-center">
             <Link
-              to="/"
+              to="/admin"
               onClick={handleCloseSideBar}
               className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white font-logo"
             >
@@ -345,7 +345,7 @@ const Sidebar = () => {
         <>
           <div className="flex items-center">
             <Link
-              to="/dashboard"
+              to="/admin"
               onClick={handleCloseSideBar}
               className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white font-logo"
             >

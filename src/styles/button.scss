@@ -1,0 +1,42 @@
+.card {
+  .export-button {
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    text-transform: capitalize;
+
+    &:hover {
+      color: #fff;
+      background-color: #0177cd;
+    }
+  }
+
+  .add-button {
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    text-transform: capitalize;
+    &:hover {
+      background-color: #04a3e7;
+    }
+  }
+
+  .delete-button {
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    line-height: 0.5;
+    border-radius: 0.25rem;
+    color: #ed4c78;
+    font-weight: 400;
+    text-align: center;
+    border: 0.0625rem solid #ed4c78;
+
+    &:hover {
+      color: #fff;
+      background-color: #ed4c78;
+    }
+  }
+}

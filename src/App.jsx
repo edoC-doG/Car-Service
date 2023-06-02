@@ -32,6 +32,7 @@ import Cancel from "./pages/Order/Cancel";
 import AdminReport from "./pages/Report/AdminReport";
 import TransactionReport from "./pages/Report/TransactionReport";
 import OnwerReport from "./pages/Report/OnwerReport";
+import OrderDetail from "./pages/Order/OrderDetail";
 
 function App() {
   return (
@@ -75,6 +76,8 @@ function App() {
             <Route path="deal" element={<Deal />} />
             {/* ORDER */}
             <Route path="all-orders" element={<All />} />
+            <Route path="orders/details/:id" element={<OrderDetail />} />
+
             <Route path="pending-order" element={<Pending />} />
             <Route path="confirm-order" element={<Confirm />} />
             <Route path="cancel-order" element={<Cancel />} />

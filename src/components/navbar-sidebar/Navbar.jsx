@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { FiShoppingCart } from "react-icons/fi";
-import { BsChatLeft } from "react-icons/bs";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useStateContext } from "../../contexts/ContextProvider";
 import Tooltip from "@mui/material/Tooltip";
 import UserProfile from "./UserProfile";
-import Cart from "./Cart";
-import Chat from "./Chat";
 import "../../styles/navbar.scss";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => {
@@ -68,20 +64,6 @@ const NavBar = () => {
       />
 
       <div className="flex">
-        <NavButton
-          title="Cart"
-          customFunc={() => handleClick("cart")}
-          color={currentColor}
-          icon={<FiShoppingCart />}
-        />
-
-        <NavButton
-          title="Chat"
-          dotColor="#03C9D7"
-          customFunc={() => handleClick("chat")}
-          color={currentColor}
-          icon={<BsChatLeft />}
-        />
         <Tooltip title="Profile" placeholder="bottom">
           <div
             className="flex items-center gap-2 cursor-pointer user-detail"
@@ -99,10 +81,6 @@ const NavBar = () => {
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
           </div>
         </Tooltip>
-        {/* {isClicked.cart && <Cart />} */}
-        {/* {isClicked.chat && <Chat />} */}
-        {isClicked.cart && <Cart />}
-        {isClicked.chat && <Chat />}
         {isClicked.userProfile && <UserProfile />}
       </div>
     </div>

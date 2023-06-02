@@ -18,8 +18,8 @@ const MainLayout = () => {
     setThemeSettings,
     screenSize,
   } = useStateContext();
-  console.log(screenSize);
-  console.log(activeMenu);
+  // console.log(screenSize);
+  // console.log(activeMenu);
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -33,7 +33,7 @@ const MainLayout = () => {
     <>
       <div className={currentMode === "Dark" ? "dark" : ""}>
         <div className="flex relative dark:bg-main-dark-bg">
-          <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
+          {/* <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
             <Tooltip content="Settings" position="Top">
               <button
                 type="button"
@@ -44,7 +44,7 @@ const MainLayout = () => {
                 <FiSettings />
               </button>
             </Tooltip>
-          </div>
+          </div> */}
           {activeMenu ? (
             <div className="w-72 fixed sidebarr dark:bg-secondary-dark-bg bg-white ">
               <Sidebar />
@@ -62,10 +62,6 @@ const MainLayout = () => {
                   <Sidebar />
                 </div>
               )}
-
-              {/* <div className="dark:bg-secondary-dark-bg bg-white small-sidebar">
-              <Sidebar />
-            </div> */}
             </>
           )}
           <div
@@ -78,10 +74,10 @@ const MainLayout = () => {
             <div
               className={
                 activeMenu
-                  ? "fixed md:fixed  dark:bg-main-dark-bg navbarr size"
+                  ? "fixed md:fixed sm:fixed  dark:bg-main-dark-bg navbarr size"
                   : screenSize <= 1200
-                  ? "fixed md:fixed  dark:bg-main-dark-bg navbarr w-full"
-                  : "fixed md:fixed  dark:bg-main-dark-bg navbarr size1"
+                  ? "fixed md:fixed sm:fixed dark:bg-main-dark-bg navbarr w-full"
+                  : "fixed md:fixed sm:fixed dark:bg-main-dark-bg navbarr size1"
               }
             >
               <NavBar />

@@ -9,13 +9,51 @@ import Button from "../../components/filter/Button";
 import "../../styles/button.scss";
 import { MdFilterList } from "react-icons/md";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import useTable from "../../components/table/useTable";
+import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
+import { Link } from "react-router-dom";
+import StarIcon from "@mui/icons-material/Star";
+import Switches from "../../components/table/Switches";
+const headCells = [
+  { id: "id", label: "ID" },
+  { id: "service", label: "Service" },
 
+  { id: "customer", label: "Customer Name" },
+  { id: "rating", label: "Rating" },
+  { id: "Review", label: "Review" },
+  { id: "date", label: "Date" },
+
+  { id: "status", label: "Status" },
+];
 const Review = () => {
   const [age, setAge] = React.useState("");
 
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+  const rows = [
+    {
+      id: 1,
+      service: "Rua Xe",
+      customer: "Min",
+      rating: 5,
+      review: "Quality was good",
+      date: "12 Jun 2023",
+      status: true,
+    },
+    {
+      id: 2,
+      service: "Son mau xe",
+      customer: "Mindsd",
+      rating: 4,
+      review: "Lorem Ipsum is simply dummy text of...",
+      date: "9 Jun 2023",
+      status: true,
+    },
+  ];
+
+  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
+    useTable(rows, headCells);
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -138,7 +176,45 @@ const Review = () => {
         </form>
       </div>
 
-      <div className="card mt-4">sdasd</div>
+      <div className="card mt-4">
+        <div className="table-responsive">
+          <TblContainer>
+            <TblHead />
+            <TableBody>
+              {rows.map((item) => (
+                <TableRow hover key={item.id}>
+                  <TableCell sx={{ border: "none" }}>
+                    <div>{item.id}</div>
+                  </TableCell>
+                  <TableCell sx={{ border: "none" }}>
+                    <div>{item.service}</div>
+                  </TableCell>
+                  <TableCell sx={{ border: "none" }}>
+                    <div>{item.customer}</div>
+                  </TableCell>
+                  <TableCell sx={{ border: "none" }}>
+                    <label className="badge badge-soft-info mb-0">
+                      <span className="fz-12 d-flex align-items-center gap-1">
+                        {item.rating} <StarIcon fontSize="inherit" />
+                      </span>
+                    </label>
+                  </TableCell>
+                  <TableCell sx={{ border: "none" }}>
+                    <div>{item.review}</div>
+                  </TableCell>
+                  <TableCell sx={{ border: "none" }}>
+                    <div>{item.date}</div>
+                  </TableCell>
+                  <TableCell sx={{ border: "none" }}>
+                    <Switches checked={item.status} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </TblContainer>
+          <TblPagination />
+        </div>
+      </div>
     </div>
   );
 };

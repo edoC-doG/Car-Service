@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineSharp";
 import CustomerInfo from "../../components/card-info/CustomerInfo";
+import CarInfo from "../../components/card-info/CarInfo";
 const headCells = [
   { id: "id", label: "ID" },
   { id: "orderID", label: "Order ID", minWidth: 200 },
@@ -136,16 +137,26 @@ const CustomerDetail = () => {
           </div>
         </div>
         {/* Info of Customer */}
-        <div className="col-lg-4">
+        <div className="col-lg-4 col-xl-3 d-flex flex-column gap-3">
           <CustomerInfo
             title={"Customer"}
+            srcIcon={
+              "https://6valley.6amtech.com/public/assets/back-end/img/seller-information.png"
+            }
             src={
               "https://6valley.6amtech.com/storage/app/public/profile/2022-10-12-63464cd299fc3.png"
             }
             name={"Thanh Min"}
             numberOfOrder={"11 "}
+            content={"Orders"}
             phone={"092124334322344"}
             email={"thanhminh1452000@gmail.com"}
+          />
+          <CarInfo
+            title={"Car Info"}
+            brand={"Mercedes Benz"}
+            model={"GLC X254"}
+            plate="60A-99999"
           />
         </div>
       </div>

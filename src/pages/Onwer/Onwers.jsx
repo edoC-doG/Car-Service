@@ -173,7 +173,7 @@ const Onwers = () => {
                         }}
                       >
                         <Link
-                          to={`/admin/owners/service-list/1`}
+                          to={`/admin/owners/service-list/${item.id}`}
                           className="btn text--primary bg-soft--primary font-weight-bold px-3 py-1 mb-0 fz-12"
                         >
                           {item.totalService}
@@ -212,7 +212,7 @@ const Onwers = () => {
                         <div className="d-flex justify-content-center gap-2">
                           <Tooltip title="view" arrow>
                             <Link
-                              to={`/admin/customer/view/${item.accountID}`}
+                              to={`/admin/owner/view/1`}
                               className="btn btn-outline-info btn-sm square-btn"
                             >
                               <VisibilityIcon fontSize="small" />

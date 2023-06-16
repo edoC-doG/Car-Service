@@ -4,7 +4,7 @@ import Search from "../../components/filter/Search";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Select from "../../components/filter/Select";
-import Date from "../../components/filter/Date";
+import Date from "../../components/filter/DateTime";
 import Button from "../../components/filter/Button";
 import "../../styles/button.scss";
 import { MdFilterList } from "react-icons/md";
@@ -34,7 +34,11 @@ const Review = () => {
   const rows = [
     {
       id: 1,
-      service: "Rua Xe",
+      service: {
+        id_service: 1,
+        name: "Rua Xe",
+      },
+
       customer: "Min",
       rating: 5,
       review: "Quality was good",
@@ -43,7 +47,10 @@ const Review = () => {
     },
     {
       id: 2,
-      service: "Son mau xe",
+      service: {
+        id_service: 2,
+        name: "Son mau xe",
+      },
       customer: "Mindsd",
       rating: 4,
       review: "Lorem Ipsum is simply dummy text of...",
@@ -90,11 +97,11 @@ const Review = () => {
             <div className="col-md-4">
               <div>
                 <label htmlFor="product" className="title-color d-flex">
-                  Choose Product
+                  Choose Service
                 </label>
                 <Select
                   size="small"
-                  title={"--Select product--"}
+                  title={"--Select service--"}
                   value={age}
                   onChange={handleChange}
                 />
@@ -187,7 +194,12 @@ const Review = () => {
                     <div>{item.id}</div>
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    <div>{item.service}</div>
+                    <Link
+                      to={`/admin/service/view/${item.service.id_service}`}
+                      className="title-color hover-c1"
+                    >
+                      {item.service.name}
+                    </Link>
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <div>{item.customer}</div>

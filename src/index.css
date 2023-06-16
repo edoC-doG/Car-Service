@@ -1,61 +1,61 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
-@layer base {
-  html,
-  #root,
-  body {
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    line-height: 1.4;
-    -webkit-font-smoothing: antialiased;
-    background: #f9f9fb;
-    text-transform: capitalize;
-  }
-  body .setting {
-    padding: 0.75rem;
-  }
+/* @layer base { */
+html,
+#root,
+body {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background: #f9f9fb;
+  text-transform: capitalize;
+}
+body .setting {
+  padding: 0.75rem;
+}
 
-  body .nav-item,
-  .navbarr {
-    z-index: 10000;
-    background-color: #ffffff;
-  }
+body .nav-item,
+.navbarr {
+  z-index: 10;
+  background-color: #ffffff;
+}
 
-  body .sidebarr {
-    z-index: 10000;
-    box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
-  }
+body .sidebarr {
+  z-index: 10;
+  box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
+}
 
-  body .small-sidebar {
-    box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
-    width: 91px;
-  }
+body .small-sidebar {
+  box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
+  width: 91px;
+}
 
-  .size {
-    width: calc(100% - 18rem);
-  }
-  .size1 {
-    width: calc(100% - 91px);
-  }
+.size {
+  width: calc(100% - 18rem);
+}
+.size1 {
+  width: calc(100% - 91px);
+}
 
-  @media screen and (max-width: 800px) {
-    body .sidebar {
-      z-index: 10000000;
-    }
-  }
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: rgb(216, 216, 216);
-    border-radius: 40px;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
+@media screen and (max-width: 800px) {
+  body .sidebar {
+    z-index: 10000000;
   }
 }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(216, 216, 216);
+  border-radius: 40px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+/* } */
 
 @tailwind base;
 @tailwind components;

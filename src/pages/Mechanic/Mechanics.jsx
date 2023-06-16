@@ -139,7 +139,7 @@ const Mechanics = () => {
                             />
                             <div>
                               <Link
-                                to={`/admin/mechanic/earning-statement-overview${item.id}`}
+                                to={`/admin/mechanic/detail/${item.id}`}
                                 className="title-color"
                               >
                                 {item.info.name}
@@ -178,6 +178,7 @@ const Mechanics = () => {
                             {item.totalOrders}
                           </Link>
                         </TableCell>
+                        {/* Star */}
                         <TableCell sx={{ border: "none" }}>
                           <label className="badge badge-soft-info mb-0">
                             <span className="fz-12 d-flex align-items-center gap-1">
@@ -202,7 +203,7 @@ const Mechanics = () => {
                             </Tooltip>
                             <Tooltip title="Earning statement" arrow>
                               <Link
-                                to={`/admin/mechanic/earning-statement-overview/${item.id}`}
+                                to={`/admin/mechanic/detail/${item.id}`}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <MoneyIcon fontSize="small" />

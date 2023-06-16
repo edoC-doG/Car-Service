@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../../components/Header";
+import Instruction from "../../components/import/Instruction";
 
 const Import = () => {
   return (
@@ -9,6 +10,17 @@ const Import = () => {
         alt="import"
         title="Import"
       />
+
+
+      <div className="row">
+        {/* Instruction */}
+        <div className="col-md-12">
+          <Instruction />
+        </div>
+        {/* Form upload  */}
+        <div className="col-md-12 mt-2"></div>
+      </div>
+
     </div>
   );
 };

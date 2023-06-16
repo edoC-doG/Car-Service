@@ -1,7 +1,3 @@
-import { IoMdContacts } from "react-icons/io";
-import { BiColorFill } from "react-icons/bi";
-import { GiLouvrePyramid } from "react-icons/gi";
-
 import { BsChatDots } from "react-icons/bs";
 import { AiOutlineHome, AiFillStar } from "react-icons/ai";
 import { GiWallet, GiRadarSweep, GiMechanicGarage } from "react-icons/gi";
@@ -123,16 +119,6 @@ export const sidebarData = [
             icon: <RxDotFilled />,
             label: "List",
           },
-          {
-            key: "chat",
-            icon: <RxDotFilled />,
-            label: "Chat",
-          },
-          {
-            key: "emergency-contact",
-            icon: <RxDotFilled />,
-            label: "Emergency Contact",
-          },
         ],
       },
       {
@@ -165,32 +151,11 @@ export const sidebarData = [
           {
             key: "view-category",
             icon: <RxDotFilled />,
-            label: "Categories",
-          },
-          {
-            key: "sub-category-view",
-            icon: <RxDotFilled />,
-            label: "Sub Categories",
+            label: "Categories Product",
           },
         ],
       },
-      {
-        key: "brand",
-        icon: <AiFillStar />,
-        label: "Brands",
-        children: [
-          {
-            key: "add-new-brand",
-            icon: <RxDotFilled />,
-            label: "Add New",
-          },
-          {
-            key: "list-brand",
-            icon: <RxDotFilled />,
-            label: "List",
-          },
-        ],
-      },
+
       {
         key: "product",
         icon: <GiRadarSweep />,

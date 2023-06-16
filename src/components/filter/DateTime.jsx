@@ -6,7 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Box } from "@mui/material";
 
 const today = dayjs();
-const Date = ({
+const DateTime = ({
   name,
   label,
   value,
@@ -40,4 +40,4 @@ const Date = ({
   );
 };
 
-export default Date;
+export default DateTime;

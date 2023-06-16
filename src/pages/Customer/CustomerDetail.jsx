@@ -137,7 +137,7 @@ const CustomerDetail = () => {
           </div>
         </div>
         {/* Info of Customer */}
-        <div className="col-lg-4 col-xl-3 d-flex flex-column gap-3">
+        <div className="col-lg-4  d-flex flex-column gap-3">
           <CustomerInfo
             title={"Customer"}
             srcIcon={

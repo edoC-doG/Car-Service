@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import "../../styles/signin.css";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Icon } from "@mui/material";
+import { Icon } from "@mui/material"; 
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [passwordShown, setPasswordShown] = useState(false);
-
+ const navigate = useNavigate();
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
@@ -145,9 +146,12 @@ const SignIn = () => {
                     </div>
                   </div>
                   <br />
+
+                
                   <button
                     type="submit"
                     className="btn btn-lg btn-block btn--primary"
+                    onClick={ () => {navigate('/admin')}}
                   >
                     Sign in
                   </button>

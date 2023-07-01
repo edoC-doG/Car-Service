@@ -46,8 +46,9 @@ const SignIn = () => {
     useEffect(() => {
       // console.log(user);
       if (isSuccess) {
-        window.location.reload();
+       
         navigate("admin");
+        window.location.reload();
       } else {
         if(message?.status === 404){
           setNotify({
@@ -56,7 +57,7 @@ const SignIn = () => {
             type: "error",
           });
           navigate("");
-          window.location.reload();
+          
         }
         
       }

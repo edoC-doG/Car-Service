@@ -48,7 +48,7 @@ const SignIn = () => {
       if (isSuccess) {
        
         navigate("admin");
-        window.location.reload();
+        // window.location.reload();
       } else {
         if(message?.status === 404){
           setNotify({

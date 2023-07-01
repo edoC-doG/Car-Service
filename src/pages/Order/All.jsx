@@ -187,7 +187,9 @@ const All = () => {
     dispatch(getBookings(data));
   }, [page, rowsPerPage]);
 
+
   const recordsBooking = useSelector((state) => state.booking.bookings);
+  console.log(recordsBooking);
   const count = useSelector((state) => state.booking.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(

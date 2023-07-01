@@ -1,17 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/signin.css";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Icon } from "@mui/material"; 
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import * as yup from "yup";
+import { login } from "../../features/auth/authSlide";
+import Notification from "../../components/Notification";
+
+// validation input text
+let schema = yup.object().shape({
+ 
+  password: yup.string().required("Password must be 3 or more characters"),
+});
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      email: "", 
+      password: "",
+    },
+    validationSchema: schema,
+    onSubmit:(values) => {
+      // console.log("values: ", values);
+      dispatch(login(values));
+    }
+  })
+
+
   const [passwordShown, setPasswordShown] = useState(false);
- const navigate = useNavigate();
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
   const togglePassword = () => {
-    setPasswordShown(!passwordShown);
-  };
+    setPasswordShown(!passwordShown);  };
+    const authState = useSelector((state) => state.auth);
+
+    const { user, isError, isSuccess, isLoading, message } = authState;
+    useEffect(() => {
+      // console.log(user);
+      if (isSuccess) {
+        window.location.reload();
+        navigate("admin");
+      } else {
+        if(message?.status === 404){
+          setNotify({
+            isOpen: true,
+            message: message.title,
+            type: "error",
+          });
+          navigate("");
+          window.location.reload();
+        }
+        
+      }
+    }, [user, isError, isSuccess, isLoading, message, navigate],);
   return (
+    <>
+    
     <main className="main">
       <div className="position-fixed top-0 right-0 left-0 bg-img-hero __inline-1">
         <figure className="position-absolute right-0 bottom-0 left-0">
@@ -32,7 +84,7 @@ const SignIn = () => {
             height="40px"
             className="z-index-2"
             // 'src="https://6valley.6amtech.com/storage/app/public/company/2022-04-20-625fa32105ddf.png"
-            src="https://i.imgur.com/IbQr6kf.png"
+            src="https://firebasestorage.googleapis.com/v0/b/book-2223b.appspot.com/o/logo.png?alt=media&token=993a2db6-7459-4fb8-967f-c139c002105a"
             alt="Logo"
           />
         </a>
@@ -50,7 +102,7 @@ const SignIn = () => {
                   </div>
                   {/* EMAIL INPUT */}
                   <div className="js-form-message form-group">
-                    <label className="input-label" htmlFor="signinSrEmail">
+                    <label className="input-label text-base" htmlFor="signinSrEmail">
                       Your email
                     </label>
                     <input
@@ -61,8 +113,11 @@ const SignIn = () => {
                       tabIndex="1"
                       placeholder="email@address.com"
                       aria-label="email@address.com"
-                      required=""
+                      required
                       data-msg="Please enter a valid email address."
+                      onChange={formik.handleChange("email")}
+                      onBlur={formik.handleBlur("email")}
+                      value={formik.values.email}
                     />
                   </div>
 
@@ -73,7 +128,7 @@ const SignIn = () => {
                       htmlFor="signinSrPassword"
                       tabIndex={"0"}
                     >
-                      <span className="d-flex justify-content-between align-items-center">
+                      <span className="d-flex justify-content-between align-items-center text-base">
                         Password
                       </span>
                     </label>
@@ -85,7 +140,10 @@ const SignIn = () => {
                         id="signinSrPassword"
                         placeholder="8+ characters required"
                         aria-label="8+ characters required"
-                        required=""
+                        required
+                        onChange={formik.handleChange("password")}
+                        onBlur={formik.handleBlur("password")}
+                        value={formik.values.password}
                         // data-msg="Your password is invalid. Please try again."
                       />
                       <div id="changePassTarget" className="input-group-append">
@@ -105,55 +163,16 @@ const SignIn = () => {
                     </div>
                   </div>
 
-                  {/* Recaptcha */}
-                  <div
-                    id="recaptcha_element"
-                    className="w-100"
-                    datatype="image"
-                  >
-                    <div style={{ width: "304px", height: "78px" }}>
-                      <div>
-                        <iframe
-                          title="reCAPTCHA"
-                          src="https://www.google.com/recaptcha/api2/anchor?ar=2&amp;k=6LfMARoeAAAAAAITvA-le6X9IElSWX6CncicwEfY&amp;co=aHR0cHM6Ly82dmFsbGV5LjZhbXRlY2guY29tOjQ0Mw..&amp;hl=en&amp;type=image&amp;v=1h-hbVSJRMOQsmO_2qL9cO0z&amp;size=normal&amp;cb=us7wzgnvpoj0"
-                          width="304"
-                          height="78"
-                          role="presentation"
-                          name="a-upari3xcziom"
-                          frameBorder="0"
-                          scrolling="no"
-                          sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
-                        ></iframe>
-                      </div>
-                      <textarea
-                        id="g-recaptcha-response"
-                        name="g-recaptcha-response"
-                        className="g-recaptcha-response"
-                        style={{
-                          width: "250px",
-                          height: "40px",
-                          border: "1px solid rgb(193, 193, 193)",
-                          margin: "10px 25px",
-                          padding: "0px",
-                          resize: "none",
-                          display: "none",
-                        }}
-                      ></textarea>
-                      <iframe
-                        style={{ display: "none" }}
-                        title="hello"
-                      ></iframe>
-                    </div>
-                  </div>
+                  
                   <br />
 
                 
                   <button
                     type="submit"
                     className="btn btn-lg btn-block btn--primary"
-                    onClick={ () => {navigate('/admin')}}
+                    onClick={formik.handleSubmit}
                   >
-                    Sign in
+                    <h1 className="text-2xl text-white">Sign in</h1>
                   </button>
                 </form>
               </div>
@@ -163,6 +182,8 @@ const SignIn = () => {
         </div>
       </div>
     </main>
+    <Notification  notify={notify} setNotify={setNotify}/>
+    </>
   );
 };
 

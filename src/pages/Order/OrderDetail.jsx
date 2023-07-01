@@ -1,28 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import Button from "../../components/filter/Button";
 import "../../styles/button.scss";
 import MapIcon from "@mui/icons-material/Map";
 import PrintIcon from "@mui/icons-material/Print";
-import useTable from "../../components/table/useTable";
-import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import useTableV2 from "../../components/table/useTableV2";
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableRow,
+  Tooltip,
+  Collapse,
+  Box,
+  Typography,
+} from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 import CustomerInfo from "../../components/card-info/CustomerInfo";
 import StaffInfo from "../../components/card-info/StaffInfo";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { getDetailBooking } from "../../features/book/bookingSlide";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CurrencyFormat from "react-currency-format";
 
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "items", label: "ItemsDetails", disableSorting: true },
-  { id: "tax", label: "Tax" },
-  { id: "discount", label: "Discount" },
-  { id: "total", label: "Total Price" },
+  { id: "bookingDetailId", label: "Id" },
+
+  {
+    id: "serviceBookingDetailDto",
+    label: "Service Details",
+    disableSorting: true,
+  },
+  { id: "serviceCost", label: "Service cost" },
+  { id: "productCost", label: "Product cost" },
+  {
+    id: "action",
+    label: "Action",
+    disableSorting: true,
+
+    align: "center",
+  },
 ];
 
 const OrderDetail = () => {
-  const [paid, setPaid] = useState("Paid");
-  const [activeDiv, setActiveDiv] = useState(true);
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+  const id = location.pathname.split("/")[4];
+  const [open, setOpen] = React.useState(false);
+  const [bid, setBid] = useState("");
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
+
+  useEffect(() => {
+    dispatch(getDetailBooking(id));
+  }, [id]);
+
+  const booking = useSelector((state) => state.booking.booking);
+
+  const garage = useSelector((state) => state.booking.garage);
+  const detail = useSelector((state) => state.booking.detail);
+  const customer = useSelector((state) => state.booking.customer);
+
   const rows = [
     {
       id: 1,
@@ -39,8 +88,10 @@ const OrderDetail = () => {
       total: 270000,
     },
   ];
+
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(detail, headCells, filterFn);
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -57,10 +108,12 @@ const OrderDetail = () => {
               {/* Info of Order */}
               <div className="d-flex flex-wrap gap-3 justify-content-between mb-4">
                 <div className="d-flex flex-column gap-3">
-                  <h4 className="capitalize font-semibold">Order ID #100280</h4>
+                  <h4 className="capitalize font-semibold">
+                    Order ID #{booking.bookingId}
+                  </h4>
                   <div>
                     <EventNoteIcon fontSize="inherit" />{" "}
-                    {new Date().toLocaleString() + ""}
+                    {moment(booking.bookingTime).format("DD/MM/YY hh:mm:ss")}
                   </div>
                   <div className="d-flex flex-wrap gap-3">
                     <div className="badge-soft-info font-weight-bold d-flex align-items-center rounded py-1 px-2">
@@ -95,14 +148,14 @@ const OrderDetail = () => {
                     <div className="order-status d-flex justify-content-sm-end gap-3 text-capitalize">
                       <span className="title-color">Status: </span>
                       <span className="badge badge-soft-info font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm">
-                        Complete
+                        {booking.bookingStatus}
                       </span>
                     </div>
 
                     {/* Payment method */}
                     <div className="payment-method d-flex justify-content-sm-end gap-3 capitalize">
                       <span className="title-color">Payment Method: </span>
-                      <strong>Cash</strong>
+                      <strong>{booking.paymentMethod}</strong>
                     </div>
 
                     {/* Payment status */}
@@ -110,12 +163,12 @@ const OrderDetail = () => {
                       <span className="title-color">Payment Status: </span>
                       <span
                         className={
-                          paid
+                          booking.paymentStatus === "Paid"
                             ? "text-success font-weight-bold"
                             : "text-danger font-weight-bold"
                         }
                       >
-                        {paid}
+                        {booking.paymentStatus}
                       </span>
                     </div>
                   </div>
@@ -127,55 +180,151 @@ const OrderDetail = () => {
                 <TblContainer>
                   <TblHead />
                   <TableBody>
-                    {rows.map((item) => (
-                      <TableRow hover key={item.id}>
-                        <TableCell sx={{ border: "none" }}>
-                          <div>{item.id}</div>
-                        </TableCell>
-
-                        <TableCell sx={{ border: "none" }}>
-                          <div className="media align-items-center gap-3">
-                            <img
-                              className="avatar avatar-60 rounded"
-                              src={item.items.image}
-                              alt="Image Description"
-                            />
-                            <div>
-                              <h6 className="title-color font-semibold">
-                                {item.items.name}
-                              </h6>
+                    {recordsAfterPagingAndSorting().map((item) => (
+                      <>
+                        <TableRow hover key={item.bookingDetailId}>
+                          <TableCell sx={{ border: "none" }}>
+                            <IconButton
+                              aria-label="expand row"
+                              size="small"
+                              onClick={() => {
+                                setBid(item.bookingDetailId);
+                                setOpen(!open);
+                              }}
+                            >
+                              {item.bookingDetailId === bid && open ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
+                            </IconButton>
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
+                            <div className="media align-items-center gap-3">
+                              <img
+                                className="avatar avatar-60 rounded"
+                                src={item.serviceBookingDetailDto.serviceImage}
+                                alt="Description"
+                              />
                               <div>
-                                <strong>Price:</strong> {item.items.price}
-                              </div>
-                              <div>
-                                <strong>Qty:</strong> {item.items.qty}
+                                <h6 className="title-color font-semibold">
+                                  {item.serviceBookingDetailDto.serviceName}
+                                </h6>
+                                <div>
+                                  <strong>Price:</strong>{" "}
+                                  {item.serviceBookingDetailDto.servicePrice}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </TableCell>
+                          </TableCell>
 
-                        <TableCell sx={{ border: "none" }}>
-                          {item.tax}
-                        </TableCell>
-                        <TableCell sx={{ border: "none" }}>
-                          {item.discount}
-                        </TableCell>
-                        <TableCell sx={{ border: "none" }}>
-                          {item.total}
-                        </TableCell>
-                      </TableRow>
+                          <TableCell sx={{ border: "none" }}>
+                            {item.serviceCost}
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
+                            {item.productCost}
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
+                            <div className="d-flex justify-content-center gap-2">
+                              <Tooltip title="More mechanics" arrow>
+                                <Link
+                                  to={`${item.bookingDetailId}`}
+                                  className="btn btn-outline--primary btn-sm edit square-btn"
+                                >
+                                  <VisibilityIcon fontSize="small" />
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                        {/*  PRODUCT */}
+                        {item.bookingDetailId === bid ? (
+                          <TableRow key={item.productCost}>
+                            <TableCell
+                              style={{
+                                paddingBottom: 0,
+                                paddingTop: 0,
+                                border: "none",
+                              }}
+                              colSpan={6}
+                            >
+                              <Collapse
+                                in={open}
+                                timeout="auto"
+                                unmountOnExit
+                                key={item.bookingDetailId}
+                              >
+                                <Box>
+                                  <Typography
+                                    variant="h6"
+                                    gutterBottom
+                                    component="div"
+                                  >
+                                    Product
+                                  </Typography>
+                                </Box>
+                                <Table aria-label="purchases">
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell
+                                        sx={{
+                                          fontSize: "12px",
+                                          fontWeight: 600,
+                                        }}
+                                      >
+                                        Id
+                                      </TableCell>
+                                      <TableCell
+                                        sx={{
+                                          fontSize: "12px",
+                                          fontWeight: 600,
+                                        }}
+                                      >
+                                        Name
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow hover>
+                                      <TableCell sx={{ border: "none" }}>
+                                        {item.productBookingDetailDto.productId}
+                                      </TableCell>
+                                      <TableCell sx={{ border: "none" }}>
+                                        {
+                                          item.productBookingDetailDto
+                                            .productName
+                                        }
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </Collapse>
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          ""
+                        )}
+                      </>
                     ))}
                   </TableBody>
                 </TblContainer>
               </div>
               <hr className="my-3" />
+
               {/* Total Price */}
               <div className="row justify-content-md-end mb-3">
                 <div className="col-md-9 col-lg-8">
                   <dl className="row gy-1 text-sm-right">
                     <dt className="col-5">Repair costs</dt>
                     <dd className="col-6 title-color">
-                      <strong>50.000</strong>
+                      <strong>
+                        {" "}
+                        <CurrencyFormat
+                          value={booking.totalPrice}
+                          displayType={"text"}
+                          format={"###,###,### VND"}
+                        />
+                      </strong>
                     </dd>
                     <dt className="col-5">Coupon discount</dt>
                     <dd className="col-6 title-color">- 0.0</dd>
@@ -183,7 +332,14 @@ const OrderDetail = () => {
                       <strong>Total</strong>
                     </dt>
                     <dd className="col-6 title-color">
-                      <strong>420.000</strong>
+                      <strong>
+                        {" "}
+                        <CurrencyFormat
+                          value={booking.totalPrice}
+                          displayType={"text"}
+                          format={"###,###,### VND"}
+                        />
+                      </strong>
                     </dd>
                   </dl>
                 </div>
@@ -198,16 +354,12 @@ const OrderDetail = () => {
             srcIcon={
               "https://6valley.6amtech.com/public/assets/back-end/img/seller-information.png"
             }
-            src={
-              "https://6valley.6amtech.com/storage/app/public/profile/2022-10-12-63464cd299fc3.png"
-            }
-            name={"Thanh Min"}
-            numberOfOrder={"11 "}
-            content={"Orders"}
-            phone={"0921243341"}
-            email={"thanhminh1452000@gmail.com"}
+            src={customer.userImage}
+            name={customer.fullName}
+            phone={customer.userPhone}
+            email={customer.userEmail}
           />
-          {/* Mechanic */}
+          {/* Mechanic
           <StaffInfo
             title="Mechanic Info"
             name="Min Min"
@@ -221,21 +373,17 @@ const OrderDetail = () => {
             name="Min Min"
             contact="092134553431"
             location="Chi nhánh số 9"
-          />
+          /> */}
           <CustomerInfo
             title={"Garage Information"}
             srcIcon={
               "https://6valley.6amtech.com/public/assets/back-end/img/shop-information.png"
             }
-            src={
-              "https://6valley.6amtech.com/storage/app/public/shop/2022-04-21-6260f38e9ce54.png"
-            }
-            name={"Garage"}
-            numberOfOrder={"20 "}
-            content={"Orders Served"}
-            phone={"0921243"}
+            src={garage.garageImage}
+            name={garage.garageName}
+            phone={garage.garageStatus}
             icon={<LocationOnIcon fontSize="inherit" />}
-            location={"234 Ung Van Khiem Binh Thanh"}
+            location={garage.fullAddress}
           />
         </div>
       </div>

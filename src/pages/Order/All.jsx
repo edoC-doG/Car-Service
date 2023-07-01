@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Select from "../../components/filter/Select";
 import DateTime from "../../components/filter/DateTime";
@@ -9,20 +9,22 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Search from "../../components/filter/Search";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import useTable from "../../components/table/useTable";
+import useTableV2 from "../../components/table/useTableV2";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineSharp";
-const headCells = [
-  { id: "id", label: "ID" },
-  { id: "order", label: "Order ID" },
-  { id: "date", label: "Order Date" },
-  { id: "info", label: "Customer Info" },
+import { useDispatch, useSelector } from "react-redux";
+import { getBookings } from "../../features/book/bookingSlide";
 
-  { id: "garage", label: "Garage" },
+const headCells = [
+  { id: "bookingCode", label: "Code" },
+  { id: "bookingTime", label: "Order Date" },
+  { id: "userBookingDto", label: "Customer Info" },
+
+  { id: "garageName", label: "Garage" },
   { id: "total", label: "Total Amount", align: "right" },
-  { id: "status", label: "Order Status", align: "center" },
+  { id: "bookingStatus", label: "Order Status", align: "center" },
   {
     id: "action",
     label: "Action",
@@ -32,6 +34,10 @@ const headCells = [
   },
 ];
 const All = () => {
+  const dispatch = useDispatch();
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
   const rows = [
     {
       id: 1,
@@ -175,8 +181,26 @@ const All = () => {
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+
+  useEffect(() => {
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage };
+    dispatch(getBookings(data));
+  }, [page, rowsPerPage]);
+
+  const recordsBooking = useSelector((state) => state.booking.bookings);
+  const count = useSelector((state) => state.booking.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells, filterFn);
+    useTableV2(
+      recordsBooking,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -184,7 +208,7 @@ const All = () => {
         size={20}
         alt="all"
         title="All Orders"
-        number="8"
+        number={count}
       />
       <div className="card">
         {/* Filter */}
@@ -284,51 +308,44 @@ const All = () => {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow hover key={item.id}>
-                    <TableCell sx={{ border: "none" }}>
-                      <div>{item.id}</div>
-                    </TableCell>
-
+                  <TableRow hover key={item.bookingCode}>
                     <TableCell sx={{ border: "none" }}>
                       <Link
-                        to={`/admin/orders/details/${item.order}`}
+                        to={`/admin/orders/details/${item.bookingCode}`}
                         className="title-color hover-c1"
                       >
-                        {item.order}
+                        {item.bookingCode}
                       </Link>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.date}</div>
+                      <div>{item.bookingTime}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
-                      <Link
-                        to={`/admin/customer/view/${"1"}`}
-                        className="text-body text-capitalize"
-                      >
-                        <strong>{item.info.name}</strong>
+                      <Link to={``} className="text-body text-capitalize">
+                        <strong>{item.userBookingDto.fullName}</strong>
                       </Link>
                       <Link
-                        to={`tel:${item.info.phone}`}
+                        to={`tel:${item.userBookingDto.userPhone}`}
                         className="d-block title-color"
                       >
-                        {item.info.phone}
+                        {item.userBookingDto.userPhone}
                       </Link>
                     </TableCell>
 
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.garare}</div>
+                      <div>{item.garageBookingDto.garageName}</div>
                     </TableCell>
 
                     <TableCell sx={{ border: "none", textAlign: "right" }}>
-                      <div>{item.total.price}</div>
+                      <div>{item.totalPrice}</div>
                       <span
                         className={
-                          item.total.status === "Unpaid"
+                          item.paymentStatus === "Unpaid"
                             ? "badge text-danger fz-12 px-0"
                             : "badge text-success fz-12 px-0"
                         }
                       >
-                        {item.total.status}
+                        {item.paymentStatus}
                       </span>
                     </TableCell>
 
@@ -341,21 +358,25 @@ const All = () => {
                     >
                       <span
                         className={
-                          item.status === "Confirmed"
-                            ? "badge badge-soft-success fz-12"
-                            : item.status === "Canceled"
+                          item.bookingStatus === "Pending"
                             ? "badge badge-soft-danger fz-12"
-                            : "badge badge-soft-info fz-12"
+                            : item.bookingStatus === "CheckIn"
+                            ? "badge badge-soft-warning fz-12"
+                            : item.bookingStatus === "Processing"
+                            ? "badge badge-soft-info fz-12"
+                            : item.bookingStatus === "Completed"
+                            ? "badge badge-soft-success fz-12"
+                            : "badge badge-danger fz-12"
                         }
                       >
-                        {item.status}
+                        {item.bookingStatus}
                       </span>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
                         <Tooltip title="view" arrow>
                           <Link
-                            to={`/admin/orders/details/${item.order}`}
+                            to={`/admin/orders/details/${item.bookingCode}`}
                             className="btn btn-outline--primary btn-sm edit square-btn"
                           >
                             <VisibilityIcon fontSize="small" />

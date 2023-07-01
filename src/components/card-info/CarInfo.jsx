@@ -15,7 +15,7 @@ const CarInfo = ({ title, brand, model, plate }) => {
             <strong>{brand}</strong>
           </div>
           <div>
-            <span>Model: </span>
+            <span>Fuel Type: </span>
             <strong>{model}</strong>
           </div>
           <div>

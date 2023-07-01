@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -7,7 +7,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import "../../styles/button.scss";
 import Search from "../../components/filter/Search";
 import AddIcon from "@mui/icons-material/Add";
-import useTable from "../../components/table/useTable";
+import useTableV2 from "../../components/table/useTableV2";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
@@ -15,18 +15,18 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useDispatch, useSelector } from "react-redux";
+import { getServices } from "../../features/service/serviceSlide";
 
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "image", label: "Image" },
-  { id: "name", label: "Service name" },
-  { id: "category", label: "Category" },
+  { id: "serviceId", label: "ID" },
+  { id: "serviceImage", label: "Image" },
+  { id: "serviceName", label: "Service name" },
+  { id: "serviceGroup", label: "Category" },
 
-  { id: "type", label: "Car type" },
+  { id: "serviceUnit", label: "Unit" },
 
-  { id: "price", label: "Price" },
-  { id: "unit", label: "Unit" },
-  { id: "status", label: "Status" },
+  { id: "serviceStatus", label: "Status" },
 
   {
     id: "action",
@@ -38,6 +38,15 @@ const headCells = [
 ];
 
 const Services = () => {
+  const dispatch = useDispatch();
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
@@ -83,8 +92,26 @@ const Services = () => {
     },
   ];
 
+  useEffect(() => {
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage };
+    dispatch(getServices(data));
+  }, [page, rowsPerPage]);
+
+  const recordsService = useSelector((state) => state.service.services);
+  const count = useSelector((state) => state.service.number);
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(
+      recordsService,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <>
       <div className="md:pt-24 md:px-8">
@@ -143,48 +170,41 @@ const Services = () => {
                 <TblContainer>
                   <TblHead />
                   <TableBody>
-                    {rows.map((item) => (
-                      <TableRow hover key={item.id}>
+                    {recordsAfterPagingAndSorting().map((item) => (
+                      <TableRow hover key={item.serviceId}>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.id}</div>
+                          <div>{item.serviceId}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none", textAlign: "center" }}>
                           <img
                             className="rounded"
-                            src={item.image}
+                            src={item.serviceImage}
                             width={70}
                             alt={"hello"}
                           />
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <Link
-                            to={`/admin/service/view/1/`}
+                            to={`/admin/service/view/${item.serviceId}`}
                             className="title-color hover-c1"
                           >
-                            {item.name}
+                            {item.serviceName}
                           </Link>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.category}</div>
+                          <div>{item.serviceGroup}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.type}</div>
-                        </TableCell>
-
-                        <TableCell sx={{ border: "none" }}>
-                          <div>{item.price}</div>
+                          <div>{item.serviceUnit}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.unit}</div>
-                        </TableCell>
-                        <TableCell sx={{ border: "none" }}>
-                          <Switches checked={item.status} />
+                          <Switches checked={item.serviceStatus === "Activate" ? true : false} />
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="view" arrow>
                               <Link
-                                to={`/admin/service/view/1/`}
+                                to={`/admin/service/view/${item.serviceId}`}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <VisibilityIcon fontSize="small" />
@@ -192,7 +212,7 @@ const Services = () => {
                             </Tooltip>
                             <Tooltip title="edit" arrow>
                               <Link
-                                to={`/admin/mechanic/edit/${item.id}`}
+                                to={`/admin/mechanic/edit/${item.serviceId}`}
                                 className="btn btn-outline--primary btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />

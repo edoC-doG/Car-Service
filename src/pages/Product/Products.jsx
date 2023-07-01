@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -7,21 +7,24 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import "../../styles/button.scss";
 import Search from "../../components/filter/Search";
 import AddIcon from "@mui/icons-material/Add";
-import useTable from "../../components/table/useTable";
+import useTableV2 from "../../components/table/useTableV2";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../../features/product/productSlice";
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "image", label: "Product Image", align: "left" },
+  { id: "productId", label: "ID" },
+  { id: "productImage", label: "Product Image", align: "left" },
 
-  { id: "name", label: "Name" },
-  { id: "type", label: "Product Type" },
-  { id: "price", label: "Price" },
-  { id: "status", label: "Status" },
+  { id: "productName", label: "Name" },
+  { id: "productPrice", label: "Price" },
+  { id: "productQuantity", label: "Quantity" },
+  { id:"categoryName",  label: "Category" },
+  { id: "productStatus", label: "Status" },
   {
     id: "action",
     label: "Action",
@@ -31,11 +34,25 @@ const headCells = [
   },
 ];
 const Products = () => {
+  const dispatch = useDispatch();
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
+
+  useEffect(() => {
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage };
+    dispatch(getProducts(data));
+  }, [page, rowsPerPage]);
 
   const rows = [
     {
@@ -68,8 +85,20 @@ const Products = () => {
     },
   ];
 
+  const recordsProduct = useSelector((state) => state.product.products);
+  const count = useSelector((state) => state.product.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(
+      recordsProduct,
+      headCells,
+      filterFn, 
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <>
       <div className="min-[620px]:pt-24 min-[620px]:px-8">
@@ -127,37 +156,44 @@ const Products = () => {
                 <TblContainer>
                   <TblHead />
                   <TableBody>
-                    {rows.map((item) => (
-                      <TableRow hover key={item.id}>
+                    {recordsAfterPagingAndSorting().map((item) => (
+                      <TableRow hover key={item.productId}>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.id}</div>
+                          <div>{item.productId}</div>
                         </TableCell>
 
                         <TableCell sx={{ border: "none", textAlign: "center" }}>
                           <img
                             className="rounded"
-                            src={item.image}
+                            src={item.productImage}
                             width={70}
                             alt={"hello"}
                           />
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.name}</div>
+                          <div>{item.productName}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.type}</div>
+                          <div>{item.productPrice}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.price}</div>
+                          <div>{item.productQuantity}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <Switches checked={item.status} />
+                          <div>{item.categoryProductDto.categoryName}</div>
+                        </TableCell>
+                        <TableCell sx={{ border: "none" }}>
+                          <Switches
+                            checked={
+                              item.productStatus === "Activate" ? true : false
+                            }
+                          />
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="edit" arrow>
                               <Link
-                                to={`/admin/mechanic/edit/${item.id}`}
+                                to={`/admin/mechanic/edit/${item.productId}`}
                                 className="btn btn-outline--primary btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />

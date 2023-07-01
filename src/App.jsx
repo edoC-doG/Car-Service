@@ -6,18 +6,13 @@ import Customers from "./pages/Customer/Customers";
 import MainLayout from "./pages/MainLayout";
 import Review from "./pages/Customer/Review";
 import CustomerDetail from "./pages/Customer/CustomerDetail";
-import Wallet from "./pages/Customer/Wallet";
 import AddOwner from "./pages/Onwer/AddOwner";
 import Onwers from "./pages/Onwer/Onwers";
 import AddMechanic from "./pages/Mechanic/AddMechanic";
 import Mechanics from "./pages/Mechanic/Mechanics";
 import Chat from "./pages/Mechanic/MechanicDetail";
-import EmercencyContact from "./pages/Mechanic/EmercencyContact";
 import Employees from "./pages/Employee/Employees";
-import SubCatogories from "./pages/Category/sub-category/SubCatogories";
 import Categories from "./pages/Category/Categories";
-import AddBrand from "./pages/Brand/AddBrand";
-import Brands from "./pages/Brand/Brands";
 import Products from "./pages/Product/Products";
 import Import from "./pages/Product/Import";
 import AddService from "./pages/Service/AddService";
@@ -34,6 +29,7 @@ import OnwerReport from "./pages/Report/OnwerReport";
 import OrderDetail from "./pages/Order/OrderDetail";
 import ReviewDetail from "./pages/Customer/ReviewDetail";
 import OwnerDetail from "./pages/Onwer/OwnerDetail";
+import TableDemo from "./pages/TableDemo";
 
 function App() {
   return (
@@ -48,10 +44,6 @@ function App() {
             <Route path="customer/view/:id" element={<CustomerDetail />} />
             <Route path="review-list-customer" element={<Review />} />
             <Route path="service/view/:id" element={<ReviewDetail />} />
-
-            <Route path="customer-wallet-report" element={<Wallet />} />
-            <Route path="wallet" element={<Wallet />} />
-
             {/* ONWER */}
             <Route path="owner" element={<AddOwner />} />
             <Route path="owner-list" element={<Onwers />} />
@@ -66,7 +58,7 @@ function App() {
             <Route path="list-employee" element={<Employees />} />
             {/* CATEGORY */}
             <Route path="view-category" element={<Categories />} />
-            {/* <Route path="sub-category-view" element={<SubCatogories />} /> */}
+           
 
             {/* PRODUCT */}
             <Route path="list-product" element={<Products />} />
@@ -92,6 +84,7 @@ function App() {
               element={<TransactionReport />}
             />
             <Route path="owner-report" element={<OnwerReport />} />
+            <Route path="test" element={<TableDemo />} />
           </Route>
         </Routes>
       </BrowserRouter>

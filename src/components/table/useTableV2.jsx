@@ -9,17 +9,17 @@ import {
 } from "@mui/material";
 // import './useTable.scss'
 
-const useTable = (records, headCells, filterFn) => {
-  const pages = [5, 10, 25]; // page size
-  const [page, setPage] = useState(0);  // page index
-  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setPage, setRowsPerPage, count) => {
+ 
   const [order, setOrder] = useState();
   const [orderBy, setOrderBy] = useState();
 
-  const TblContainer = (props) => <Table>{props.children}</Table>;
+  const TblContainer = (props) => <Table aria-label='collapsible table'>{props.children}</Table>;
   console.log("pages: ", pages);
   console.log("page: ", page);
   console.log("row per page:" , rowsPerPage);
+
+  console.log("record use table:" , records);
 
   const handleSortRequest = (cellId) => {
     const isAsc = orderBy === cellId && order === "asc";
@@ -77,6 +77,7 @@ const useTable = (records, headCells, filterFn) => {
   };
 
   function stableSort(array, comparator) {
+    
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
@@ -106,7 +107,9 @@ const useTable = (records, headCells, filterFn) => {
     return stableSort(
       filterFn.fn(records),
       getComparator(order, orderBy)
-    ).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+    )
+    
+    // .slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   };
 
   const TblPagination = () => (
@@ -115,7 +118,7 @@ const useTable = (records, headCells, filterFn) => {
       page={page}
       rowsPerPageOptions={pages}
       rowsPerPage={rowsPerPage}
-      count={records.length}
+      count={count}
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
@@ -129,4 +132,4 @@ const useTable = (records, headCells, filterFn) => {
   };
 };
 
-export default useTable;
+export default useTableV2;

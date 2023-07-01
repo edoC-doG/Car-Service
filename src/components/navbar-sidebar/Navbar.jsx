@@ -13,7 +13,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => {
         type="button"
         onClick={customFunc}
         style={{ color }}
-        className="relative text-xl hover:bg-light-gray nav-button"
+        className="relative text-xl  nav-button"
       >
         <span
           style={{ background: dotColor }}

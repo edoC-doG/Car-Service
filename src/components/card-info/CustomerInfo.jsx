@@ -2,9 +2,8 @@ import React from "react";
 const CustomerInfo = ({
   title,
   srcIcon,
-  src,
   name,
-  numberOfOrder,
+  src,
   content,
   phone,
   email,
@@ -30,10 +29,6 @@ const CustomerInfo = ({
           <div className="media-body d-flex flex-column gap-1">
             <span className="title-color hover-c1">
               <strong>{name}</strong>
-            </span>
-            <span className="title-color">
-              <strong>{numberOfOrder}</strong>
-              {content}
             </span>
             <span className="title-color break-all">
               <strong>{phone}</strong>

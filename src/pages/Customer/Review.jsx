@@ -1,5 +1,5 @@
 import Header from "../../components/Header";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Search from "../../components/filter/Search";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -9,25 +9,50 @@ import Button from "../../components/filter/Button";
 import "../../styles/button.scss";
 import { MdFilterList } from "react-icons/md";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import useTable from "../../components/table/useTable";
+import useTableV2 from "../../components/table/useTableV2";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import StarIcon from "@mui/icons-material/Star";
 import Switches from "../../components/table/Switches";
+
+import { useDispatch, useSelector } from "react-redux";
+import {getReviews} from '../../features/review/reviewSlice'
+
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "service", label: "Service" },
+  { id: "reviewId", label: "ID" },
+  { id: "garageReviewDto", label: "Garage" },
 
-  { id: "customer", label: "Customer Name" },
+  { id: "fullName", label: "Customer Name" },
   { id: "rating", label: "Rating" },
-  { id: "Review", label: "Review" },
-  { id: "date", label: "Date" },
+  { id: "content", label: "Review" },
+  { id: "createdAt", label: "Date" },
 
-  { id: "status", label: "Status" },
+  { id: "reviewStatus", label: "Status" },
 ];
 const Review = () => {
+  const dispatch = useDispatch();
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0);  // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
   const [age, setAge] = React.useState("");
 
+
+  useEffect(() => {
+    const data = { pageIndex: page + 1 , pageSize : rowsPerPage }
+    dispatch(getReviews(data));
+   
+
+}, [ page,rowsPerPage, dispatch])
+
+
+const recordsReview = useSelector((state) => state.review.reviews)
+
+const count = useSelector((state) => state.review.number)
   const handleChange = (event) => {
     setAge(event.target.value);
   };
@@ -60,7 +85,7 @@ const Review = () => {
   ];
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(recordsReview, headCells, filterFn, pages, page, rowsPerPage, setPage, setRowsPerPage, count );
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -188,21 +213,21 @@ const Review = () => {
           <TblContainer>
             <TblHead />
             <TableBody>
-              {rows.map((item) => (
-                <TableRow hover key={item.id}>
+              {recordsAfterPagingAndSorting().map((item) => (
+                <TableRow hover key={item.reviewId}>
                   <TableCell sx={{ border: "none" }}>
-                    <div>{item.id}</div>
+                    <div>{item.reviewId}</div>
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <Link
-                      to={`/admin/service/view/${item.service.id_service}`}
+                      to={`/admin/service/view/${item.garageReviewDto.garageId}`}
                       className="title-color hover-c1"
                     >
-                      {item.service.name}
+                      {item.garageReviewDto.garageName}
                     </Link>
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    <div>{item.customer}</div>
+                    <div>{item.userReviewDto.fullName}</div>
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <label className="badge badge-soft-info mb-0">
@@ -212,13 +237,13 @@ const Review = () => {
                     </label>
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    <div>{item.review}</div>
+                    <div>{item.content}</div>
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    <div>{item.date}</div>
+                    <div>{item.createdAt}</div>si
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    <Switches checked={item.status} />
+                    <Switches checked={item.reviewStatus === "Activate" ? true : false} />
                   </TableCell>
                 </TableRow>
               ))}

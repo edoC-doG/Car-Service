@@ -7,16 +7,7 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   const { activeMenu, screenSize } = useStateContext();
-  // console.log(screenSize);
-  // console.log(activeMenu);
-  // useEffect(() => {
-  //   const currentThemeColor = localStorage.getItem("colorMode");
-  //   const currentThemeMode = localStorage.getItem("themeMode");
-  //   if (currentThemeColor && currentThemeMode) {
-  //     setCurrentColor(currentThemeColor);
-  //     setCurrentMode(currentThemeMode);
-  //   }
-  // }, []);
+
 
   return (
     <>
@@ -35,7 +26,7 @@ const MainLayout = () => {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white small-sidebar">
+                <div className="bg-white small-sidebar ">
                   <Sidebar />
                 </div>
               )}

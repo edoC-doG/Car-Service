@@ -1,26 +1,26 @@
 import "../../styles/button.scss";
 import Search from "../../components/filter/Search";
 import Header from "../../components/Header";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "../../components/filter/Button";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import useTable from "../../components/table/useTable";
+import useTableV2 from "../../components/table/useTableV2";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "../../components/ConfirmDialog";
-
+import { useDispatch, useSelector } from "react-redux";
+import {getCustomers, getNumberCustomer} from "../../features/customer/customerSilde";
 const headCells = [
-  { id: "accountID", label: "ID" },
-  { id: "name", label: "Customer Name", disableSorting: true },
-  { id: "accountEmail", label: "Contact Info" },
-  { id: "totalOrder", label: "Total Order" },
-
-  { id: "status", label: "Block/Unblcok" },
+  { id: "userId", label: "ID" },
+  { id: "fullName", label: "Customer Name"},
+  { id:"userEmail", label: "Contact Info" },
+  { id: "totalBooking", label: "Total Booking" },
+  { id: "userStatus", label: "Block/Unblock" },
   {
     id: "action",
     label: "Action",
@@ -29,37 +29,45 @@ const headCells = [
     align: "center",
   },
 ];
+
 const Customers = () => {
+  const dispatch = useDispatch();
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0);  // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
-  const rows = [
-    {
-      accountID: 1,
-      name: "Nguyen Thi Thu Hien",
-      image:
-        "https://6valley.6amtech.com/public/assets/back-end/img/160x160/img1.jpg",
-      accountEmail: "thanhminh1452000@gmail.com",
-      contact: "0812394832",
-      totalOrder: 200,
-      status: true,
-    },
-    {
-      accountID: 2,
-      name: "Thanh Min",
-      image:
-        "https://6valley.6amtech.com/public/assets/back-end/img/160x160/img1.jpg",
-      accountEmail: "thanhminh1452000@gmail.com",
-      contact: "0812394832",
-      totalOrder: 200,
-      status: false,
-    },
-  ];
 
+
+
+
+  useEffect(() => {
+      const data = { pageIndex: page + 1 , pageSize : rowsPerPage }
+      dispatch(getCustomers(data));
+      dispatch(getNumberCustomer())
+
+  }, [ page,rowsPerPage, dispatch])
+
+  
+
+  const recordsCustomer = useSelector((state) => state.customer.customers);
+
+  const count  = useSelector((state) => state.customer.number);
+  
+
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
+  console.log("records" , recordsCustomer);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(recordsCustomer, headCells, filterFn,  pages, page, rowsPerPage, setPage, setRowsPerPage, count);
+    
   return (
     <>
       <div className="min-[620px]:pt-24 min-[620px]:px-8">
@@ -68,7 +76,7 @@ const Customers = () => {
           size={20}
           alt="customer"
           title="Customer List"
-          number="8"
+          number={count}
         />
         <div className="card">
           <div className="px-3 py-4">
@@ -105,24 +113,24 @@ const Customers = () => {
             <TblContainer>
               <TblHead />
               <TableBody>
-                {rows.map((item) => (
-                  <TableRow hover key={item.accountID}>
+                {recordsAfterPagingAndSorting().map((item) => (
+                  <TableRow hover key={item.userId}>
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.accountID}</div>
+                      <div>{item.userId}</div>
                     </TableCell>
                     {/* NAME AND IMAGE */}
                     <TableCell sx={{ border: "none" }}>
                       <Link
-                        to={`/admin/customer/view/${"1"}`}
+                        to={`/admin/customer/view/${item.userId}`}
                         className="title-color hover-c1 d-flex align-items-center gap-3 "
                       >
                         <img
-                          src={item.image}
+                          src={item.userImage}
                           alt="avatar"
                           width="40"
                           className="rounded-circle"
                         />
-                        {item.name}
+                        {item.fullName}
                       </Link>
                     </TableCell>
                     {/* EMAIL AND PHONE */}
@@ -130,36 +138,36 @@ const Customers = () => {
                       <div className="mb-1">
                         <strong>
                           <Link
-                            to={`mailto:${item.accountEmail}`}
+                            to={`mailto:${item.userEmail}`}
                             className="title-color hover-c1 lowercase"
                           >
-                            {item.accountEmail}
+                            {item.userEmail}
                           </Link>
                         </strong>
                       </div>
                       <Link
-                        to={`tel:${item.contact}`}
+                        to={`tel:${item.userPhone}`}
                         className="title-color hover-c1 lowercase"
                       >
-                        {item.contact}
+                        {item.userPhone}
                       </Link>
                     </TableCell>
                     {/* Quantity Ordered */}
                     <TableCell sx={{ border: "none" }}>
                       <label className="btn text-info bg-soft-info font-weight-bold px-3 py-1 mb-0 fz-12">
-                        {item.totalOrder}
+                        {item.totalBooking}
                       </label>
                     </TableCell>
                     {/* Block and unblock */}
                     <TableCell sx={{ border: "none" }}>
-                      <Switches checked={item.status} />
+                      <Switches checked={item.userStatus === "Activate" ? true : false} />
                     </TableCell>
                     {/* Action */}
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
                         <Tooltip title="view" arrow>
                           <Link
-                            to={`/admin/customer/view/${item.accountID}`}
+                            to={`/admin/customer/view/${item.userId}`}
                             className="btn btn-outline-info btn-sm square-btn"
                           >
                             <VisibilityIcon fontSize="small" />

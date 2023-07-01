@@ -9,7 +9,7 @@ import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineSharp";
-import CurrencyFormat from "react-currency-format";
+// import CurrencyFormat from "react-currency-format";
 import CustomerInfo from "../../components/card-info/CustomerInfo";
 import CarInfo from "../../components/card-info/CarInfo";
 import { useDispatch, useSelector } from "react-redux";
@@ -175,11 +175,12 @@ const CustomerDetail = () => {
                         </TableCell>
                         {/* Total */}
                         <TableCell sx={{ border: "none", fontSize: "14px" }}>
-                          <CurrencyFormat
+                          {/* <CurrencyFormat
                             value={item.totalPrice}
                             displayType={"text"}
                             format={"###,###,### VND"}
-                          />
+                          /> */}
+                          {item.totalPrice}
                         </TableCell>
 
                         {/* Action */}

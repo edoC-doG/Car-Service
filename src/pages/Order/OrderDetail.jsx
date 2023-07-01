@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import CustomerInfo from "../../components/card-info/CustomerInfo";
-import StaffInfo from "../../components/card-info/StaffInfo";
+
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { getDetailBooking } from "../../features/book/bookingSlide";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +28,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CurrencyFormat from "react-currency-format";
+// import CurrencyFormat from "react-currency-format";
 
 const headCells = [
   { id: "bookingDetailId", label: "Id" },
@@ -319,11 +319,12 @@ const OrderDetail = () => {
                     <dd className="col-6 title-color">
                       <strong>
                         {" "}
-                        <CurrencyFormat
+                        {/* <CurrencyFormat
                           value={booking.totalPrice}
                           displayType={"text"}
                           format={"###,###,### VND"}
-                        />
+                        /> */}
+                        {booking.totalPrice}
                       </strong>
                     </dd>
                     <dt className="col-5">Coupon discount</dt>
@@ -334,11 +335,12 @@ const OrderDetail = () => {
                     <dd className="col-6 title-color">
                       <strong>
                         {" "}
-                        <CurrencyFormat
+                        {/* <CurrencyFormat
                           value={booking.totalPrice}
                           displayType={"text"}
                           format={"###,###,### VND"}
-                        />
+                        /> */}
+                        {booking.totalPrice}
                       </strong>
                     </dd>
                   </dl>

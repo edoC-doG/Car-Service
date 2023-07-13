@@ -1,14 +1,15 @@
+// const getTokenFromLocalStorage = localStorage.getItem("userV2")
+//   ? JSON.parse(localStorage.getItem("userV2"))
+//   : null;
 
-const getTokenFromLocalStorage = localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
-  : null;
+// console.log(getTokenFromLocalStorage);
 
-// console.log(getTokenFromLocalStorage.userToken);
+import authService from "../features/auth/authService";
+
+const getTokenFromLocalStorage = authService.getCurrentUser();
 export const config = {
-    headers: {
-            Authorization: `Bearer ${
-              getTokenFromLocalStorage !== null ? getTokenFromLocalStorage?.userToken : ""
-            }`,
-            Accept: "application/json",   
-    }
-}
+  headers: {
+    Authorization: `Bearer ${getTokenFromLocalStorage?.userToken}`,
+    Accept: "application/json",
+  },
+};

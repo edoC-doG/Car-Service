@@ -15,9 +15,9 @@ let schema = yup.object().shape({
 });
 
 const SignIn = () => {
-  const getTokenFromLocalStorage = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : null;
+  // const getTokenFromLocalStorage = localStorage.getItem("user")
+  //   ? JSON.parse(localStorage.getItem("user"))
+  //   : null;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -31,7 +31,7 @@ const SignIn = () => {
       dispatch(login(values));
     },
   });
-
+  // console.log(getTokenFromLocalStorage);
   const [passwordShown, setPasswordShown] = useState(false);
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -45,14 +45,11 @@ const SignIn = () => {
   const authState = useSelector((state) => state.auth);
 
   const { user, isError, isSuccess, isLoading, message } = authState;
+
   useEffect(() => {
-    // console.log(user);
     if (isSuccess) {
-      getTokenFromLocalStorage !== null
-        ? // navigate("admin");
-          navigate("admin")
-        : navigate("/");
-      // window.location.reload( );
+      // window.location.reload('/admin');
+      navigate("admin");
     } else {
       if (message?.status === 404) {
         setNotify({
@@ -177,6 +174,7 @@ const SignIn = () => {
                       type="submit"
                       className="btn btn-lg btn-block btn--primary"
                       onClick={formik.handleSubmit}
+                      // onClick={navigate('/admin')}
                     >
                       <h1 className="text-2xl text-white">Sign in</h1>
                     </button>

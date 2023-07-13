@@ -30,17 +30,17 @@ import OrderDetail from "./pages/Order/OrderDetail";
 import ReviewDetail from "./pages/Customer/ReviewDetail";
 import OwnerDetail from "./pages/Onwer/OwnerDetail";
 import TableDemo from "./pages/TableDemo";
+import authService from "./features/auth/authService";
 
 function App() {
-  const getTokenFromLocalStorage = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : null;
+  const user = authService.getCurrentUser();
+
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignIn />} />
-          {getTokenFromLocalStorage !== null ? (
+          
             <Route path="/admin" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               {/* CUSTOMER */}
@@ -89,9 +89,7 @@ function App() {
               <Route path="owner-report" element={<OnwerReport />} />
               <Route path="test" element={<TableDemo />} />
             </Route>
-          ) : (
-            <Route path="/" element={<SignIn />} />
-          )}
+          
         </Routes>
       </BrowserRouter>
     </>

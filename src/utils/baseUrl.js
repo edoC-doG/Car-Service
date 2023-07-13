@@ -1,1 +1,1 @@
-export const base_url = "https://project20230606170014.azurewebsites.net/api/"
+export const base_url = "https://carserviceappservice.azurewebsites.net/api/"

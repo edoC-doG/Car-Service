@@ -43,14 +43,12 @@ const Customers = () => {
   });
 
 
-
-
   useEffect(() => {
       const data = { pageIndex: page + 1 , pageSize : rowsPerPage }
       dispatch(getCustomers(data));
       dispatch(getNumberCustomer())
 
-  }, [ page,rowsPerPage, dispatch])
+  }, [ page,rowsPerPage])
 
   
 

@@ -8,7 +8,6 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
   const { activeMenu, screenSize } = useStateContext();
 
-
   return (
     <>
       <div>

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const login = async (user) => {
@@ -19,8 +18,20 @@ const login = async (user) => {
     return response.data;
 };
 
+const logout = () => {
+  localStorage.removeItem("user");
+ 
+};
+
+const getCurrentUser = () => {
+  return JSON.parse(localStorage.getItem("user"));
+};
+
+
 const authService = {
   login,
+  logout, 
+  getCurrentUser
 };
 
 export default authService;

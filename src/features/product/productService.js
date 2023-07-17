@@ -1,14 +1,13 @@
-import axios from "axios";
-import { config } from "../../utils/axiosconfig";
+import { instance } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 
 
 const getProducts = async (page) => {
-    const response = await axios.post(
+    const response = await instance.post(
         `${base_url}product/view-all-product`,
         page,
-        config
+        instance
       );
       console.log("product response: ",response.data);
     

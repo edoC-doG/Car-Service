@@ -1,13 +1,13 @@
-import axios from "axios";
-import { config } from "../../utils/axiosconfig";
+
+import { instance } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 
 const getServices = async (page) => {
-    const response = await axios.post(
+    const response = await instance.post(
         `${base_url}service/view-all-service`,
         page,
-        config
+        instance
       );
       console.log("service response: ",response.data);
     

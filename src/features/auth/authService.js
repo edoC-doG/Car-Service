@@ -1,8 +1,8 @@
-import axios from "axios";
+import { instance } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const login = async (user) => {
-   let response = await axios.post(`${base_url}authentication/login`, user);
+   let response = await instance.post(`${base_url}authentication/login`, user);
 
    if (response.data) {
     const data =  {

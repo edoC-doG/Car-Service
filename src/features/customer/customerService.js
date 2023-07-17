@@ -1,14 +1,13 @@
-import axios from "axios";
-import { config } from "../../utils/axiosconfig";
+import { instance} from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
-console.log(config);
+console.log(instance);
 
 const getCustomers = async (page) => {
-  const response = await axios.post(
+  const response = await instance.post(
     `${base_url}user/filter-by-role/1`,
     page,
-    config
+    instance
   );
   console.log(response.data);
 
@@ -16,16 +15,16 @@ const getCustomers = async (page) => {
 };
 
 const getNumberCustomers = async () => {
-  const response = await axios.get(`${base_url}authentication/count/Customer`);
+  const response = await instance.get(`${base_url}authentication/count/Customer`);
   console.log("the number of customer: ", response.data);
 
   return response.data;
 };
 
 const getDetailCustomer = async (id) => {
-  const response = await axios.get(
+  const response = await instance.get(
     `${base_url}user/detail-customer/${id}`,
-    config
+    instance
   );
 
   console.log(`detail customer ${id}:`, response.data);

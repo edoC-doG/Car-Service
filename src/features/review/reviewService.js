@@ -1,12 +1,12 @@
-import axios from "axios";
-import { config } from "../../utils/axiosconfig";
+
+import { instance } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const getReviews = async (page) => {
-  const response = await axios.post(
+  const response = await instance.post(
     `${base_url}review/view-all-review`,
     page,
-    config
+    instance
   );
   console.log("all review: " , response.data);
 

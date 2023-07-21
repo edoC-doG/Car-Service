@@ -1,12 +1,11 @@
-import axios from "axios";
-import { config } from "../../utils/axiosconfig";
+import { instance } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
 const getEmployees = async (page) => {
-  const response = await axios.post(
+  const response = await instance.post(
     `${base_url}user/filter-by-role/245`,
     page,
-    config
+    instance
   );
   console.log("employee: ", response.data);
 

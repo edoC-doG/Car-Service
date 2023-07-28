@@ -1,8 +1,3 @@
-// const getTokenFromLocalStorage = localStorage.getItem("userV2")
-//   ? JSON.parse(localStorage.getItem("userV2"))
-//   : null;
-
-// console.log(getTokenFromLocalStorage);
 
 import axios from "axios";
 import authService from "../features/auth/authService";

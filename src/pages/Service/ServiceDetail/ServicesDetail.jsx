@@ -1,0 +1,279 @@
+import React, { useState, useEffect } from "react";
+import Header from "./../../../components/Header";
+import Button from "./../../../components/filter/Button";
+import "./../../../styles/button.scss";
+import AddIcon from "@mui/icons-material/Add";
+import useTableV2 from "./../../../components/table/useTableV2";
+import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import ConfirmDialog from "./../../../components/ConfirmDialog";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { useDispatch, useSelector } from "react-redux";
+import { getDetailServices } from "./../../../features/service/serviceSlide";
+import Notification from "./../../../components/Notification";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import ModalAddDetail from "./ModalAdd";
+const headCells = [
+  { id: "serviceDetailId", label: "ID" },
+  { id: "servicePrice", label: "Price" },
+  { id: "minNumberOfCarLot", label: "Min Car slot" },
+  { id: "maxNumberOfCarLot", label: "Max Car slot" },
+  {
+    id: "action",
+    label: "Action",
+    disableSorting: true,
+
+    align: "center",
+  },
+];
+
+const Services = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const id = location.pathname.split("/")[4];
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+  });
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+  };
+  const serState = useSelector((state) => state.service);
+  const { service, isError, isSuccessAdd, isLoading, message, isSuccess } =
+    serState;
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  const getData = () => {
+    // const data = { pageIndex: page + 1, pageSize: rowsPerPage };
+    dispatch(getDetailServices(id));
+  };
+  useEffect(() => {
+    getData();
+    if (isSuccessAdd) {
+      setNotify({
+        isOpen: true,
+        message: "Dịch vụ được được thêm thành công",
+        type: "success",
+      });
+      handleClose();
+    } else {
+      if (message?.status === 400) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      }
+    }
+  }, [page, rowsPerPage, isSuccessAdd, message]);
+  const serviceInfo = useSelector((state) => state.service.serviceInfo);
+  const recordDetail = useSelector((state) => state.service.servicesDetail);
+  console.log(recordDetail);
+  const count = recordDetail.length
+  console.log(count)
+  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
+    useTableV2(
+      recordDetail,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
+  return (
+    <>
+      <div className="md:pt-24 md:px-8">
+        <Header
+          icon="https://i.imgur.com/1EPVEZN.png"
+          size={25}
+          alt="services"
+          title="List detail services"
+          number="20"
+        />
+        <div className="row mt-4">
+          <div className="col-md-12">
+            <div className="card">
+              <div className="px-3 py-4">
+                <div className="d-flex flex-wrap gap-3 justify-content-between mb-4">
+                  <div className="d-flex flex-column gap-3">
+                    <h4 className="capitalize font-semibold">
+                      Service ID: #{id}
+                    </h4>
+                    <div className="d-flex flex-wrap gap-3">
+                      <div className="d-flex align-items-center rounded ">
+                        {serviceInfo.serviceName}
+                      </div>
+                    </div>
+                    <div className="d-flex flex-wrap gap-3">
+                      <div className="payment-method d-flex justify-content-sm-end gap-3 capitalize">
+                        <span className="title-color">Service Duration: </span>
+                        <div>{serviceInfo.serviceDuration} Hour</div>
+                      </div>
+                    </div>
+                    <div className="d-flex flex-wrap gap-3">
+                      <div className="order-status d-flex justify-content-sm-end gap-3 text-capitalize">
+                        <span className="title-color">Status: </span>
+                        <span className="font-weight-bold radius-50 d-flex align-items-center px-2 text-sm">
+                          <span
+                            className={
+                              serviceInfo.serviceStatus === "Activate"
+                                ? "badge badge-soft-success fz-12"
+                                : "badge badge-soft-error fz-12"
+                            }
+                          >
+                            <div>
+                              {/* {" "}
+                              {item.status === "ACTIVE"
+                                ? "Khả dụng"
+                                : "Không khả dụng"}{" "} */}
+                              {serviceInfo.serviceStatus}
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-sm-right">
+                    <div className="d-flex flex-wrap gap-3">
+                      <div>
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => {
+                            navigate(-1);
+                          }}
+                          startIcon={<KeyboardArrowLeftIcon fontSize="small" />}
+                          text="Back"
+                        />
+                      </div>
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => setShowModal(true)}
+                        startIcon={<AddIcon fontSize="small" />}
+                        text="Add new Service"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Table */}
+              <div className="table-responsive">
+                <TblContainer>
+                  <TblHead />
+                  <TableBody>
+                    {recordsAfterPagingAndSorting().length > 0 ? (
+                      recordsAfterPagingAndSorting().map((item) => (
+                        <TableRow hover key={item.serviceDetailId}>
+                          <TableCell
+                            sx={{ border: "none", alignContent: "flex-start" }}
+                          >
+                            <div>{item.serviceDetailId}</div>
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "none", alignContent: "flex-start" }}
+                          >
+                            {item.servicePrice}
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "none", alignContent: "flex-start" }}
+                          >
+                            <div>{item.minNumberOfCarLot}</div>
+                          </TableCell>
+                          <TableCell
+                            sx={{ border: "none", alignContent: "flex-start" }}
+                          >
+                            <div>{item.maxNumberOfCarLot}</div>
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
+                            <div className="d-flex justify-content-center gap-2">
+                              <Tooltip title="edit" arrow>
+                                <Link
+                                  to={`/admin/mechanic/edit/${item.serviceId}`}
+                                  className="btn btn-outline--primary btn-sm square-btn"
+                                >
+                                  <EditIcon fontSize="small" />
+                                </Link>
+                              </Tooltip>
+  
+                              <Tooltip title="delelte" arrow>
+                                <Link
+                                  className="btn btn-outline-danger btn-sm delete square-btn"
+                                  onClick={() => {
+                                    setConfirmDialog({
+                                      isOpen: true,
+                                      title:
+                                        "Are you sure to delete this record?",
+                                      subTitle: "You can't undo this operation",
+                                      onConfirm: () => {},
+                                    });
+                                  }}
+                                >
+                                  <DeleteIcon fontSize="small" />
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ): (
+                      <TableRow>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                      <TableCell
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div className="text-center">
+                          <img
+                            src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
+                            alt=""
+                            className="mb-3 w-160"
+                          />
+                          <p>Không có dữ liệu</p>
+                        </div>
+                      </TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    )}
+                  </TableBody>
+                </TblContainer>
+                <TblPagination />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
+      <Notification notify={notify} setNotify={setNotify} />
+      <ModalAddDetail show={showModal} handleClose={handleClose} />
+    </>
+  );
+};
+
+export default Services;

@@ -31,6 +31,7 @@ import ReviewDetail from "./pages/Customer/ReviewDetail";
 import OwnerDetail from "./pages/Onwer/OwnerDetail";
 import TableDemo from "./pages/TableDemo";
 import authService from "./features/auth/authService";
+import ServicesDetail from "./pages/Service/ServiceDetail/ServicesDetail";
 
 function App() {
   const user = authService.getCurrentUser();
@@ -68,6 +69,7 @@ function App() {
               <Route path="import" element={<Import />} />
               {/* SERVICES */}
               <Route path="add-new-service" element={<AddService />} />
+              <Route path="list-service/detail/:id" element={<ServicesDetail />} />
               <Route path="list-service" element={<Services />} />
               {/* COUPON */}
               <Route path="coupon" element={<Coupon />} />

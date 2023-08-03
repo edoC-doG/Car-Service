@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 
-const AddService = () => {
+
+const AddService = (props) => {
+  const [files, setFiles] = useState([]);
   return (
     <div className="md:pt-24 md:px-8">
       <Header
@@ -10,6 +12,10 @@ const AddService = () => {
         alt="service"
         title="Add New Service"
       />
+      <div className="row mb-4 card card-body px-3 py-4">
+        <div className="row align-items-center">
+        </div>
+      </div>
     </div>
   );
 };

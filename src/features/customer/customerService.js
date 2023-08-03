@@ -1,7 +1,7 @@
 import { instance} from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
-console.log(instance);
+// console.log(instance);
 
 const getCustomers = async (page) => {
   const response = await instance.post(
@@ -9,7 +9,7 @@ const getCustomers = async (page) => {
     page,
     instance
   );
-  console.log(response.data);
+  // console.log(response.data);
 
   return response.data;
 };
@@ -33,6 +33,16 @@ const getDetailCustomer = async (id) => {
 };
 
 
+const updateCustomerStatus = async (data) => {
+  const response = await instance.put(
+    `${base_url}user/update-status`,
+    data,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+}
+
 
 
 
@@ -40,7 +50,7 @@ const customerService = {
   getCustomers,
   getNumberCustomers,
   getDetailCustomer, 
-
+  updateCustomerStatus
 };
 
 export default customerService;

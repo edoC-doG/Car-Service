@@ -1,24 +1,23 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import reviewService from "./reviewService";
+import mechanicService from "./mechanicService";
 
-export const getReviews = createAsyncThunk(
-  "review/reviews",
+export const getMechanics = createAsyncThunk(
+  "mechanic/mechanics",
   async (data, thunkAPI) => {
     try {
-      // console.log(data);
-      return await reviewService.getReviews(data);
+      console.log(data);
+      return await mechanicService.getMechanics(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-
-export const updateReviewStatus = createAsyncThunk(
-  "review/update-status",
+export const updateMechanicStatus = createAsyncThunk(
+  "mechanic/update-status",
   async (data, thunkAPI) => {
     try {
-      return await reviewService.updateReviewStatus(data);
+      return await mechanicService.updateMechanicStatus(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -28,8 +27,8 @@ export const updateReviewStatus = createAsyncThunk(
 export const resetState = createAction("Reset_all");
 
 const initialState = {
-  reviews: [],
-  review: {},
+  mechanics: [],
+  mechanic: {},
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -38,48 +37,48 @@ const initialState = {
   number: 0,
 };
 
-export const reviewSlice = createSlice({
-  name: "review",
+export const mechanicSlice = createSlice({
+  name: "mechanic",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getReviews.pending, (state) => {
+      .addCase(getMechanics.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getReviews.fulfilled, (state, action) => {
+      .addCase(getMechanics.fulfilled, (state, action) => {
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.reviews = action.payload.list;
+        state.mechanics = action.payload.list;
         state.number = action.payload.count;
         state.message = "success";
       })
-      .addCase(getReviews.rejected, (state, action) => {
+      .addCase(getMechanics.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-      .addCase(updateReviewStatus.pending, (state) => {
+      .addCase(updateMechanicStatus.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateReviewStatus.fulfilled, (state, action) => {
+      .addCase(updateMechanicStatus.fulfilled, (state, action) => {
         state.isError = false;
         state.isLoading = false;
         state.isSuccessAction = true;
         state.customer = action.payload;
         state.message = "success";
       })
-      .addCase(updateReviewStatus.rejected, (state, action) => {
+      .addCase(updateMechanicStatus.rejected, (state, action) => {
         state.isError = true;
         state.isSuccessAction = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
+
       .addCase(resetState, () => initialState);
   },
 });
 
-
-export default reviewSlice.reducer;
+export default  mechanicSlice.reducer;

@@ -1,11 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import customerService from "./customerService";
 
 export const getCustomers = createAsyncThunk(
   "customer/customers",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await customerService.getCustomers(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -35,6 +35,18 @@ export const getDetailCustomer = createAsyncThunk(
   }
 );
 
+export const updateCustomerStatus = createAsyncThunk(
+  "customer/update-status",
+  async (data, thunkAPI) => {
+    try {
+      return await customerService.updateCustomerStatus(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const resetState = createAction("Reset_all");
 
 
 const initialState = {
@@ -44,6 +56,7 @@ const initialState = {
   isError: false,
   isLoading: false,
   isSuccess: false,
+  isSuccessAction: false,
   message: "",
   number: 0,
 };
@@ -104,8 +117,24 @@ export const customerSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
+      .addCase(updateCustomerStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCustomerStatus.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAction = true;
+        state.customer = action.payload;
+        state.message = "success";
+      })
+      .addCase(updateCustomerStatus.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAction = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
 
-      
+      .addCase(resetState, () => initialState);
   },
 });
 

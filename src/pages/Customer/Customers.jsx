@@ -11,13 +11,16 @@ import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCustomers,
   getNumberCustomer,
+  updateCustomerStatus,
+  resetState,
 } from "../../features/customer/customerSilde";
+import Notification from "../../components/Notification";
+
 const headCells = [
   { id: "userId", label: "ID" },
   { id: "fullName", label: "Customer Name" },
@@ -38,41 +41,56 @@ const Customers = () => {
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
-  const [checked, setChecked] = useState(true);
-  const [userId, setUserId] = useState("");
 
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  const updateSuccessAction = useSelector((state) => state.customer.isSuccessAction);
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getCustomers(data));
     dispatch(getNumberCustomer());
-  }, [page, rowsPerPage]);
+
+    if (updateSuccessAction) {
+      dispatch(resetState());
+      setConfirmDialog({
+        ...confirmDialog,
+        isOpen: false,
+      });
+      setNotify({
+        isOpen: true,
+        message: "Update Successfully",
+        type: "success",
+      });
+    }
+  }, [page, updateSuccessAction, rowsPerPage]);
 
   const recordsCustomer = useSelector((state) => state.customer.customers);
 
   const count = useSelector((state) => state.customer.number);
-
-  const handleChecked = (status) => {
-    if (status === "Activate") {
-      return checked;
-    } else {
-      setChecked(false);
-      return checked;
-    }
-  };
-
 
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
     },
   });
-  console.log("records", recordsCustomer);
+  // console.log("records", recordsCustomer);
+
+  const handleSwitchToggle = (userId, userStatus) => {
+    // Dispatch the updateCustomerStatus action
+    // console.log(userId, userStatus);
+    dispatch(updateCustomerStatus({ userId, userStatus }));
+  };
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsCustomer,
@@ -132,8 +150,8 @@ const Customers = () => {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow hover key={item.userId} onMouseOver={() => {setUserId(item.userId)}}>
-                    <TableCell sx={{ border: "none" }} >
+                  <TableRow hover key={item.userId}>
+                    <TableCell sx={{ border: "none" }}>
                       <div>{item.userId}</div>
                     </TableCell>
                     {/* NAME AND IMAGE */}
@@ -179,8 +197,20 @@ const Customers = () => {
                     {/* Block and unblock */}
                     <TableCell sx={{ border: "none" }}>
                       <Switches
-                        checked={handleChecked(item.userStatus)}
-
+                        checked={item.userStatus === "Activate" ? true : false}
+                        onChange={(event) => {
+                          setConfirmDialog({
+                            isOpen: true,
+                            title: "Are you sure to change status this record?",
+                            subTitle: "You can't undo this operation",
+                            onConfirm: () => {
+                              handleSwitchToggle(
+                                item.userId,
+                                event.target.checked ? 1 : 0
+                              );
+                            },
+                          });
+                        }}
                       />
                     </TableCell>
                     {/* Action */}
@@ -208,6 +238,7 @@ const Customers = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };

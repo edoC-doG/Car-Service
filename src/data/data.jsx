@@ -80,27 +80,23 @@ export const sidebarData = [
             icon: <RxDotFilled />,
             label: "Customer Reviews",
           },
-          {
-            key: "customer-wallet-report",
-            icon: <RxDotFilled />,
-            label: "Wallet",
-          },
+        
         ],
       },
       {
-        key: "oweners",
+        key: "garage",
         icon: <FaUserShield />,
-        label: "All Owners",
+        label: "All Garages",
         children: [
           {
-            key: "owner",
+            key: "add-garage",
             icon: <RxDotFilled />,
-            label: "Add New Owner",
+            label: "Add New Garage",
           },
           {
-            key: "owner-list",
+            key: "garage-list",
             icon: <RxDotFilled />,
-            label: "Owner List",
+            label: "Garage List",
           },
         ],
       },
@@ -210,11 +206,7 @@ export const sidebarData = [
             icon: <RxDotFilled />,
             label: "Coupon",
           },
-          {
-            key: "deal",
-            icon: <RxDotFilled />,
-            label: "Featured Deal",
-          },
+          
         ],
       },
     ],
@@ -256,34 +248,34 @@ export const sidebarData = [
     ],
   },
   // Reports & Analysis
-  {
-    key: "r&a",
-    icon: null,
-    label: "REPORT & ANALYSIS",
-    type: "group",
-    children: [
-      {
-        key: "report",
-        icon: <VscGraphLine />,
-        label: "Sale & Transaction Report",
-        children: [
-          {
-            key: "admin-report",
-            icon: <RxDotFilled />,
-            label: "Earning report",
-          },
-          {
-            key: "order-transaction-list",
-            icon: <RxDotFilled />,
-            label: "Transaction report",
-          },
-          {
-            key: "owner-report",
-            icon: <RxDotFilled />,
-            label: "Owner Report",
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   key: "r&a",
+  //   icon: null,
+  //   label: "REPORT & ANALYSIS",
+  //   type: "group",
+  //   children: [
+  //     {
+  //       key: "report",
+  //       icon: <VscGraphLine />,
+  //       label: "Sale & Transaction Report",
+  //       children: [
+  //         {
+  //           key: "admin-report",
+  //           icon: <RxDotFilled />,
+  //           label: "Earning report",
+  //         },
+  //         {
+  //           key: "order-transaction-list",
+  //           icon: <RxDotFilled />,
+  //           label: "Transaction report",
+  //         },
+  //         {
+  //           key: "owner-report",
+  //           icon: <RxDotFilled />,
+  //           label: "Owner Report",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];

@@ -119,7 +119,7 @@ const Services = () => {
           icon="https://i.imgur.com/1EPVEZN.png"
           size={25}
           alt=""
-          title="Service List"
+          title="Service List" 
           number="20"
         />
         <div className="row mt-4">

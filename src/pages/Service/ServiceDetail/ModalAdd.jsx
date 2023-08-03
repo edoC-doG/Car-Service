@@ -72,7 +72,7 @@ function ModalAddDetail(props) {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Mô tả dịch vụ</Form.Label>
+              <Form.Label>Số ghế lớn nhất của xe</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus

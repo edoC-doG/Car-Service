@@ -12,6 +12,17 @@ const getBookings = async (page) => {
       return response.data;
 }
 
+const getBookingStatus = async (page) => {
+  const response = await instance.post(
+      `${base_url}booking/filter-booking-by-status`,
+      page,
+      instance
+    );
+    console.log("booking response: ",response.data);
+  
+    return response.data;
+}
+
 
 
 const getBookingDetail = async (id) => {
@@ -36,7 +47,8 @@ const getBookingsOfCustomer = async (pageAndId) => {
 const bookingService = {
     getBookingDetail,
     getBookings, 
-    getBookingsOfCustomer
+    getBookingsOfCustomer, 
+    getBookingStatus
 }
 
 export default bookingService;

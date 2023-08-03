@@ -199,11 +199,7 @@ const Coupon = () => {
 
                             <Tooltip title="delelte" arrow>
                               <Link
-                                style={
-                                  item.couponStatus === "Expired"
-                                    ? { pointerEvents: "none" }
-                                    : ""
-                                }
+                                
                                 className="btn btn-outline-danger btn-sm delete square-btn"
                                 onClick={() => {
                                   setConfirmDialog({

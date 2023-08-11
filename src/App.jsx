@@ -27,7 +27,6 @@ import Cancel from "./pages/Order/Cancel";
 import OrderDetail from "./pages/Order/OrderDetail";
 import OwnerDetail from "./pages/Onwer/OwnerDetail";
 import authService from "./features/auth/authService";
-import ServicesDetail from "./pages/Service/ServiceDetail/ServicesDetail";
 
 function App() {
   const user = authService.getCurrentUser();
@@ -59,20 +58,19 @@ function App() {
             <Route path="list-employee" element={<Employees />} />
             {/* CATEGORY */}
             <Route path="view-category" element={<Categories />} />
-              {/* PRODUCT */}
-              <Route path="list-product" element={<Products />} />
-              <Route path="import" element={<Import />} />
-              {/* SERVICES */}
-              <Route path="add-new-service" element={<AddService />} />
-              <Route path="list-service/detail/:id" element={<ServicesDetail />} />
-              <Route path="list-service" element={<Services />} />
-              {/* COUPON */}
-              <Route path="coupon" element={<Coupon />} />
-              <Route path="deal" element={<Deal />} />
-              {/* ORDER */}
-              <Route path="all-orders" element={<All />} />
-              <Route path="orders/details/:id" element={<OrderDetail />} />
 
+            {/* PRODUCT */}
+            <Route path="list-product" element={<Products />} />
+            <Route path="import" element={<Import />} />
+            {/* SERVICES */}
+            <Route path="add-new-service" element={<AddService />} />
+            <Route path="list-service" element={<Services />} />
+            {/* COUPON */}
+            <Route path="coupon" element={<Coupon />} />
+
+            {/* ORDER */}
+            <Route path="all-orders" element={<All />} />
+            <Route path="orders/details/:id" element={<OrderDetail />} />
 
             <Route path="pending-order" element={<Pending />} />
             <Route path="confirm-order" element={<Confirm />} />

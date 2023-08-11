@@ -200,7 +200,7 @@ const All = () => {
       page,
       rowsPerPage,
       setPage,
-      setRowsPerPage,           
+      setRowsPerPage,
       count
     );
   return (
@@ -313,7 +313,7 @@ const All = () => {
                   <TableRow hover key={item.bookingCode}>
                     <TableCell sx={{ border: "none" }}>
                       <Link
-                        to={`/admin/orders/details/${item.bookingId}`}
+                        to={`/admin/orders/details/${item.bookingCode}`}
                         className="title-color hover-c1"
                       >
                         {item.bookingCode}

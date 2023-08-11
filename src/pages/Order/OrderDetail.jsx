@@ -51,6 +51,7 @@ const headCells = [
 
 const OrderDetail = () => {
   const dispatch = useDispatch();
+
   const location = useLocation();
   const id = location.pathname.split("/")[4];
   const [open, setOpen] = React.useState(false);
@@ -87,6 +88,8 @@ const OrderDetail = () => {
       total: 270000,
     },
   ];
+
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(detail, headCells, filterFn);
   return (
@@ -368,7 +371,7 @@ const OrderDetail = () => {
             activeDiv={activeDiv}
           />
           <StaffInfo
-            title="  Care Staff Info"
+            title="Customer Care Staff Info"
             name="Min Min"
             contact="092134553431"
             location="Chi nhánh số 9"

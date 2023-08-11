@@ -14,7 +14,6 @@ import Chat from "./pages/Mechanic/MechanicDetail";
 import Employees from "./pages/Employee/Employees";
 import Categories from "./pages/Category/Categories";
 import Products from "./pages/Product/Products";
-import Import from "./pages/Product/Import";
 import AddService from "./pages/Service/AddService";
 import Services from "./pages/Service/Services";
 import Coupon from "./pages/Coupon/Coupon";
@@ -27,6 +26,8 @@ import Cancel from "./pages/Order/Cancel";
 import OrderDetail from "./pages/Order/OrderDetail";
 import OwnerDetail from "./pages/Onwer/OwnerDetail";
 import authService from "./features/auth/authService";
+import ServiceDetail from "./pages/Service/ServiceDetail/ServiceDetail";
+
 
 function App() {
   const user = authService.getCurrentUser();
@@ -62,13 +63,12 @@ function App() {
 
             {/* PRODUCT */}
             <Route path="list-product" element={<Products />} />
-            <Route path="import" element={<Import />} />
             {/* SERVICES */}
             <Route path="add-new-service" element={<AddService />} />
+            <Route path="list-service/detail/:id" element={<ServiceDetail />} />
             <Route path="list-service" element={<Services />} />
             {/* COUPON */}
             <Route path="coupon" element={<Coupon />} />
-
             {/* ORDER */}
             <Route path="all-orders" element={<All />} />
             <Route path="orders/details/:id" element={<OrderDetail />} />

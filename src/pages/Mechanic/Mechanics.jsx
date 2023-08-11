@@ -16,6 +16,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoneyIcon from "@mui/icons-material/Money";
 import Notification from "../../components/Notification";
 import { useDispatch, useSelector } from "react-redux";
+import ModalAdd from "./AddMechanic";
+import ModalEdit from "./ModalEdit";
 import {
   getMechanics,
   resetState,
@@ -23,7 +25,7 @@ import {
 import useTableV2 from "../../components/table/useTableV2";
 
 const headCells = [
-  { id: "mechanicId", label: "ID" },
+  { id: "userId", label: "ID" },
   { id: "fullName", label: "Name" },
 
   { id: "contact", label: "Contact Info" },
@@ -53,7 +55,19 @@ const Mechanics = () => {
     title: "",
     subTitle: "",
   });
-
+  //Add
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setShowEdit(false);
+  };
+  //Edit
+  const [showEdit, setShowEdit] = useState(false);
+  const [mechaEdit, setMechaEdit] = useState({});
+  const handleEdit = (mecha) => {
+    setMechaEdit(mecha);
+    setShowEdit(true);
+  };
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -86,42 +100,6 @@ const Mechanics = () => {
     console.log(mechanicId, userStatus);
     // dispatch(updateCustomerStatus({ userId, userStatus }));
   };
-  const rows = [
-    {
-      id: 1,
-      info: {
-        name: "Will Smith",
-        image:
-          "https://6valley.6amtech.com/public/assets/back-end/img/160x160/img1.jpg",
-      },
-
-      contact: {
-        email: "tester123@gmail.com",
-        phone: "02921323131",
-      },
-      rating: 5,
-      status: true,
-
-      totalOrders: 15,
-    },
-    {
-      id: 2,
-      info: {
-        name: "Min Min",
-        image:
-          "https://6valley.6amtech.com/public/assets/back-end/img/160x160/img1.jpg",
-      },
-      contact: {
-        email: "tester123@gmail.com",
-        phone: "02921323131",
-      },
-      rating: 4.5,
-      status: true,
-
-      totalOrders: 15,
-    },
-  ];
-
   const recordsMechanic = useSelector((state) => state.mechanic.mechanics);
   const count = useSelector((state) => state.mechanic.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -171,7 +149,7 @@ const Mechanics = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => {}}
+                        onClick={() => setShowModal(true)}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Add Mechanic"
                       />
@@ -186,9 +164,9 @@ const Mechanics = () => {
                   <TblHead />
                   <TableBody>
                     {recordsAfterPagingAndSorting().map((item) => (
-                      <TableRow hover key={item.mechanicId}>
+                      <TableRow hover key={item.userId}>
                         <TableCell sx={{ border: "none" }}>
-                          <div>{item.mechanicId}</div>
+                          <div>{item.userId}</div>
                         </TableCell>
 
                         <TableCell sx={{ border: "none" }}>
@@ -243,7 +221,11 @@ const Mechanics = () => {
 
                         <TableCell sx={{ border: "none" }}>
                           <Switches
-                            checked={item.userMechanicDto.userStatus === 1 ? true : false}
+                            checked={
+                              item.userMechanicDto.userStatus === 1
+                                ? true
+                                : false
+                            }
                             onChange={(event) => {
                               setConfirmDialog({
                                 isOpen: true,
@@ -266,7 +248,7 @@ const Mechanics = () => {
                           <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="edit" arrow>
                               <Link
-                                to={`/admin/mechanic/edit/${item.mechanicId}`}
+                                onClick={() => handleEdit(item)}
                                 className="btn btn-outline--primary btn-sm edit"
                               >
                                 <EditIcon fontSize="small" />
@@ -312,8 +294,13 @@ const Mechanics = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
+      <ModalAdd show={showModal} handleClose={handleClose} />
+      <ModalEdit
+        show={showEdit}
+        handleClose={handleClose}
+        mechaEdit={mechaEdit}
+      />
       <Notification notify={notify} setNotify={setNotify} />
-
     </>
   );
 };

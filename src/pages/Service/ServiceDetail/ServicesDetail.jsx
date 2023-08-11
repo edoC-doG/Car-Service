@@ -14,16 +14,20 @@ import { getDetailServices } from "./../../../features/service/serviceSlide";
 import Notification from "./../../../components/Notification";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ModalAddDetail from "./ModalAdd";
+import ModalEdit from "./ModalEdit";
 const headCells = [
   { id: "serviceDetailId", label: "ID" },
   { id: "servicePrice", label: "Price" },
-  { id: "minNumberOfCarLot", label: "Min Car slot" },
+  {
+    id: "minNumberOfCarLot",
+    label: "Min Car slot",
+
+  },
   { id: "maxNumberOfCarLot", label: "Max Car slot" },
   {
     id: "action",
     label: "Action",
     disableSorting: true,
-
     align: "center",
   },
 ];
@@ -46,25 +50,38 @@ const Services = () => {
     title: "",
     subTitle: "",
   });
+  //ADD
   const [showModal, setShowModal] = useState(false);
+  const [serAdd, setSerAdd] = useState({});
+  const handleAdd = (ser) => {
+    setShowModal(true)
+    setSerAdd(ser)
+  }
   const handleClose = () => {
     setShowModal(false);
+    setShowEdit(false)
   };
+  //EDIT
+  const [showEdit, setShowEdit] = useState(false);
+  const [serEdit, setSerEdit] = useState({});
+  const handleEdit = (ser) => {
+    setSerEdit(ser)
+    setShowEdit(true)
+  }
+
+  // const getData = () => {
+  //   // const data = { pageIndex: page + 1, pageSize: rowsPerPage };
+  //   dispatch(getDetailServices(id));
+  // };
   const serState = useSelector((state) => state.service);
-  const { service, isError, isSuccessAdd, isLoading, message, isSuccess } =
-    serState;
+  const { isSuccessAdd, message } = serState;
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
     type: "",
   });
-
-  const getData = () => {
-    // const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-    dispatch(getDetailServices(id));
-  };
   useEffect(() => {
-    getData();
+    dispatch(getDetailServices(id));
     if (isSuccessAdd) {
       setNotify({
         isOpen: true,
@@ -81,12 +98,12 @@ const Services = () => {
         });
       }
     }
-  }, [page, rowsPerPage, isSuccessAdd, message]);
+  }, [dispatch, id, isSuccessAdd, message?.status, message.title]);
   const serviceInfo = useSelector((state) => state.service.serviceInfo);
   const recordDetail = useSelector((state) => state.service.servicesDetail);
   console.log(recordDetail);
-  const count = recordDetail.length
-  console.log(count)
+  const count = recordDetail.length;
+  console.log(count);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordDetail,
@@ -168,7 +185,7 @@ const Services = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => handleAdd(id)}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Add new Service"
                       />
@@ -194,27 +211,28 @@ const Services = () => {
                           >
                             {item.servicePrice}
                           </TableCell>
-                          <TableCell
-                            sx={{ border: "none", alignContent: "flex-start" }}
-                          >
-                            <div>{item.minNumberOfCarLot}</div>
+                          <TableCell sx={{ border: "none" }}>
+                            <div >
+                            {item.minNumberOfCarLot}
+                            </div>
+                        
                           </TableCell>
                           <TableCell
-                            sx={{ border: "none", alignContent: "flex-start" }}
+                            sx={{ border: "none" }}
                           >
-                            <div>{item.maxNumberOfCarLot}</div>
+                            {item.maxNumberOfCarLot}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
                             <div className="d-flex justify-content-center gap-2">
                               <Tooltip title="edit" arrow>
                                 <Link
-                                  to={`/admin/mechanic/edit/${item.serviceId}`}
+                                  onClick={()=>handleEdit(item)}
                                   className="btn btn-outline--primary btn-sm square-btn"
                                 >
                                   <EditIcon fontSize="small" />
                                 </Link>
                               </Tooltip>
-  
+
                               <Tooltip title="delelte" arrow>
                                 <Link
                                   className="btn btn-outline-danger btn-sm delete square-btn"
@@ -235,28 +253,28 @@ const Services = () => {
                           </TableCell>
                         </TableRow>
                       ))
-                    ): (
+                    ) : (
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell></TableCell>
-                      <TableCell
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div className="text-center">
-                          <img
-                            src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
-                            alt=""
-                            className="mb-3 w-160"
-                          />
-                          <p>Không có dữ liệu</p>
-                        </div>
-                      </TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
+                        <TableCell
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div className="text-center">
+                            <img
+                              src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
+                              alt=""
+                              className="mb-3 w-160"
+                            />
+                            <p>Không có dữ liệu</p>
+                          </div>
+                        </TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
                     )}
                   </TableBody>
                 </TblContainer>
@@ -271,7 +289,8 @@ const Services = () => {
         setConfirmDialog={setConfirmDialog}
       />
       <Notification notify={notify} setNotify={setNotify} />
-      <ModalAddDetail show={showModal} handleClose={handleClose} />
+      <ModalAddDetail show={showModal} handleClose={handleClose} serAdd={serAdd}/>
+      <ModalEdit show={showEdit} handleClose={handleClose} serEdit={serEdit}/>
     </>
   );
 };

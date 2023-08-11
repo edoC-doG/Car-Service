@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getServices, resetState } from "../../features/service/serviceSlide";
 import ModalAdd from "./ModalAdd";
 import Notification from "../../components/Notification";
+import ModalEdit from "./ModalEdit";
 
 const headCells = [
   { id: "serviceId", label: "ID" },
@@ -38,7 +39,6 @@ const headCells = [
     align: "center",
   },
 ];
-
 const Services = () => {
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
@@ -49,15 +49,26 @@ const Services = () => {
       return items;
     },
   });
+
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
+
+  //Add
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => {
     setShowModal(false);
+    setShowEdit(false)
   };
+  // Edit 
+  const [showEdit, setShowEdit] = useState(false);
+  const [serEdit, setSerEdit] = useState({});
+  const handleEdit = (ser) => {
+    setSerEdit(ser)
+    setShowEdit(true)
+  }
   const serState = useSelector((state) => state.service);
   const { service, isError, isSuccessAdd, isLoading, message, isSuccess } =
     serState;
@@ -67,6 +78,8 @@ const Services = () => {
     type: "",
   });
 
+
+  //Call API List
   const getData = () => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getServices(data));
@@ -207,7 +220,7 @@ const Services = () => {
                             </Tooltip>
                             <Tooltip title="edit" arrow>
                               <Link
-                                to={`/admin/mechanic/edit/${item.serviceId}`}
+                                onClick={() => handleEdit(item)}
                                 className="btn btn-outline--primary btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />
@@ -247,6 +260,7 @@ const Services = () => {
         setConfirmDialog={setConfirmDialog}
       />
       <ModalAdd show={showModal} handleClose={handleClose} />
+      <ModalEdit show={showEdit} handleClose={handleClose} serEdit={serEdit}/>
       <Notification notify={notify} setNotify={setNotify} />
     </>
   );

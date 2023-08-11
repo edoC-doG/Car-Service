@@ -20,6 +20,15 @@ const addServices = async (data) => {
   console.log("service response: ", data);
   return response.data;
 };
+const editServices = async (data) => {
+  const response = await instance.put(
+      `${base_url}service/update-service`,
+      data,
+      instance
+    );  
+    console.log("product response: ",response.data);
+    return response.data;
+}
 const addDetail = async (data) => {
   const response = await instance.post(
     `${base_url}service-detail/create-service-detail`,
@@ -43,6 +52,7 @@ const serviceService = {
   addServices,
   getDetailServices,
   addDetail,
+  editServices
 };
 
 export default serviceService;

@@ -3,33 +3,36 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
-import { addDetail} from './../../../features/service/serviceSlide';
+// import { addServices, getServices, resetState } from './../../features/service/serviceSlide';
 
-
-function ModalAddDetail(props) {
+function ModalEdit(props) {
   const dispatch = useDispatch();
-  const { show, handleClose, serAdd} = props;
+  const { show, handleClose, serEdit } = props;
+  console.log(serEdit);
   const [servicePrice, setPrice] = useState("");
   const [minNumberOfCarLot, setMin] = useState("");
   const [maxNumberOfCarLot, setMax] = useState("");
-  const [serviceId, setId] = useState("");
+  const [serviceDetailId, setId] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
     const ser = {
       servicePrice,
       minNumberOfCarLot,
       maxNumberOfCarLot,
-      serviceId,
+      serviceDetailId,
     };
-    dispatch(addDetail(ser));
+    // dispatch(addDetail(ser));
     console.log(ser);
   };
   useEffect(() => {
     if (show) {
-      setId(serAdd);
+      setId(serEdit.serviceDetailId);
+      setPrice(serEdit.servicePrice);
+      setMax(serEdit.maxNumberOfCarLot);
+      setMin(serEdit.minNumberOfCarLot);
     }
-    console.log(serAdd);
-  }, [serAdd]);
+    console.log(serEdit);
+  }, [serEdit]);
   return (
     <div
       className="modal show"
@@ -46,16 +49,16 @@ function ModalAddDetail(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Thêm mới chi tiết dịch vụ </Modal.Title>
+          <Modal.Title>Thêm mới chi tiết dịch vụ # {serviceDetailId} </Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
-            <Form.Group className="mb-3" hidden={true} >
-              <Form.Label>Mã  dịch vụ</Form.Label>
+            <Form.Group className="mb-3" hidden = {true}>
+              <Form.Label>Mã dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={serviceId}
+                value={serviceDetailId}
                 onChange={(e) => setId(e.target.value)}
               />
             </Form.Group>
@@ -91,8 +94,8 @@ function ModalAddDetail(props) {
             <Button variant="secondary" onClick={handleClose}>
               Đóng
             </Button>
-            <Button variant="success" type="submit">
-              Thêm mới
+            <Button variant="warning" type="submit">
+              Cập nhật
             </Button>
           </Modal.Footer>
         </Form>
@@ -101,4 +104,4 @@ function ModalAddDetail(props) {
   );
 }
 
-export default ModalAddDetail;
+export default ModalEdit;

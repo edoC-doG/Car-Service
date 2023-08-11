@@ -13,7 +13,17 @@ export const getServices = createAsyncThunk(
     }
   }
 );
-
+export const editServices = createAsyncThunk(
+  "service/edit",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      return await serviceService.editServices(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const addServices = createAsyncThunk(
   "service/addSer",
   async (data, thunkAPI) => {
@@ -115,6 +125,24 @@ export const serviceSlice = createSlice({
       })
       .addCase(addDetail.rejected, (state, action) => {
         state.isError = true;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+       //Edit
+       .addCase(editServices.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editServices.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAdd = true;
+        state.isSuccess = true;
+        state.message = "success";
+      })
+      .addCase(editServices.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
         state.isSuccessAdd = false;
         state.message = action.payload.response.data;
         state.isLoading = false;

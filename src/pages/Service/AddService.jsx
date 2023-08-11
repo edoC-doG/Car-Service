@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "../../components/Header";
 
 
 const AddService = (props) => {
-  const [files, setFiles] = useState([]);
   return (
     <div className="md:pt-24 md:px-8">
       <Header

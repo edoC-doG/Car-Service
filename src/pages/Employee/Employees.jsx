@@ -13,8 +13,6 @@ import Switches from "../../components/table/Switches";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployees } from "../../features/employee/employeeSlice";
-import ModalAdd from "./AddEmploye";
-import ModalEdit from "./ModalEdit";
 
 const headCells = [
   { id: "userId", label: "ID" },
@@ -52,19 +50,7 @@ const Employees = () => {
       status: true,
     },
   ];
-  //Add
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => {
-    setShowModal(false);
-    setShowEdit(false);
-  };
-  //Edit
-  const [showEdit, setShowEdit] = useState(false);
-  const [employEdit, setEmployEdit] = useState({});
-  const handleEdit = (employ) => {
-    setEmployEdit(employ);
-    setShowEdit(true);
-  };
+
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -134,7 +120,7 @@ const Employees = () => {
                 <Button
                   className="add-button"
                   size="large"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => {}}
                   startIcon={<AddIcon fontSize="small" />}
                   text="Add New"
                 />
@@ -173,7 +159,7 @@ const Employees = () => {
                         <div className="d-flex justify-content-center ">
                           <Tooltip title="edit" arrow>
                             <Link
-                              onClick={()=> handleEdit(item)}
+                              to={`/admin/employee/update/${item.userId}`}
                               className="btn btn-outline--primary btn-sm edit"
                             >
                               <EditIcon fontSize="small" />
@@ -190,12 +176,6 @@ const Employees = () => {
           </div>
         </div>
       </div>
-      <ModalAdd show={showModal} handleClose={handleClose} />
-      <ModalEdit
-        show={showEdit}
-        handleClose={handleClose}
-        employEdit={employEdit}
-      />
     </div>
   );
 };

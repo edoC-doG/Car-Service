@@ -16,10 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useDispatch, useSelector } from "react-redux";
-import { getServices, resetState } from "../../features/service/serviceSlide";
-import ModalAdd from "./ModalAdd";
-import Notification from "../../components/Notification";
-import ModalEdit from "./ModalEdit";
+import { getServices } from "../../features/service/serviceSlide";
 
 const headCells = [
   { id: "serviceId", label: "ID" },
@@ -39,6 +36,7 @@ const headCells = [
     align: "center",
   },
 ];
+
 const Services = () => {
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
@@ -49,62 +47,59 @@ const Services = () => {
       return items;
     },
   });
-
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
 
-  //Add
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => {
-    setShowModal(false);
-    setShowEdit(false)
-  };
-  // Edit 
-  const [showEdit, setShowEdit] = useState(false);
-  const [serEdit, setSerEdit] = useState({});
-  const handleEdit = (ser) => {
-    setSerEdit(ser)
-    setShowEdit(true)
-  }
-  const serState = useSelector((state) => state.service);
-  const { service, isError, isSuccessAdd, isLoading, message, isSuccess } =
-    serState;
-  const [notify, setNotify] = useState({
-    isOpen: false,
-    message: "",
-    type: "",
-  });
+  const rows = [
+    {
+      id: 1,
+      image:
+        "https://daiphatvienthong.vn/upload/images/phuc-hoi-lam-moi-den-o-to-xe-hoi-gia-re-tphcm.jpg",
+      name: "Đánh Bóng Đèn Pha Xe Ô Tô",
+      category: "CHĂM SÓC XE, LÀM ĐẸP XE",
+      type: "4 chỗ",
+      price: "500,000",
+      unit: "Lần",
 
+      status: true,
+    },
+    {
+      id: 2,
+      image:
+        "https://thanhphongauto.com/wp-content/uploads/2019/11/rua-xe-voi-dung-cu-chuyen-nghiep.jpg",
+      name: "Vệ Sinh – Bảo Dưỡng Ngoại Thất Ô Tô",
+      category: "CHĂM SÓC XE, LÀM ĐẸP XE",
+      type: "4-5 chỗ",
+      price: "200,000",
+      unit: "Lần",
 
-  //Call API List
-  const getData = () => {
+      status: true,
+    },
+    {
+      id: 3,
+      image:
+        "https://thanhphongauto.com/wp-content/uploads/2019/11/rua-xe-voi-dung-cu-chuyen-nghiep.jpg",
+      name: "Vệ Sinh – Bảo Dưỡng Ngoại Thất Ô Tô",
+      category: "CHĂM SÓC XE, LÀM ĐẸP XE",
+      type: "5-7 chỗ",
+      price: "699,000",
+      unit: "Gói",
+
+      status: true,
+    },
+  ];
+
+  useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getServices(data));
-  };
-  useEffect(() => {
-    getData();
-    if(isSuccessAdd ){
-      setNotify({
-        isOpen: true,
-        message: "Chi tiết dịch vụ được được thêm thành công",
-        type: "success",
-      })
-      handleClose()
-    } else {
-      if (message?.status === 400) {
-        setNotify({
-          isOpen: true,
-          message: message.title,
-          type: "error",
-        });
-      }
-    }
-  }, [page, rowsPerPage, isSuccessAdd, message]);
+  }, [page, rowsPerPage]);
+
   const recordsService = useSelector((state) => state.service.services);
   const count = useSelector((state) => state.service.number);
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsService,
@@ -161,7 +156,7 @@ const Services = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => {}}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Add new Service"
                       />
@@ -169,6 +164,7 @@ const Services = () => {
                   </div>
                 </div>
               </div>
+
               {/* Table */}
               <div className="table-responsive">
                 <TblContainer>
@@ -177,12 +173,7 @@ const Services = () => {
                     {recordsAfterPagingAndSorting().map((item) => (
                       <TableRow hover key={item.serviceId}>
                         <TableCell sx={{ border: "none" }}>
-                          <Link
-                            to={`/admin/list-service/detail/${item.serviceId}`}
-                            className="title-color hover-c1"
-                          >
-                            <div>{item.serviceId}</div>
-                          </Link>
+                          <div>{item.serviceId}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none", textAlign: "center" }}>
                           <img
@@ -192,8 +183,13 @@ const Services = () => {
                             alt={"hello"}
                           />
                         </TableCell>
-                        <TableCell sx={{ border: "none" }}>                        
+                        <TableCell sx={{ border: "none" }}>
+                          <Link
+                            to={`/admin/service/view/${item.serviceId}`}
+                            className="title-color hover-c1"
+                          >
                             {item.serviceName}
+                          </Link>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.serviceGroup}</div>
@@ -202,17 +198,13 @@ const Services = () => {
                           <div>{item.serviceUnit}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <Switches
-                            checked={
-                              item.serviceStatus === "Activate" ? true : false
-                            }
-                          />
+                          <Switches checked={item.serviceStatus === "Activate" ? true : false} />
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="view" arrow>
                               <Link
-                                to={`/admin/list-service/detail/${item.serviceId}`}
+                                to={`/admin/service/view/${item.serviceId}`}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <VisibilityIcon fontSize="small" />
@@ -220,7 +212,7 @@ const Services = () => {
                             </Tooltip>
                             <Tooltip title="edit" arrow>
                               <Link
-                                onClick={() => handleEdit(item)}
+                                to={`/admin/mechanic/edit/${item.serviceId}`}
                                 className="btn btn-outline--primary btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />
@@ -259,9 +251,6 @@ const Services = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
-      <ModalAdd show={showModal} handleClose={handleClose} />
-      <ModalEdit show={showEdit} handleClose={handleClose} serEdit={serEdit}/>
-      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };

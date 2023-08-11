@@ -16,9 +16,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../features/product/productSlice";
-import ModalAdd from "./ModalAdd";
-import Notification from './../../components/Notification';
-import ModalEdit from "./ModalEdit";
 const headCells = [
   { id: "productId", label: "ID" },
   { id: "productImage", label: "Product Image", align: "left" },
@@ -26,12 +23,13 @@ const headCells = [
   { id: "productName", label: "Name" },
   { id: "productPrice", label: "Price" },
   { id: "productQuantity", label: "Quantity" },
-  // { id:"categoryName",  label: "Category" },
+  { id:"categoryName",  label: "Category" },
   { id: "productStatus", label: "Status" },
   {
     id: "action",
     label: "Action",
     disableSorting: true,
+
     align: "center",
   },
 ];
@@ -45,56 +43,48 @@ const Products = () => {
       return items;
     },
   });
-  //Add
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => {
-    setShowModal(false);
-    setShowEdit(false);
-  };
   const [confirmDialog, setConfirmDialog] = useState({
-  isOpen: false,
+    isOpen: false,
     title: "",
     subTitle: "",
   });
-  const [showEdit, setShowEdit] = useState(false);
-  const [proEdit, setSerEdit] = useState({});
-  const handleEdit = (pro) => {
-    setSerEdit(pro)
-    setShowEdit(true)
-  }
-   //Call API List
-   const proState = useSelector((state) => state.product);
-   const { isSuccessAdd,  message } =
-    proState;
-    const [notify, setNotify] = useState({
-      isOpen: false,
-      message: "",
-      type: "", 
-    });
-  
-   const getData = () => {
+
+  useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getProducts(data));
-  };
-  useEffect(() => {
-    getData();
-    if(isSuccessAdd ){
-      setNotify({
-        isOpen: true,
-        message: "Sản phẩm được được thêm thành công",
-        type: "success",
-      })
-      handleClose()
-    } else {
-      if (message?.status === 400) {
-        setNotify({
-          isOpen: true,
-          message: message.title,
-          type: "error",
-        });
-      }
-    }
-  }, [page, rowsPerPage, isSuccessAdd, message]);;
+  }, [page, rowsPerPage]);
+
+  const rows = [
+    {
+      id: 1,
+      image:
+        "https://aloauto.net/wp-content/uploads/2021/11/camera-hanh-trinh-vietmap-c6-1-1.jpg",
+      name: "Camera Hành Trình Vietmap C6 Ghi Hình Sắc Nét, Full HD 1080P",
+      type: "Đồ công nghê",
+      price: "2,190,000 ",
+      status: true,
+    },
+
+    {
+      id: 2,
+      image:
+        "https://aloauto.net/wp-content/uploads/2021/11/boc-vo-lang-dinh-da-2-1.jpg",
+      name: "Bọc Vô Lăng Hạt Cườm, Đính Đá Siêu Sang Chảnh",
+      type: "Bọc vô lăng",
+      price: "5,190,000 ",
+      status: true,
+    },
+    {
+      id: 3,
+      image:
+        "https://aloauto.net/wp-content/uploads/2021/11/tham-lot-san-mercedes-3.jpg",
+      name: "Thảm Lót Sàn Mercedes",
+      type: "Bọc vô lăng",
+      price: "4,000,000 ",
+      status: true,
+    },
+  ];
+
   const recordsProduct = useSelector((state) => state.product.products);
   const count = useSelector((state) => state.product.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -152,7 +142,7 @@ const Products = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => {}}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Add new Product"
                       />
@@ -189,9 +179,9 @@ const Products = () => {
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.productQuantity}</div>
                         </TableCell>
-                        {/* <TableCell sx={{ border: "none" }}>
+                        <TableCell sx={{ border: "none" }}>
                           <div>{item.categoryProductDto.categoryName}</div>
-                        </TableCell> */}
+                        </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <Switches
                             checked={
@@ -203,7 +193,7 @@ const Products = () => {
                           <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="edit" arrow>
                               <Link
-                               onClick={() => handleEdit(item)}
+                                to={`/admin/mechanic/edit/${item.productId}`}
                                 className="btn btn-outline--primary btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />
@@ -242,9 +232,6 @@ const Products = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
-      <ModalAdd show={showModal} handleClose={handleClose} />
-      <ModalEdit show={showEdit} handleClose={handleClose} proEdit={proEdit}/>
-      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };

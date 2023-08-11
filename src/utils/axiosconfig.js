@@ -1,11 +1,12 @@
+
 import axios from "axios";
 import authService from "../features/auth/authService";
 
  export const instance = axios.create({
+  // baseURL: 'https://carserviceappservice.azurewebsites.net/api/',
   timeout: 300000,
   headers: {
-      "Content-Type": "application/json", 'charset': 'utf-8',
-      "Accept": "application/json",
+      'Content-Type': 'application/json',
   }
 })
 

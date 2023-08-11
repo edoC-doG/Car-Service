@@ -36,6 +36,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
+          <Route index element={<SignIn />} />
+
             <Route path="login" element={<SignIn />} />
           </Route>
           {/* Protected routes for "admin" role */}

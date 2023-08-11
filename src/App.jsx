@@ -1,6 +1,6 @@
 import React from "react";
 import SignIn from "./pages/SignIn/SignIn";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Customers from "./pages/Customer/Customers";
 import MainLayout from "./pages/MainLayout";
@@ -31,59 +31,89 @@ import authService from "./features/auth/authService";
 function App() {
   const user = authService.getCurrentUser();
 
+  // Function to check if the user has the required role
+  const hasRole = (role) => {
+    return user && user.roleName === role;
+  };
+
+  // Function to handle unauthorized access
+  const unauthorizedAccess = () => {
+    return <Navigate to="/login" />;
+  };
+
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/login" element={<SignIn />} />
-
-          <Route path="admin" element={<MainLayout />}>
-            <Route path="" element={<Dashboard />} />
-            {/* CUSTOMER */}
-            <Route path="list-customer" element={<Customers />} />
-            <Route path="customer/view/:id" element={<CustomerDetail />} />
-            <Route path="review-list-customer" element={<Review />} />
-            {/* Garage */}
-            <Route path="add-garage" element={<AddOwner />} />
-            <Route path="garage-list" element={<Onwers />} />
-            <Route path="garage/view/:id" element={<OwnerDetail />} />
-
-            {/* MECHANIC */}
-            <Route path="add-new-mechanics" element={<AddMechanic />} />
-            <Route path="list-mechanics" element={<Mechanics />} />
-            <Route path="mechanic/detail/:id" element={<Chat />} />
-
-            {/* EMPLOYEE */}
-            <Route path="list-employee" element={<Employees />} />
-            {/* CATEGORY */}
-            <Route path="view-category" element={<Categories />} />
-
-            {/* PRODUCT */}
-            <Route path="list-product" element={<Products />} />
-            <Route path="import" element={<Import />} />
-            {/* SERVICES */}
-            <Route path="add-new-service" element={<AddService />} />
-            <Route path="list-service" element={<Services />} />
-            {/* COUPON */}
-            <Route path="coupon" element={<Coupon />} />
-
-            {/* ORDER */}
-            <Route path="all-orders" element={<All />} />
-            <Route path="orders/details/:id" element={<OrderDetail />} />
-
-            <Route path="pending-order" element={<Pending />} />
-            <Route path="confirm-order" element={<Confirm />} />
-            <Route path="cancel-order" element={<Cancel />} />
-            {/* REPORT */}
-            {/* <Route path="admin-report" element={<AdminReport />} />
-
-              <Route
-                path="order-transaction-list"
-                element={<TransactionReport />}
-              />
-              <Route path="owner-report" element={<OnwerReport />} /> */}
+          <Route path="/">
+            {user ? (
+              // If the user is logged in, redirect to the dashboard
+              <Navigate to="/admin" />
+            ) : (
+              // If the user is not logged in, show the login page
+              <Route index element={<SignIn />} />
+            )}
+            <Route path="login" element={<SignIn />} />
           </Route>
+          {/* Protected routes for "admin" role */}
+          {hasRole("admin") && (
+            <Route path="admin" element={<MainLayout />}>
+              <Route path="" element={<Dashboard />} />
+              {/* CUSTOMER */}
+              <Route path="list-customer" element={<Customers />} />
+              <Route path="customer/view/:id" element={<CustomerDetail />} />
+              <Route path="review-list-customer" element={<Review />} />
+              {/* Garage */}
+              <Route path="add-garage" element={<AddOwner />} />
+              <Route path="garage-list" element={<Onwers />} />
+              <Route path="garage/view/:id" element={<OwnerDetail />} />
+
+              {/* MECHANIC */}
+              <Route path="add-new-mechanics" element={<AddMechanic />} />
+              <Route path="list-mechanics" element={<Mechanics />} />
+              <Route path="mechanic/detail/:id" element={<Chat />} />
+
+              {/* EMPLOYEE */}
+              <Route path="list-employee" element={<Employees />} />
+              {/* CATEGORY */}
+              <Route path="view-category" element={<Categories />} />
+
+              {/* PRODUCT */}
+              <Route path="list-product" element={<Products />} />
+              <Route path="import" element={<Import />} />
+              {/* SERVICES */}
+              <Route path="add-new-service" element={<AddService />} />
+              <Route path="list-service" element={<Services />} />
+              {/* COUPON */}
+              <Route path="coupon" element={<Coupon />} />
+
+              {/* ORDER */}
+              <Route path="all-orders" element={<All />} />
+              <Route path="orders/details/:id" element={<OrderDetail />} />
+
+              <Route path="pending-order" element={<Pending />} />
+              <Route path="confirm-order" element={<Confirm />} />
+              <Route path="cancel-order" element={<Cancel />} />
+              {/* REPORT */}
+              {/* <Route path="admin-report" element={<AdminReport />} />
+  
+                <Route
+                  path="order-transaction-list"
+                  element={<TransactionReport />}
+                />
+                <Route path="owner-report" element={<OnwerReport />} /> */}
+            </Route>
+          )}
+
+          {/* Protected routes for "manager" role */}
+          {hasRole("manager") && (
+            <Route path="manager" element={<MainLayout />}>
+              {/* Your protected staff routes go here */}
+            </Route>
+          )}
+
+          {/* Redirect unauthorized users */}
+          <Route path="*">{unauthorizedAccess}</Route>
         </Routes>
       </BrowserRouter>
     </>

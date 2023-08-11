@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import authService from "../features/auth/authService.js";
+import SignIn from "../pages/SignIn/SignIn";
 
 const Button = ({
   icon,
@@ -18,7 +19,7 @@ const Button = ({
 
   const handleLogout = () => {
     const user = authService.logout();
-    navigate("/loginl");
+    navigate(<SignIn />);
   };
   return (
     <button

@@ -123,8 +123,8 @@ const Services = () => {
         <Header
           icon="https://i.imgur.com/1EPVEZN.png"
           size={25}
-          alt="services"
-          title="Service List"
+          alt=""
+          title="Service List" 
           number="20"
         />
         <div className="row mt-4">

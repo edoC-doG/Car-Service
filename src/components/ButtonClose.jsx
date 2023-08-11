@@ -1,6 +1,7 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
+import authService from "../features/auth/authService.js";
 
 const Button = ({
   icon,
@@ -12,12 +13,17 @@ const Button = ({
   borderRadius,
   width,
 }) => {
+  const navigate = useNavigate();
   const { setIsClicked, initialState } = useStateContext();
 
+  const handleLogout = () => {
+    const user = authService.logout();
+    navigate("/loginl");
+  };
   return (
     <button
       type="button"
-      onClick={() => setIsClicked(initialState)}
+      onClick={handleLogout}
       style={{
         backgroundColor: bgColor,
         color,

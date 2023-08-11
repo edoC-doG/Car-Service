@@ -15,11 +15,11 @@ const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setP
   const [orderBy, setOrderBy] = useState();
 
   const TblContainer = (props) => <Table aria-label='collapsible table'>{props.children}</Table>;
-  console.log("pages: ", pages);
-  console.log("page: ", page);
-  console.log("row per page:" , rowsPerPage);
+  // console.log("pages: ", pages);
+  // console.log("page: ", page);
+  // console.log("row per page:" , rowsPerPage);
 
-  console.log("record use table:" , records);
+  // console.log("record use table:" , records);
 
   const handleSortRequest = (cellId) => {
     const isAsc = orderBy === cellId && order === "asc";

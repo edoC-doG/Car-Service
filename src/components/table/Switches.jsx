@@ -1,16 +1,17 @@
 import React from "react";
 import Switch from "@mui/material/Switch";
 
-const Switches = ({ checked, onchange, color, size, name, other }) => {
+const Switches = ({ checked, onChange, color, size, name, other }) => {
   return (
     <Switch
       checked={checked}
-      onChange={onchange}
+      onChange={onChange}
       inputProps={{ "aria-label": "controlled" }}
       name={name}
       size={size}
       color={color}
       {...other}
+     
     />
   );
 };

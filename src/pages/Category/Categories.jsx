@@ -80,7 +80,7 @@ const Categories = () => {
                     <h5 className="text-capitalize d-flex gap-1 font-semibold">
                       Category List
                       <span className="badge badge-soft-dark radius-50 fz-12">
-                        13
+                        {count}
                       </span>
                     </h5>
                   </div>

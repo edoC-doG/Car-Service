@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import bookingService from "./bookingService";
 
+export const getBookings = createAsyncThunk(
+  "booking/bookings",
 
-
-export const getBookings = createAsyncThunk( 'booking/bookings', 
-
-async (data, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
       console.log(data);
       return await bookingService.getBookings(data);
@@ -13,9 +12,20 @@ async (data, thunkAPI) => {
       return thunkAPI.rejectWithValue(error);
     }
   }
+);
 
-) 
+export const getBookingsStatus = createAsyncThunk(
+  "booking/bookings-status",
 
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      return await bookingService.getBookingStatus(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const getDetailBooking = createAsyncThunk(
   "booking/detail",
   async (id, thunkAPI) => {
@@ -42,7 +52,7 @@ export const getBookingsCustomer = createAsyncThunk(
 const initialState = {
   bookings: [],
   booking: {},
-  garage: {}, 
+  garage: {},
   detail: [],
   customer: {},
   products: [],
@@ -60,23 +70,40 @@ export const bookingSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-    .addCase(getBookings.pending, (state) => {
-      state.isLoading = true;
-    })
-    .addCase(getBookings.fulfilled, (state, action) => {
-      state.isError = false;
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.bookings = action.payload.list;
-      state.number = action.payload.count
-      state.message = "success";
-    })
-    .addCase(getBookings.rejected, (state, action) => {
-      state.isError = true;
-      state.isSuccess = false;
-      state.message = action.payload.response.data;
-      state.isLoading = false;
-    })
+      .addCase(getBookings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBookings.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.bookings = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getBookings.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getBookingsStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBookingsStatus.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.bookings = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getBookingsStatus.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
       .addCase(getDetailBooking.pending, (state) => {
         state.isLoading = true;
       })
@@ -87,7 +114,7 @@ export const bookingSlice = createSlice({
         state.booking = action.payload;
         state.garage = action.payload.garageBookingDto;
         state.customer = action.payload.customerBookingDto;
-        state.detail =action.payload.bookingDetailDtos;
+        state.detail = action.payload.bookingDetailDtos;
         state.message = "success";
       })
       .addCase(getDetailBooking.rejected, (state, action) => {
@@ -104,7 +131,7 @@ export const bookingSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.bookings = action.payload.list;
-        state.number = action.payload.count
+        state.number = action.payload.count;
         state.message = "success";
       })
       .addCase(getBookingsCustomer.rejected, (state, action) => {
@@ -112,7 +139,7 @@ export const bookingSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
-      })
+      });
   },
 });
 

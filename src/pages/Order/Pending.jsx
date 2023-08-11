@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -8,20 +8,23 @@ import Select from "../../components/filter/Select";
 import DateTime from "../../components/filter/DateTime";
 import Button from "../../components/filter/Button";
 import "../../styles/button.scss";
-import useTable from "../../components/table/useTable";
+
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineSharp";
-const headCells = [
-  { id: "id", label: "ID" },
-  { id: "order", label: "Order ID" },
-  { id: "date", label: "Order Date" },
-  { id: "info", label: "Customer Info" },
+import { useDispatch, useSelector } from "react-redux";
+import { getBookingsStatus } from "../../features/book/bookingSlide";
+import useTableV2 from "../../components/table/useTableV2";
 
-  { id: "garage", label: "Garage" },
+const headCells = [
+  { id: "bookingCode", label: "Code" },
+  { id: "bookingTime", label: "Order Date" },
+  { id: "userBookingDto", label: "Customer Info" },
+
+  { id: "garageName", label: "Garage" },
   { id: "total", label: "Total Amount", align: "right" },
-  { id: "status", label: "Order Status", align: "center" },
+  { id: "bookingStatus", label: "Order Status", align: "center" },
   {
     id: "action",
     label: "Action",
@@ -30,6 +33,7 @@ const headCells = [
     align: "center",
   },
 ];
+
 const Pending = () => {
   const rows = [
     {
@@ -77,18 +81,47 @@ const Pending = () => {
       status: "Pending",
     },
   ];
-  const [age, setAge] = React.useState("");
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+  const dispatch = useDispatch();
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
     },
   });
+
+  const [age, setAge] = React.useState("");
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  useEffect(() => {
+    const data = {
+      pageIndex: page + 1,
+      pageSize: rowsPerPage,
+      bookingStatus: 0,
+    };
+    dispatch(getBookingsStatus(data));
+  }, [page, rowsPerPage]);
+
+  const recordsBooking = useSelector((state) => state.booking.bookings);
+  const count = useSelector((state) => state.booking.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells, filterFn);
+    useTableV2(
+      recordsBooking,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -168,64 +201,59 @@ const Pending = () => {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow hover key={item.id}>
-                    <TableCell sx={{ border: "none" }}>
-                      <div>{item.id}</div>
-                    </TableCell>
-
+                  <TableRow hover key={item.bookingCode}>
                     <TableCell sx={{ border: "none" }}>
                       <Link
-                        to={`/admin/orders/details/${item.order}`}
+                        to={`/admin/orders/details/${item.bookingCode}`}
                         className="title-color hover-c1"
                       >
-                        {item.order}
+                        {item.bookingCode}
                       </Link>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.date}</div>
+                      <div>{item.bookingTime}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
-                      <Link
-                        to={`/admin/customer/view/${"1"}`}
-                        className="text-body text-capitalize"
-                      >
-                        <strong>{item.info.name}</strong>
+                      <Link to={``} className="text-body text-capitalize">
+                        <strong>{item.userBookingDto.fullName}</strong>
                       </Link>
                       <Link
-                        to={`tel:${item.info.phone}`}
+                        to={`tel:${item.userBookingDto.userPhone}`}
                         className="d-block title-color"
                       >
-                        {item.info.phone}
+                        {item.userBookingDto.userPhone}
                       </Link>
                     </TableCell>
 
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.garare}</div>
+                      <div>{item.garageBookingDto.garageName}</div>
                     </TableCell>
 
                     <TableCell sx={{ border: "none", textAlign: "right" }}>
-                      <div>{item.total.price}</div>
-                      <span className="badge text-danger fz-12 px-0">
-                        {item.total.status}
+                      <div>{item.totalPrice}</div>
+                      <span
+                        className={
+                          item.paymentStatus === "Unpaid"
+                            ? "badge text-danger fz-12 px-0"
+                            : "badge text-success fz-12 px-0"
+                        }
+                      >
+                        {item.paymentStatus}
                       </span>
                     </TableCell>
 
-                    <TableCell
-                      sx={{
-                        border: "none",
-                        textDecoration: "capitalize",
-                        textAlign: "center",
-                      }}
-                    >
-                      <span className="badge badge-soft-info fz-12">
-                        {item.status}
+                    <TableCell sx={{ border: "none", textAlign: "center" }}>
+                      <span className="badge badge-soft-danger fz-12">
+                        {item.bookingStatus}
                       </span>
                     </TableCell>
+
+
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
                         <Tooltip title="view" arrow>
                           <Link
-                            to={`/admin/orders/details/${item.order}`}
+                            to={`/admin/orders/details/${item.bookingId}`}
                             className="btn btn-outline--primary btn-sm edit square-btn"
                           >
                             <VisibilityIcon fontSize="small" />

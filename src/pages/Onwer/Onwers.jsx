@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/button.scss";
 import Header from "../../components/Header";
 import Search from "../../components/filter/Search";
@@ -6,19 +6,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "../../components/filter/Button";
 import AddIcon from "@mui/icons-material/Add";
-import useTable from "../../components/table/useTable";
+import useTableV2 from "../../components/table/useTableV2";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-const headCells = [
-  { id: "id", label: "ID" },
-  { id: "shopname", label: "Shop Name", disableSorting: true },
-  { id: "ownername", label: "Owner Name" },
-  { id: "contact", label: "Contact Info" },
+import { useDispatch, useSelector } from "react-redux";
+import { getGarages, resetState,updateGarageStatus } from "../../features/garage/garageSlice";
+import Switches from "../../components/table/Switches";
+import ConfirmDialog from "../../components/ConfirmDialog";
+import Notification from "../../components/Notification";
 
-  { id: "status", label: "Status" },
-  { id: "totalService", label: "Total Services" },
-  { id: "totalProduct", label: "Total Product" },
+const headCells = [
+  { id: "garageId", label: "ID" },
+  { id: "garageName", label: "Name", disableSorting: true },
+  { id: "garageContactInformation", label: "Contact" },
+
+  { id: "garageStatus", label: "Status" },
+  { id: "totalServices", label: "Total Services" },
+  // { id: "", label: "Total Product" },
   { id: "totalOrders", label: "Total Orders" },
 
   {
@@ -31,6 +36,56 @@ const headCells = [
 ];
 
 const Onwers = () => {
+  const dispatch = useDispatch();
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
+
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+  });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+
+  const updateSuccessAction = useSelector((state) => state.garage.isSuccessAction);
+
+  useEffect(() => {
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage };
+    dispatch(getGarages(data));
+    // dispatch(getNumberCustomer());
+
+    if (updateSuccessAction) {
+      dispatch(resetState());
+      setConfirmDialog({
+        ...confirmDialog,
+        isOpen: false,
+      });
+      setNotify({
+        isOpen: true,
+        message: "Update Successfully",
+        type: "success",
+      });
+    }
+  }, [page, rowsPerPage, updateSuccessAction]);
+
+  const recordsGarage = useSelector((state) => state.garage.garages);
+
+  const handleSwitchToggle = (garageId, garageStatus) => {
+    // Dispatch the updateCustomerStatus action
+    console.log("id and status", garageId, garageStatus);
+    dispatch(updateGarageStatus({garageId, garageStatus }));
+  };
   const rows = [
     {
       id: 1,
@@ -68,119 +123,134 @@ const Onwers = () => {
     },
   ];
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(
+      recordsGarage,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      15
+    );
   return (
-    <div className="min-[620px]:pt-24 min-[620px]:px-8">
-      <Header
-        icon="https://6valley.6amtech.com/public/assets/back-end/img/add-new-seller.png"
-        alt="onwers"
-        title="Owner & Garage List"
-        number="10"
-      />
-      <div className="row mt-4">
-        <div className="col-md-12">
-          <div className="card">
-            <div className="px-3 py-4">
-              <div className="row justify-content-between align-items-center gy-2">
-                <div className="col-sm-8 col-md-6 col-lg-4">
-                  <Search
-                    label="Search by Name or Email or Phone"
-                    onChange={() => {}}
-                    size="small"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon fontSize="small" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </div>
-                <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                  <div className="d-flex justify-content-sm-end">
-                    <Button
-                      className="add-button"
-                      size="large"
-                      onClick={() => {}}
-                      startIcon={<AddIcon fontSize="small" />}
-                      text="Add new owner"
+    <>
+      <div className="min-[620px]:pt-24 min-[620px]:px-8">
+        <Header
+          icon="https://6valley.6amtech.com/public/assets/back-end/img/add-new-seller.png"
+          alt="onwers"
+          title="Garage List"
+          number="15"
+        />
+        <div className="row mt-4">
+          <div className="col-md-12">
+            <div className="card">
+              <div className="px-3 py-4">
+                <div className="row justify-content-between align-items-center gy-2">
+                  <div className="col-sm-8 col-md-6 col-lg-4">
+                    <Search
+                      label="Search by Garage name"
+                      onChange={() => {}}
+                      size="small"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon fontSize="small" />
+                          </InputAdornment>
+                        ),
+                      }}
                     />
+                  </div>
+                  <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
+                    <div className="d-flex justify-content-sm-end">
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => {}}
+                        startIcon={<AddIcon fontSize="small" />}
+                        text="Add new gararge"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Table Onwer */}
-            <div className="table-responsive">
-              <TblContainer>
-                <TblHead />
-                <TableBody>
-                  {rows.map((item) => (
-                    <TableRow hover key={item.id}>
-                      <TableCell sx={{ border: "none" }}>
-                        <div>{item.id}</div>
-                      </TableCell>
-                      <TableCell sx={{ border: "none" }}>
-                        <div className="d-flex align-items-center gap-2 w-max-content">
-                          <img
+              {/* Table Onwer */}
+              <div className="table-responsive">
+                <TblContainer>
+                  <TblHead />
+                  <TableBody>
+                    {recordsAfterPagingAndSorting().map((item) => (
+                      <TableRow hover key={item.garageId}>
+                        <TableCell sx={{ border: "none" }}>
+                          <div>{item.garageId}</div>
+                        </TableCell>
+                        <TableCell sx={{ border: "none" }}>
+                          <div className="d-flex align-items-center gap-2 w-max-content">
+                            {/* <img
                             width="50"
                             className="aspect-1 rounded"
                             src={item.shopname.image}
                             alt=""
-                          />
-                          <div>
-                            <Link
-                              to={`/admin/owner/view/${item.id}`}
-                              className="title-color"
-                            >
-                              {item.shopname.name}
-                            </Link>
+                          /> */}
+                            <div>
+                              <Link
+                                to={`/admin/garage/view/${item.garageId}`}
+                                className="title-color"
+                              >
+                                {item.garageName}
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      </TableCell>
-                      {/* Onwer name */}
-                      <TableCell sx={{ border: "none" }}>
-                        {item.ownername}
-                      </TableCell>
-                      <TableCell sx={{ border: "none" }}>
-                        <div className="mb-1">
-                          <strong>
-                            <Link
-                              to={`mailto:${item.contact.email}`}
-                              className="title-color hover-c1 lowercase"
-                            >
-                              {item.contact.email}
-                            </Link>
-                          </strong>
-                        </div>
-                        <Link
-                          to={`tel:${item.contact.phone}`}
-                          className="title-color hover-c1 lowercase "
-                        >
-                          {item.contact.phone}
-                        </Link>
-                      </TableCell>
+                        </TableCell>
+                        {/* Onwer name */}
 
-                      <TableCell sx={{ border: "none" }}>
-                        <label className="badge badge-success text-xs">
-                          {item.status}
-                        </label>
-                      </TableCell>
-                      {/* Total Service */}
-                      <TableCell
-                        sx={{
-                          border: "none",
-                        }}
-                      >
-                        <Link
-                          to={`/admin/owners/service-list/${item.id}`}
-                          className="btn text--primary bg-soft--primary font-weight-bold px-3 py-1 mb-0 fz-12"
+                        <TableCell sx={{ border: "none" }}>
+                          <Link
+                            to={`tel:${item.garageContactInformation}`}
+                            className="title-color hover-c1 lowercase "
+                          >
+                            {item.garageContactInformation}
+                          </Link>
+                        </TableCell>
+                        {/* status garage */}
+                        <TableCell sx={{ border: "none" }}>
+                          <Switches
+                            checked={
+                              item.garageStatus === "Activate" ? true : false
+                            }
+                            onChange={(event) => {
+                              setConfirmDialog({
+                                isOpen: true,
+                                title:
+                                  "Are you sure to change status this record?",
+                                subTitle: "You can't undo this operation",
+                                onConfirm: () => {
+                                  handleSwitchToggle(
+                                    item.garageId,
+                                    event.target.checked ? 1 : 0
+                                  );
+                                },
+                              });
+                            }}
+                          />
+                        </TableCell>
+                        {/* Total Service */}
+                        <TableCell
+                          sx={{
+                            border: "none",
+                          }}
                         >
-                          {item.totalService}
-                        </Link>
-                      </TableCell>
+                          <Link
+                            to={`/admin/garage/service-list/${item.garageId}`}
+                            className="btn text--primary bg-soft--primary font-weight-bold px-3 py-1 mb-0 fz-12"
+                          >
+                            {item.totalServices}
+                          </Link>
+                        </TableCell>
 
-                      {/* Total Product */}
+                        {/* Total Product
                       <TableCell
                         sx={{
                           border: "none",
@@ -192,44 +262,50 @@ const Onwers = () => {
                         >
                           {item.totalProduct}
                         </Link>
-                      </TableCell>
-                      {/* Total Order */}
-                      <TableCell
-                        sx={{
-                          border: "none",
-                        }}
-                      >
-                        <Link
-                          to={`/admin/owners/order-list/1`}
-                          className="btn text-info bg-soft-info font-weight-bold px-3 py-1 fz-12 mb-0"
+                      </TableCell> */}
+                        {/* Total Order */}
+                        <TableCell
+                          sx={{
+                            border: "none",
+                          }}
                         >
-                          {item.totalOrders}
-                        </Link>
-                      </TableCell>
-                      {/* Action */}
+                          <Link
+                            to={`/admin/garage/order-list/${item.garageId}`}
+                            className="btn text-info bg-soft-info font-weight-bold px-3 py-1 fz-12 mb-0"
+                          >
+                            {item.totalOrders}
+                          </Link>
+                        </TableCell>
+                        {/* Action */}
 
-                      <TableCell sx={{ border: "none" }}>
-                        <div className="d-flex justify-content-center gap-2">
-                          <Tooltip title="view" arrow>
-                            <Link
-                              to={`/admin/owner/view/1`}
-                              className="btn btn-outline-info btn-sm square-btn"
-                            >
-                              <VisibilityIcon fontSize="small" />
-                            </Link>
-                          </Tooltip>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </TblContainer>
-              <TblPagination />
+                        <TableCell sx={{ border: "none" }}>
+                          <div className="d-flex justify-content-center gap-2">
+                            <Tooltip title="view" arrow>
+                              <Link
+                                to={`/admin/garage/view/${item.garageId}`}
+                                className="btn btn-outline-info btn-sm square-btn"
+                              >
+                                <VisibilityIcon fontSize="small" />
+                              </Link>
+                            </Tooltip>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </TblContainer>
+                <TblPagination />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
+      <Notification notify={notify} setNotify={setNotify} />
+    </>
   );
 };
 

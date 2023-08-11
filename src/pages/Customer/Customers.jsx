@@ -11,14 +11,20 @@ import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { useDispatch, useSelector } from "react-redux";
-import {getCustomers, getNumberCustomer} from "../../features/customer/customerSilde";
+import {
+  getCustomers,
+  getNumberCustomer,
+  updateCustomerStatus,
+  resetState,
+} from "../../features/customer/customerSilde";
+import Notification from "../../components/Notification";
+
 const headCells = [
   { id: "userId", label: "ID" },
-  { id: "fullName", label: "Customer Name"},
-  { id:"userEmail", label: "Contact Info" },
+  { id: "fullName", label: "Customer Name" },
+  { id: "userEmail", label: "Contact Info" },
   { id: "totalBooking", label: "Total Booking" },
   { id: "userStatus", label: "Block/Unblock" },
   {
@@ -33,39 +39,71 @@ const headCells = [
 const Customers = () => {
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
-  const [page, setPage] = useState(0);  // page index
+  const [page, setPage] = useState(0); // page index
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
-  
+
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
 
+  const updateSuccessAction = useSelector((state) => state.customer.isSuccessAction);
 
   useEffect(() => {
-      const data = { pageIndex: page + 1 , pageSize : rowsPerPage }
-      dispatch(getCustomers(data));
-      dispatch(getNumberCustomer())
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage };
+    dispatch(getCustomers(data));
+    dispatch(getNumberCustomer());
 
-  }, [ page,rowsPerPage])
-
-  
+    if (updateSuccessAction) {
+      dispatch(resetState());
+      setConfirmDialog({
+        ...confirmDialog,
+        isOpen: false,
+      });
+      setNotify({
+        isOpen: true,
+        message: "Update Successfully",
+        type: "success",
+      });
+    }
+  }, [page, updateSuccessAction, rowsPerPage]);
 
   const recordsCustomer = useSelector((state) => state.customer.customers);
 
-  const count  = useSelector((state) => state.customer.number);
-  
+  const count = useSelector((state) => state.customer.number);
 
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
     },
   });
-  console.log("records" , recordsCustomer);
+  // console.log("records", recordsCustomer);
+
+  const handleSwitchToggle = (userId, userStatus) => {
+    // Dispatch the updateCustomerStatus action
+    // console.log(userId, userStatus);
+    dispatch(updateCustomerStatus({ userId, userStatus }));
+  };
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTableV2(recordsCustomer, headCells, filterFn,  pages, page, rowsPerPage, setPage, setRowsPerPage, count);
-    
+    useTableV2(
+      recordsCustomer,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
+
   return (
     <>
       <div className="min-[620px]:pt-24 min-[620px]:px-8">
@@ -158,7 +196,22 @@ const Customers = () => {
                     </TableCell>
                     {/* Block and unblock */}
                     <TableCell sx={{ border: "none" }}>
-                      <Switches checked={item.userStatus === "Activate" ? true : false} />
+                      <Switches
+                        checked={item.userStatus === "Activate" ? true : false}
+                        onChange={(event) => {
+                          setConfirmDialog({
+                            isOpen: true,
+                            title: "Are you sure to change status this record?",
+                            subTitle: "You can't undo this operation",
+                            onConfirm: () => {
+                              handleSwitchToggle(
+                                item.userId,
+                                event.target.checked ? 1 : 0
+                              );
+                            },
+                          });
+                        }}
+                      />
                     </TableCell>
                     {/* Action */}
                     <TableCell sx={{ border: "none" }}>
@@ -169,21 +222,6 @@ const Customers = () => {
                             className="btn btn-outline-info btn-sm square-btn"
                           >
                             <VisibilityIcon fontSize="small" />
-                          </Link>
-                        </Tooltip>
-                        <Tooltip title="delelte" arrow>
-                          <Link
-                            className="btn btn-outline-danger btn-sm delete square-btn"
-                            onClick={() => {
-                              setConfirmDialog({
-                                isOpen: true,
-                                title: "Are you sure to delete this record?",
-                                subTitle: "You can't undo this operation",
-                                onConfirm: () => {},
-                              });
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
                           </Link>
                         </Tooltip>
                       </div>
@@ -200,6 +238,7 @@ const Customers = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };

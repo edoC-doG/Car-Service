@@ -189,7 +189,7 @@ const All = () => {
 
 
   const recordsBooking = useSelector((state) => state.booking.bookings);
-  console.log(recordsBooking);
+  // console.log(recordsBooking);
   const count = useSelector((state) => state.booking.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
@@ -378,7 +378,7 @@ const All = () => {
                       <div className="d-flex justify-content-center gap-2">
                         <Tooltip title="view" arrow>
                           <Link
-                            to={`/admin/orders/details/${item.bookingCode}`}
+                            to={`/admin/orders/details/${item.bookingId}`}
                             className="btn btn-outline--primary btn-sm edit square-btn"
                           >
                             <VisibilityIcon fontSize="small" />

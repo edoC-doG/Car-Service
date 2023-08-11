@@ -8,13 +8,24 @@ const getReviews = async (page) => {
     page,
     instance
   );
-  console.log("all review: " , response.data);
+  // console.log("all review: " , response.data);
 
   return response.data;
 };
 
+const updateReviewStatus = async (data) => {
+  const response = await instance.put(
+    `${base_url}review/update-status-review`,
+    data,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+}
+
 const reviewService = {
-    getReviews
+    getReviews,
+    updateReviewStatus 
   };
   
   export default reviewService;

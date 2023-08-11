@@ -5,26 +5,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "./../../firebase";
-import { addProducts, getProducts } from './../../features/product/productSlice';
-function ModalAdd(props) {
+import { editServices } from './../../features/service/serviceSlide';
+
+function ModalEdit(props) {
   const dispatch = useDispatch();
-  const { show, handleClose } = props;
-  const [productName, setName] = useState("");
-  const [serviceId, setServiceId] = useState("");
-  const [productQuantity, setQuantity] = useState("");
-  const [productDetailDescription, setDes] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [productPrice, setPrice] = useState("");
+  const { show, handleClose, serEdit } = props;
+  console.log(serEdit)
+  const [serviceId, setId] = useState("")
+  const [serviceName, setName] = useState("");
+  const [serviceGroup, setGroup] = useState("");
+  const [serviceUnit, setUnit] = useState("");
+  const [serviceDetailDescription, setDes] = useState("");
+  const [serviceDuration, setDuration] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    const file = imageAsFile; 
+    const file = imageAsFile;
+    console.log("long file", file)  
     if (!file) return null
     const storageRef = ref(storage, `files/${file.name}`);
+    console.log(storageRef)
     uploadBytes(storageRef, file).then((snapshot) => {
       e.target[0].value = "";
       getDownloadURL(snapshot.ref).then((downloadURL) => {
-        const ser = { productName, productImage:downloadURL, productQuantity, productDetailDescription, categoryId, serviceId,productPrice}
-        // dispatch(addProducts(ser))           
+        console.log(downloadURL)
+        const ser = { serviceId, serviceName, serviceImage:downloadURL, serviceGroup, serviceUnit, serviceDetailDescription, serviceDuration }
+        dispatch(editServices(ser))                     
+        console.log(ser)
       });
     });
   };
@@ -33,6 +39,18 @@ function ModalAdd(props) {
     const img = e.target.files[0];
     setImageAsFile(img);
   };
+  
+  useEffect(() => {
+    if(show){
+        setName(serEdit.serviceName) 
+        setGroup(serEdit.serviceGroup)
+        setUnit(serEdit.serviceUnit)
+        setId(serEdit.serviceId)
+        setDes(serEdit.serviceDetailDescription)
+        setDuration(serEdit.serviceDuration)
+    }
+    console.log(serEdit)
+  }, [serEdit])
   return (
     <div
       className="modal show"
@@ -49,71 +67,63 @@ function ModalAdd(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Thêm mới nhân viên</Modal.Title>
+          <Modal.Title>Cập nhật dịch vụ sửa chữa </Modal.Title>
         </Modal.Header>
           <Form onSubmit={handleSubmit}>
           <Modal.Body>
             <Form.Group className="mb-3">
-              <Form.Label>Tên sản phẩm</Form.Label>
+              <Form.Label>Tên của dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={productName}
+                value={serviceName}
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Giá sản phẩm</Form.Label>
+              <Form.Label>Loại dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={productPrice}
-                onChange={(e) => setPrice(e.target.value)}
+                value={serviceGroup}
+                onChange={(e) => setGroup(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Số lượng sản phẩm</Form.Label>
+              <Form.Label>Số lần</Form.Label>
               <Form.Control
                 type="text" 
                 autoFocus
-                value={productQuantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                value={serviceUnit}
+                onChange={(e) => setUnit(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Loại sản phẩm</Form.Label>
+              <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
+                value={serviceDuration}
+                onChange={(e) => setDuration(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Dịch vụ sản phẩm cung ứng</Form.Label>
-              <Form.Control
-                type="text"
-                autoFocus
-                value={serviceId}
-                onChange={(e) => setServiceId(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Mô tả sản phẩm</Form.Label>
-              <Form.Control
-                type="text"                
-                autoFocus
-                value={productDetailDescription}
-                onChange={(e) => setDes(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Hình ảnh sản phẩm</Form.Label>
+              <Form.Label>Hình ảnh dịch vụ</Form.Label>
               <Form.Control
                 type="file"
                 autoFocus
-                name="productImage"
+                name="serviceImage"
                 onChange={handleImageAsFile}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Mô tả dịch vụ</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                autoFocus
+                value={serviceDetailDescription}
+                onChange={(e) => setDes(e.target.value)}
               />
             </Form.Group>
             </Modal.Body>
@@ -121,8 +131,8 @@ function ModalAdd(props) {
               <Button variant="secondary" onClick={handleClose}>
                 Đóng
               </Button>
-              <Button variant="success" type="submit">
-                Thêm mới
+              <Button variant="warning" type="submit">
+                Cập nhật
               </Button>
             </Modal.Footer>
           </Form>
@@ -131,4 +141,4 @@ function ModalAdd(props) {
   );
 }
 
-export default ModalAdd;
+export default ModalEdit;

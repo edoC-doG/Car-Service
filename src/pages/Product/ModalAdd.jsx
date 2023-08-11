@@ -24,7 +24,7 @@ function ModalAdd(props) {
       e.target[0].value = "";
       getDownloadURL(snapshot.ref).then((downloadURL) => {
         const ser = { productName, productImage:downloadURL, productQuantity, productDetailDescription, categoryId, serviceId,productPrice}
-        // dispatch(addProducts(ser))           
+        dispatch(addProducts(ser))           
       });
     });
   };
@@ -49,7 +49,7 @@ function ModalAdd(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Thêm mới nhân viên</Modal.Title>
+          <Modal.Title>Thêm mới sản phẩm</Modal.Title>
         </Modal.Header>
           <Form onSubmit={handleSubmit}>
           <Modal.Body>

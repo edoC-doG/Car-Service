@@ -5,26 +5,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "./../../firebase";
-import { addProducts, getProducts } from './../../features/product/productSlice';
+import { addServices, getServices, resetState } from './../../features/service/serviceSlide';
+
 function ModalAdd(props) {
   const dispatch = useDispatch();
   const { show, handleClose } = props;
-  const [productName, setName] = useState("");
-  const [serviceId, setServiceId] = useState("");
-  const [productQuantity, setQuantity] = useState("");
-  const [productDetailDescription, setDes] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [productPrice, setPrice] = useState("");
+  const [serviceName, setName] = useState("");
+  const [serviceGroup, setGroup] = useState("");
+  const [serviceUnit, setUnit] = useState("");
+  const [serviceDetailDescription, setDes] = useState("");
+  const [serviceDuration, setDuration] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
     const file = imageAsFile; 
     if (!file) return null
     const storageRef = ref(storage, `files/${file.name}`);
+    console.log(storageRef)
     uploadBytes(storageRef, file).then((snapshot) => {
       e.target[0].value = "";
       getDownloadURL(snapshot.ref).then((downloadURL) => {
-        const ser = { productName, productImage:downloadURL, productQuantity, productDetailDescription, categoryId, serviceId,productPrice}
-        // dispatch(addProducts(ser))           
+        const ser = { serviceName, serviceImage:downloadURL, serviceGroup, serviceUnit, serviceDetailDescription, serviceDuration }
+        dispatch(addServices(ser))                     
       });
     });
   };
@@ -49,70 +50,61 @@ function ModalAdd(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Thêm mới nhân viên</Modal.Title>
+          <Modal.Title>Thêm mới dịch vụ sửa chữa </Modal.Title>
         </Modal.Header>
           <Form onSubmit={handleSubmit}>
           <Modal.Body>
             <Form.Group className="mb-3">
-              <Form.Label>Tên sản phẩm</Form.Label>
+              <Form.Label>Tên của dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={productName}
+                value={serviceName}
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Giá sản phẩm</Form.Label>
+              <Form.Label>Loại dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={productPrice}
-                onChange={(e) => setPrice(e.target.value)}
+                value={serviceGroup}
+                onChange={(e) => setGroup(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Số lượng sản phẩm</Form.Label>
+              <Form.Label>Số lần</Form.Label>
               <Form.Control
                 type="text" 
                 autoFocus
-                value={productQuantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                value={serviceUnit}
+                onChange={(e) => setUnit(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Loại sản phẩm</Form.Label>
+              <Form.Label>Mô tả dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Dịch vụ sản phẩm cung ứng</Form.Label>
-              <Form.Control
-                type="text"
-                autoFocus
-                value={serviceId}
-                onChange={(e) => setServiceId(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Mô tả sản phẩm</Form.Label>
-              <Form.Control
-                type="text"                
-                autoFocus
-                value={productDetailDescription}
+                value={serviceDetailDescription}
                 onChange={(e) => setDes(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Hình ảnh sản phẩm</Form.Label>
+              <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                value={serviceDuration}
+                onChange={(e) => setDuration(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Hình ảnh dịch vụ</Form.Label>
               <Form.Control
                 type="file"
                 autoFocus
-                name="productImage"
+                name="serviceImage"
                 onChange={handleImageAsFile}
               />
             </Form.Group>

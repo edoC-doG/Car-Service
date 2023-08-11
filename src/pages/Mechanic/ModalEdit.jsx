@@ -5,34 +5,47 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "./../../firebase";
-import { addProducts, getProducts } from './../../features/product/productSlice';
-function ModalAdd(props) {
-  const dispatch = useDispatch();
-  const { show, handleClose } = props;
-  const [productName, setName] = useState("");
-  const [serviceId, setServiceId] = useState("");
-  const [productQuantity, setQuantity] = useState("");
-  const [productDetailDescription, setDes] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [productPrice, setPrice] = useState("");
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const file = imageAsFile; 
-    if (!file) return null
-    const storageRef = ref(storage, `files/${file.name}`);
-    uploadBytes(storageRef, file).then((snapshot) => {
-      e.target[0].value = "";
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        const ser = { productName, productImage:downloadURL, productQuantity, productDetailDescription, categoryId, serviceId,productPrice}
-        // dispatch(addProducts(ser))           
+import { editProducts } from './../../features/product/productSlice';
+
+function ModalEdit(props) {
+    const dispatch = useDispatch();
+    const { show, handleClose,mechaEdit } = props;
+    const [productName, setName] = useState("");
+    const [productId, setServiceId] = useState("");
+    const [productQuantity, setQuantity] = useState("");
+    const [productDetailDescription, setDes] = useState("");
+    const [categoryId, setCategoryId] = useState("");
+    const [productPrice, setPrice] = useState("");
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const file = imageAsFile; 
+      if (!file) return null
+      const storageRef = ref(storage, `files/${file.name}`);
+      uploadBytes(storageRef, file).then((snapshot) => {
+        e.target[0].value = "";
+        getDownloadURL(snapshot.ref).then((downloadURL) => {
+          const ser = { productName, productImage:downloadURL, productQuantity, productDetailDescription, categoryId, productId,productPrice}
+          dispatch(editProducts(ser))        
+          console.log(ser)   
+        });
       });
-    });
-  };
-  const [imageAsFile, setImageAsFile] = useState();
-  const handleImageAsFile = (e) => {
-    const img = e.target.files[0];
-    setImageAsFile(img);
-  };
+    };
+    const [imageAsFile, setImageAsFile] = useState();
+    const handleImageAsFile = (e) => {
+      const img = e.target.files[0];
+      setImageAsFile(img);
+    };
+//   useEffect(() => {
+//     if(show){
+//         setName(proEdit.productName) 
+//         setServiceId(proEdit.productId)
+//         setCategoryId(proEdit.categoryProductDto.categoryId)
+//         setDes(proEdit.productDetailDescription)
+//         setPrice(proEdit.productPrice)
+//         setQuantity(proEdit.productQuantity)
+//     }
+//     console.log(proEdit)
+//   }, [proEdit])
   return (
     <div
       className="modal show"
@@ -49,7 +62,7 @@ function ModalAdd(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Thêm mới nhân viên</Modal.Title>
+          <Modal.Title>Thêm mới sản phẩm</Modal.Title>
         </Modal.Header>
           <Form onSubmit={handleSubmit}>
           <Modal.Body>
@@ -89,12 +102,12 @@ function ModalAdd(props) {
                 onChange={(e) => setCategoryId(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" hidden={true}>
               <Form.Label>Dịch vụ sản phẩm cung ứng</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={serviceId}
+                value={productId}
                 onChange={(e) => setServiceId(e.target.value)}
               />
             </Form.Group>
@@ -131,4 +144,4 @@ function ModalAdd(props) {
   );
 }
 
-export default ModalAdd;
+export default ModalEdit;

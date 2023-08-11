@@ -38,7 +38,6 @@ const serviceUnitOptions = [
     value: 2,
   },
 ];
-
 const AddService = () => {
   const [cover, setCover] = useState("");
 

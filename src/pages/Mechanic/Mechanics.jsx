@@ -14,6 +14,8 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import MoneyIcon from "@mui/icons-material/Money";
+import ModalAdd from "./AddMechanic";
+import ModalEdit from "./ModalEdit";
 import Notification from "../../components/Notification";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,7 +23,6 @@ import {
   resetState,
 } from "../../features/mechanic/mechanicSlice";
 import useTableV2 from "../../components/table/useTableV2";
-
 const headCells = [
   { id: "mechanicId", label: "ID" },
   { id: "fullName", label: "Name" },
@@ -53,7 +54,18 @@ const Mechanics = () => {
     title: "",
     subTitle: "",
   });
-
+  //Add
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setShowEdit(false);
+  };
+  //Edit
+  const [showEdit, setShowEdit] = useState(false);
+  const [mechaEdit, setMechaEdit] = useState({});
+  const handleEdit = (mecha) => {
+    setMechaEdit(mecha);
+    setShowEdit(true);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -171,7 +183,7 @@ const Mechanics = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => {}}
+                        onClick={() => setShowModal(true)}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Add Mechanic"
                       />
@@ -266,7 +278,7 @@ const Mechanics = () => {
                           <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="edit" arrow>
                               <Link
-                                to={`/admin/mechanic/edit/${item.mechanicId}`}
+                                onClick={() => handleEdit(item)}
                                 className="btn btn-outline--primary btn-sm edit"
                               >
                                 <EditIcon fontSize="small" />
@@ -274,7 +286,7 @@ const Mechanics = () => {
                             </Tooltip>
                             <Tooltip title="Earning statement" arrow>
                               <Link
-                                to={`/admin/mechanic/detail/${item.mechanicId}`}
+                                onClick={() => handleEdit(item)}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <MoneyIcon fontSize="small" />
@@ -312,8 +324,13 @@ const Mechanics = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
+      <ModalAdd show={showModal} handleClose={handleClose} />
+      <ModalEdit
+        show={showEdit}
+        handleClose={handleClose}
+        mechaEdit={mechaEdit}
+      />
       <Notification notify={notify} setNotify={setNotify} />
-
     </>
   );
 };

@@ -113,7 +113,9 @@ function ModalAdd(props) {
               <Button variant="secondary" onClick={handleClose}>
                 Đóng
               </Button>
-              <Button variant="success" type="submit">
+              <Button variant="success" type="submit" 
+              style={{color: "black"}}
+              >
                 Thêm mới
               </Button>
             </Modal.Footer>

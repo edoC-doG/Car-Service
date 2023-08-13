@@ -65,9 +65,8 @@ const OrderDetail = () => {
   useEffect(() => {
     dispatch(getDetailBooking(id));
   }, [id]);
-
+  
   const booking = useSelector((state) => state.booking.booking);
-
   const garage = useSelector((state) => state.booking.garage);
   const detail = useSelector((state) => state.booking.detail);
   const customer = useSelector((state) => state.booking.customer);

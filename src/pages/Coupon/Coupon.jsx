@@ -11,12 +11,16 @@ import Switches from "../../components/table/Switches";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
 import {
   getCoupons,
   resetState,
   updateCouponStatus,
 } from "../../features/coupon/couponSlice";
 import Notification from "../../components/Notification";
+import Button from './../../components/filter/Button';
+import ModalAdd from "./ModalAdd";
+import ModalEdit from "./ModalEdit";
 
 const headCells = [
   { id: "couponId", label: "ID" },
@@ -45,6 +49,19 @@ const Coupon = () => {
     title: "",
     subTitle: "",
   });
+   //Add
+   const [showModal, setShowModal] = useState(false);
+   const handleClose = () => {
+     setShowModal(false);
+     setShowEdit(false);
+   };
+   //Edit
+   const [showEdit, setShowEdit] = useState(false);
+   const [coupEdit, setCoupEdit] = useState({});
+   const handleEdit = (coup) => {
+    setCoupEdit(coup);
+     setShowEdit(true);
+   };
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -110,19 +127,11 @@ const Coupon = () => {
         <div className="row mt-4">
           <div className="col-md-12">
             <div className="card">
-              <div className="px-3 py-4">
-                <div className="row align-items-center">
-                  <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                    <h5 className="text-capitalize d-flex gap-1 font-semibold">
-                      Coupon List
-                      <span className="badge badge-soft-dark radius-50 fz-12">
-                        {count}
-                      </span>
-                    </h5>
-                  </div>
+            <div className="px-3 py-4">
+                <div className="row justify-content-between align-items-center gy-2">
                   <div className="col-sm-8 col-md-6 col-lg-4">
                     <Search
-                      label="Search by Title or Code"
+                      label="Search by Name"
                       onChange={() => {}}
                       size="small"
                       InputProps={{
@@ -133,6 +142,17 @@ const Coupon = () => {
                         ),
                       }}
                     />
+                  </div>
+                  <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
+                    <div className="d-flex justify-content-sm-end">
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => setShowModal(true)}  
+                        startIcon={<AddIcon fontSize="small" />}
+                        text="Add Promotion"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -190,7 +210,7 @@ const Coupon = () => {
                           <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="edit" arrow>
                               <Link
-                                to={`/admin/coupon/edit/${item.couponId}`}
+                                onClick={()=> handleEdit(item)}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />
@@ -230,6 +250,12 @@ const Coupon = () => {
       <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
+      />
+       <ModalAdd show={showModal} handleClose={handleClose} />
+      <ModalEdit
+        show={showEdit}
+        handleClose={handleClose}
+        coupEdit={coupEdit}
       />
       <Notification notify={notify} setNotify={setNotify} />
     </>

@@ -313,7 +313,7 @@ const All = () => {
                   <TableRow hover key={item.bookingCode}>
                     <TableCell sx={{ border: "none" }}>
                       <Link
-                        to={`/admin/orders/details/${item.bookingCode}`}
+                        to={`/admin/orders/details/${item.bookingId}`}
                         className="title-color hover-c1"
                       >
                         {item.bookingCode}

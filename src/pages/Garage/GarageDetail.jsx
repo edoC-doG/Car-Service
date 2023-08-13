@@ -7,7 +7,7 @@ import Service from "../../components/Garage&Owner/Service";
 import ReviewGarage from "../../components/Garage&Owner/ReviewGarage";
 import { useSelector } from "react-redux";
 
-const tabs = ["garage", "order", "service", "review"];
+const tabs = ["garage", "order", "review"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
   const navigate = useNavigate();  
@@ -70,8 +70,8 @@ const OwnerDetail = () => {
       {/* Order */}
       {type === "order" && <Order />}
       {/*  */}
-      {/* Service */}
-      {type === "service" && <Service />}
+      {/* Service
+      {type === "service" && <Service />} */}
       {/*  */}
       {/* Review */}
       {type === "review" && <ReviewGarage />}

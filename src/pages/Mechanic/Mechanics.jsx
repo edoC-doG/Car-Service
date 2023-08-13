@@ -178,7 +178,7 @@ const Mechanics = () => {
                             /> */}
                             <div>
                               <Link
-                                to={`/admin/mechanic/detail/${item.mechanicId}`}
+                                to={`/admin/mechanic/detail/${item.userId}`}
                                 className="title-color"
                               >
                                 {item.userMechanicDto.fullName}
@@ -246,17 +246,17 @@ const Mechanics = () => {
                         {/* Action */}
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="edit" arrow>
+                            {/* <Tooltip title="edit" arrow>
                               <Link
                                 onClick={() => handleEdit(item)}
                                 className="btn btn-outline--primary btn-sm edit"
                               >
                                 <EditIcon fontSize="small" />
                               </Link>
-                            </Tooltip>
+                            </Tooltip> */}
                             <Tooltip title="Earning statement" arrow>
                               <Link
-                                to={`/admin/mechanic/detail/${item.mechanicId}`}
+                                to={`/admin/mechanic/detail/${item.userId}`}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <MoneyIcon fontSize="small" />

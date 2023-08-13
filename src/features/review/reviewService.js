@@ -23,9 +23,22 @@ const updateReviewStatus = async (data) => {
   return response.data;
 }
 
+const getReviewByGarageId = async (data) => {
+  const response = await instance.post(
+    `${base_url}review/filter-review-by-garage`,
+    data,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+}
+
+
+
 const reviewService = {
     getReviews,
-    updateReviewStatus 
+    updateReviewStatus ,
+    getReviewByGarageId
   };
   
   export default reviewService;

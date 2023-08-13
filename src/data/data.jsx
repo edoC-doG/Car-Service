@@ -90,11 +90,11 @@ export const sidebarData = [
         icon: <FaUserShield />,
         label: "All Garages",
         children: [
-          {
-            key: "add-garage",
-            icon: <RxDotFilled />,
-            label: "Add New Garage",
-          },
+          // {
+          //   key: "add-garage",
+          //   icon: <RxDotFilled />,
+          //   label: "Add New Garage",
+          // },
           {
             key: "garage-list",
             icon: <RxDotFilled />,
@@ -107,11 +107,11 @@ export const sidebarData = [
         icon: <RiUserSettingsFill />,
         label: "Mechanics",
         children: [
-          {
-            key: "add-new-mechanics",
-            icon: <RxDotFilled />,
-            label: "Add New",
-          },
+          // {
+          //   key: "add-new-mechanics",
+          //   icon: <RxDotFilled />,
+          //   label: "Add New",
+          // },
           {
             key: "list-mechanics",
             icon: <RxDotFilled />,

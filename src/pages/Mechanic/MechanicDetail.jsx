@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/Header";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useTable from "../../components/table/useTable";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import Search from "../../components/filter/Search";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import AccountInfo from "../../components/card-info/AccountInfo";
-import HistoryIcon from '@mui/icons-material/History';
+import HistoryIcon from "@mui/icons-material/History";
 import Button from "../../components/filter/Button";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getMechanicDetail } from "../../features/mechanic/mechanicSlice";
 const headCells = [
   { id: "id", label: "ID" },
   { id: "order", label: "Order No" },
@@ -19,7 +20,34 @@ const headCells = [
   { id: "history", label: "History" },
 ];
 const MechanicDetail = () => {
+  const location = useLocation();
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const id = location.pathname.split("/")[4];
+  console.log(id);
+  const rows = [
+    {
+      id: 1,
+      order: 1020392,
+      total: "500.000 VND",
+      status: "Confirmed",
+      history: "ok",
+    },
+    {
+      id: 2,
+      order: 1020393,
+      total: "1.000.000 VND",
+      status: "Confirmed",
+      history: "ok",
+    },
+  ];
+
+  useEffect(() => {
+    dispatch(getMechanicDetail(id));
+  }, [id]);
+
+  const detail = useSelector((state) => state.mechanic.mechanic);
 
   const infoMechanic = [
     {
@@ -37,23 +65,6 @@ const MechanicDetail = () => {
     {
       name: "Phone",
       content: "028123213143",
-    },
-  ];
-
-  const rows = [
-    {
-      id: 1,
-      order: 1020392,
-      total: "500.000 VND",
-      status: "Confirmed",
-      history: "ok",
-    },
-    {
-      id: 2,
-      order: 1020393,
-      total: "1.000.000 VND",
-      status: "Confirmed",
-      history: "ok",
     },
   ];
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -74,7 +85,7 @@ const MechanicDetail = () => {
               navigate(-1);
             }}
           >
-            Back to owner & garage list
+            Back to mechanic list
           </Link>
         </div>
       </div>
@@ -94,31 +105,14 @@ const MechanicDetail = () => {
                 </div>
 
                 <div className="row g-2">
-                  <div className="col-sm-6 col-lg-6">
-                    <div className="business-analytics">
-                      <h5 className="business-analytics__subtitle font-semibold">
-                        Total Earning
-                      </h5>
-                      <h2 className="business-analytics__title font-semibold">
-                        3.000.000 VND
-                      </h2>
-                      <img
-                        className="business-analytics__img"
-                        src="https://6valley.6amtech.com/public/assets/back-end/img/aw.png"
-                        width={"40"}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-
                   {/* Total order receive */}
-                  <div className="col-sm-6 col-lg-6">
+                  <div className="col-sm-12 col-lg-12">
                     <div className="business-analytics">
                       <h5 className="business-analytics__subtitle font-semibold">
                         Total Order Confirmed
                       </h5>
                       <h2 className="business-analytics__title font-semibold">
-                        20
+                        {detail.totalBookingApplied}
                       </h2>
                       <img
                         className="business-analytics__img"
@@ -198,12 +192,10 @@ const MechanicDetail = () => {
                                   sx={{ border: "none", fontSize: "14px" }}
                                 >
                                   <div className="media align-items-center gap-2 flex-wrap">
-
-                                  <Link className="btn btn-info">
-                                    <HistoryIcon fontSize="small"/>
-                                  </Link>
+                                    <Link className="btn btn-info">
+                                      <HistoryIcon fontSize="small" />
+                                    </Link>
                                   </div>
-
                                 </TableCell>
                               </TableRow>
                             ))}
@@ -218,8 +210,11 @@ const MechanicDetail = () => {
           </div>
           {/* Info */}
           <div className="col-lg-3 d-flex flex-column">
-      
-             <AccountInfo name={'mechanic'} title={"Mechanic Info"} items={infoMechanic} />
+            <AccountInfo
+              name={"mechanic"}
+              title={"Mechanic Info"}
+              items={infoMechanic}
+            />
           </div>
         </div>
       </div>

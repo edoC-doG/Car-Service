@@ -5,7 +5,7 @@ export const getMechanics = createAsyncThunk(
   "mechanic/mechanics",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await mechanicService.getMechanics(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -45,7 +45,16 @@ export const updateMechanicByBookingId = createAsyncThunk(
     }
   }
 );
-
+export const getMechanicDetail = createAsyncThunk(
+  "mechanic/mechanic-detail",
+  async (id, thunkAPI) => {
+    try {
+      return await mechanicService.getMechanicDetail(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const resetState = createAction("Reset_all");
 
@@ -128,6 +137,22 @@ export const mechanicSlice = createSlice({
       .addCase(updateMechanicByBookingId.rejected, (state, action) => {
         state.isError = true;
         state.isSuccessAction = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getMechanicDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMechanicDetail.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.mechanic = action.payload;
+        state.message = "success";
+      })
+      .addCase(getMechanicDetail.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
       })

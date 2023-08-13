@@ -25,6 +25,18 @@ export const updateReviewStatus = createAsyncThunk(
   }
 );
 
+export const getReviewsByGarage = createAsyncThunk(
+  "review/reviews-by-garage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await reviewService.getReviewByGarageId(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -74,6 +86,23 @@ export const reviewSlice = createSlice({
       .addCase(updateReviewStatus.rejected, (state, action) => {
         state.isError = true;
         state.isSuccessAction = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getReviewsByGarage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getReviewsByGarage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.reviews = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getReviewsByGarage.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
       })

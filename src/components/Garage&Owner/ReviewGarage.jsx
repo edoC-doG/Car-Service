@@ -1,37 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Search from "../../components/filter/Search";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import StarIcon from "@mui/icons-material/Star";
-
 import useTable from "../../components/table/useTable";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
+import {
+  getReviewsByGarage,
+  resetState,
+} from "../../features/review/reviewSlice";
+import { useDispatch, useSelector } from "react-redux";
+import useTableV2 from "../table/useTableV2";
+import { Link, useLocation } from "react-router-dom";
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "service", label: "Service" },
+  { id: "reviewId", label: "ID" },
 
-  { id: "review", label: "Review", disableSorting: true },
-  { id: "ratin", label: "Rating" },
+  { id: "fullName", label: "Customer Name" },
+  { id: "rating", label: "Rating" },
+  { id: "content", label: "Review" },
+  { id: "createdAt", label: "Date" },
+
+  { id: "reviewStatus", label: "Status" },
 ];
 const ReviewGarage = () => {
-  const rows = [
-    {
-      id: 1,
-      service: "Rua xe",
-      review:
-        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text,",
-      rating: "4",
-    },
-    {
-      id: 2,
-      service: "Son bong",
-      review: "Service quality was good.",
+  const dispatch = useDispatch();
+  const location = useLocation();
 
-      rating: "5",
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const id = location.pathname.split("/")[4];
+
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+  });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
     },
-  ];
+  });
+  useEffect(() => {
+    document.title = "List of cutomers's review of garage";
+  }, []);
+
+  useEffect(() => {
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage, garageId: id };
+    dispatch(getReviewsByGarage(data));
+  }, [page, rowsPerPage, id]);
+
+  const recordsReview = useSelector((state) => state.review.reviews);
+
+  const count = useSelector((state) => state.review.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(
+      recordsReview,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <div className="container-fluid p-0">
       <div className="row gx-2 gx-lg-3">
@@ -44,7 +83,7 @@ const ReviewGarage = () => {
                   <h5 className="text-capitalize d-flex gap-1 font-semibold">
                     Review List
                     <span className="badge badge-soft-dark radius-50 fz-12">
-                      2
+                      {count}
                     </span>
                   </h5>
                 </div>
@@ -69,28 +108,43 @@ const ReviewGarage = () => {
               <TblContainer>
                 <TblHead />
                 <TableBody>
-                  {rows.map((item) => (
-                    <TableRow hover key={item.id}>
-                      <TableCell sx={{ border: "none" }}>{item.id}</TableCell>
+                  {recordsAfterPagingAndSorting().map((item) => (
+                    <TableRow hover key={item.reviewId}>
                       <TableCell sx={{ border: "none" }}>
-                        {item.service}
+                        <div>{item.reviewId}</div>
                       </TableCell>
                       <TableCell sx={{ border: "none" }}>
-                        <p className="text-wrap mb-1 ">{item.review}</p>
+                        <div>{item.userReviewDto.fullName}</div>
                       </TableCell>
-                      <TableCell sx={{ border: "none", fontSize: "12px" }}>
-                        <label className="mb-1 badge badge-soft-info">
+                      <TableCell sx={{ border: "none" }}>
+                        <label className="badge badge-soft-info mb-0">
                           <span className="fz-12 d-flex align-items-center gap-1">
-                            {item.rating}
-                            <StarIcon fontSize="inherit" />
+                            {item.rating} <StarIcon fontSize="inherit" />
                           </span>
                         </label>
+                      </TableCell>
+                      <TableCell sx={{ border: "none" }}>
+                        <div>{item.content}</div>
+                      </TableCell>
+                      <TableCell sx={{ border: "none" }}>
+                        <div>{item.createdAt}</div>
+                      </TableCell>
+                      <TableCell sx={{ border: "none" }}>
+                        <span
+                          className={
+                            item.ureviewStatus === "Activate"
+                              ? "badge badge-soft-danger fz-12"
+                              : "badge badge-soft-success fz-12"
+                          }
+                        >
+                          {item.reviewStatus}
+                        </span>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </TblContainer>
-              <TblPagination className="pagination" />
+              <TblPagination />
             </div>
             <div className="table-responsive mt-4"></div>
           </div>

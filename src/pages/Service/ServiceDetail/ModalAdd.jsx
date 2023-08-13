@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
@@ -68,24 +70,44 @@ function ModalAddDetail(props) {
                 onChange={(e) => setPrice(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Row   className="mb-3">
+            <Form.Group as={Col} md="6">
               <Form.Label>Sô ghế nhỏ nhất của xe </Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="text"
                 autoFocus
                 value={minNumberOfCarLot}
                 onChange={(e) => setMin(e.target.value)}
-              />
+              /> */}
+               <Form.Select  
+                className="form-control"
+                aria-label="Default select example"
+                onChange={(e) => setMin(e.target.value)}
+              >
+                <option defaultValue={2} value="2">2</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group as={Col} md="6">
               <Form.Label>Số ghế lớn nhất của xe</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="text"
                 autoFocus
                 value={maxNumberOfCarLot}
                 onChange={(e) => setMax(e.target.value)}
-              />
+              /> */}
+               <Form.Select  
+                className="form-control"
+                aria-label="Default select example"
+                onChange={(e) => setMax(e.target.value)}
+              >
+                <option defaultValue={5} value="5">5</option>
+                <option value="7">7</option>
+                <option value="12">12</option>
+              </Form.Select>
             </Form.Group>
+            </Row>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

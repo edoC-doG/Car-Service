@@ -8,13 +8,16 @@ import {
   getServices,
   resetState,
 } from "./../../features/service/serviceSlide";
-
+import DateTime from "./../../components/filter/DateTime";
+import dayjs from "dayjs";
 function ModalAdd(props) {
   const dispatch = useDispatch();
   const { show, handleClose } = props;
   const [couponValue, setValue] = useState("");
-  const [couponStartDate, setStart] = useState("");
-  const [couponEndDate, setEnd] = useState("");
+  // const [couponStartDate, setStart] = useState("");
+  const [date, setDay] = useState("");
+  const [dateEnd, setDayEnd] = useState("");
+  // const [couponEndDate, setEnd] = useState("");
   const [couponMinSpend, setMin] = useState("");
   const [couponMaxSpend, setMax] = useState("");
   const [couponType, setCouponType] = useState("");
@@ -22,10 +25,12 @@ function ModalAdd(props) {
   const [numberOfTimesToTUse, setTime] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
+    const dateStart = dayjs(date.$d).format("MM/DD/YYYY");
+    const dayEnd = dayjs(dateEnd.$d).format("MM/DD/YYYY");
     const coupon = {
       couponValue,
-      couponStartDate,
-      couponEndDate,    
+      couponStartDate: dateStart,
+      couponEndDate: dayEnd,
       couponMinSpend,
       couponMaxSpend,
       couponType,
@@ -33,8 +38,9 @@ function ModalAdd(props) {
       numberOfTimesToTUse,
     };
     // dispatch(addServices(ser));
-    console.log(coupon)
+    console.log(coupon);
   };
+  const garage = useSelector((state) => state.garage.garages);
   const [imageAsFile, setImageAsFile] = useState();
   const handleImageAsFile = (e) => {
     const img = e.target.files[0];
@@ -60,77 +66,165 @@ function ModalAdd(props) {
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
+            <Row className="mb-3">
+              <Form.Group as={Col} md="6">
+                {/* <Form.Label>Loại giảm giá</Form.Label>
+                <Form.Control
+                  type="text"
+                  autoFocus
+                  value={couponType}
+                  onChange=setCouponType(e.target.value)}
+                /> */}
+                <div className="mb-1">
+                  <label>Loại giảm giá</label>
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    id="title"
+                    name="title"
+                    onChange={(e) => setCouponType(e.target.value)}
+                    value={couponType}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group as={Col} md="6">
+                {/* <Form.Label>Số lượng</Form.Label>
+                <Form.Control
+                  type="text"
+                  autoFocus
+                  value={numberOfTimesToTUse}
+                  onChange={(e) => setTime(e.target.value)}
+                /> */}
+                <div className="mb-1">
+                  <label>Số lượng</label>
+                  <input
+                    type="text"
+                    className="form-control form-control-lg"
+                    id="title"
+                    name="title"
+                    onChange={(e) => setTime(e.target.value)}
+                    value={numberOfTimesToTUse}
+                  />
+                </div>
+              </Form.Group>
+            </Row>
             <Form.Group className="mb-3">
-              <Form.Label>garageId</Form.Label>
+              {/* <Form.Label>Giá trị giảm giá đơn hàng</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
                 value={couponValue}
                 onChange={(e) => setValue(e.target.value)}
-              />
+              /> */}
+              <div className="mb-3">
+                <label>Giá trị giảm giá đơn hàng</label>
+                <input
+                  type="text"
+                  className="form-control form-control-lg"
+                  id="title"
+                  name="title"
+                  onChange={(e) => setValue(e.target.value)}
+                  value={couponValue}
+                />
+              </div>
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Loại dịch vụ</Form.Label>
-              <Form.Control
+            <Row className="mb-3">
+              <Form.Group as={Col} md="6">
+                <Form.Label>Thời gian bắt đầu</Form.Label>
+                {/* <Form.Control
                 type="text"
                 autoFocus
                 value={couponStartDate}
                 onChange={(e) => setStart(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Số lần</Form.Label>
-              <Form.Control
+              /> */}
+                <DateTime
+                  value={date}
+                  onChange={(day) => {
+                    setDay(day);
+                  }}
+                  format="MM/DD/YYYY"
+                />
+              </Form.Group>
+              <Form.Group as={Col} md="6">
+                <Form.Label>Thời gian kết thúc</Form.Label>
+                {/* <Form.Control
                 type="text"
                 autoFocus
                 value={couponEndDate}
                 onChange={(e) => setEnd(e.target.value)}
-              />
-            </Form.Group>
+              /> */}
+                <DateTime
+                  value={dateEnd}
+                  onChange={(day) => {
+                    setDayEnd(day);
+                  }}
+                  format="MM/DD/YYYY"
+                />
+              </Form.Group>
+            </Row>
             <Form.Group className="mb-3">
-              <Form.Label>Mô tả dịch vụ</Form.Label>
+              {/* <Form.Label>Áp dụng giá trị đơn hàng tối thiểu</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
                 value={couponMinSpend}
                 onChange={(e) => setMin(e.target.value)}
-              />
+              /> */}
+              <div className="mb-1">
+                <label>Áp dụng giá trị đơn hàng tối thiểu</label>
+                <input
+                  type="text"
+                  className="form-control form-control-lg"
+                  id="title"
+                  name="title"
+                  onChange={(e) => setMin(e.target.value)}
+                  value={couponMinSpend}
+                />
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
+              {/* <Form.Label>Áp dụng giá trị đơn hàng caothiểu</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
                 value={couponMaxSpend}
                 onChange={(e) => setMax(e.target.value)}
-              />
+              /> */}
+                 <div className="mb-1">
+                <label>Áp dụng giá trị đơn hàng caothiểu</label>
+                <input
+                  type="text"
+                  className="form-control form-control-lg"
+                  id="title"
+                  name="title"
+                  onChange={(e) => setMax(e.target.value)}
+                  value={couponMaxSpend}
+                />
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
-              <Form.Control
-                type="text"
-                autoFocus
-                value={couponType}
-                onChange={(e) => setCouponType(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
-              <Form.Control
+              <Form.Label>Garage áp dụng khuyến mãi</Form.Label>
+              {/* <Form.Control
                 type="text"
                 autoFocus
                 value={garageId}
                 onChange={(e) => setGarageId(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
-              <Form.Control
-                type="text"
-                autoFocus
-                value={numberOfTimesToTUse}
-                onChange={(e) => setTime(e.target.value)}
-              />
+              /> */}
+              <Form.Select
+                className="form-control form-control-lg"
+                aria-label="Default select example"
+                onChange={(e) => setGarageId(e.target.value)}
+              >
+                {garage
+                  ? garage.map((ga) => {
+                      return (
+                        <option key={ga.garageId} value={ga.garageId}>
+                          {ga.garageName}
+                        </option>
+                      );
+                    })
+                  : null}
+              </Form.Select>
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

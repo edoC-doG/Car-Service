@@ -123,14 +123,14 @@ const Categories = () => {
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="edit" arrow>
+                            {/* <Tooltip title="edit" arrow>
                               <Link
                                 to={`/admin/mechanic/edit/${item.categoryId}`}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />
                               </Link>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             <Tooltip title="delelte" arrow>
                               <Link

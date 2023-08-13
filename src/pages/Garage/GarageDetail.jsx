@@ -5,11 +5,13 @@ import Garage from "../../components/Garage&Owner/Garage";
 import Order from "../../components/Garage&Owner/Order";
 import Service from "../../components/Garage&Owner/Service";
 import ReviewGarage from "../../components/Garage&Owner/ReviewGarage";
+import { useSelector } from "react-redux";
 
 const tabs = ["garage", "order", "service", "review"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
+  const garageDetail = useSelector((state) => state.garage.garage);
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -17,7 +19,7 @@ const OwnerDetail = () => {
           "https://6valley.6amtech.com/public/assets/back-end/img/add-new-seller.png"
         }
         alt={"owner detail"}
-        title={"Owner Details"}
+        title={"Garage Details"}
       />
 
       {/* Button back  */}
@@ -29,7 +31,7 @@ const OwnerDetail = () => {
               navigate(-1);
             }}
           >
-            Back to owner & garage list
+            Back to garage list
           </Link>
         </div>
       </div>
@@ -38,7 +40,7 @@ const OwnerDetail = () => {
         {/* name of garage */}
         <div className="flex-between row mx-1">
           <h1 className="page-header-title text-xl font-semibold">
-            Auto Garage
+           {garageDetail.garageName}
           </h1>
         </div>
         <div className="js-nav-scroller hs-nav-scroller-horizontal">

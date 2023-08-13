@@ -47,12 +47,24 @@ const getDetailServices = async (data) => {
   console.log("service response: ", response.data);
   return response.data;
 };
+
+const getServiceByGarage = async (page) => {
+  const response = await instance.post(
+    `${base_url}service/filter-service-by-garage`,
+    page,
+    instance
+  );
+  console.log("service response: ", response.data);
+  return response.data;
+};
+
 const serviceService = {
   getServices,
   addServices,
   getDetailServices,
   addDetail,
-  editServices
+  editServices, 
+  getServiceByGarage
 };
 
 export default serviceService;

@@ -6,29 +6,13 @@ import "../../styles/button.scss";
 import MapIcon from "@mui/icons-material/Map";
 import PrintIcon from "@mui/icons-material/Print";
 import useTableV2 from "../../components/table/useTableV2";
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableRow,
-  Tooltip,
-  Collapse,
-  Box,
-  Typography,
-} from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import CustomerInfo from "../../components/card-info/CustomerInfo";
-
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { getDetailBooking } from "../../features/book/bookingSlide";
 import { useDispatch, useSelector } from "react-redux";
-import moment from "moment";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import IconButton from "@mui/material/IconButton";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-// import CurrencyFormat from "react-currency-format";
+import TableOrderDetail from "../../components/order-detail/TableOrderDetail";
+import MechanicsOrder from "../../components/order-detail/MechanicsOrder";
 
 const headCells = [
   { id: "bookingDetailId", label: "Id" },
@@ -49,11 +33,12 @@ const headCells = [
   },
 ];
 
+const tabs = ["detail", "allotment of repairman"];
 const OrderDetail = () => {
   const dispatch = useDispatch();
-
   const location = useLocation();
   const id = location.pathname.split("/")[4];
+  const [type, setType] = useState("detail");
   const [open, setOpen] = React.useState(false);
   const [bid, setBid] = useState("");
   const [filterFn, setFilterFn] = useState({
@@ -72,26 +57,11 @@ const OrderDetail = () => {
   const detail = useSelector((state) => state.booking.detail);
   const customer = useSelector((state) => state.booking.customer);
 
-  const rows = [
-    {
-      id: 1,
-      items: {
-        image:
-          "https://vnn-imgs-f.vgcloud.vn/2021/09/18/16/thay-nhot-dinh-ky-5-000-km-la-thoi-quen-nem-tien-cho-nganh-dich-vu.jpg",
-        name: "Thay Nhot ",
-        price: "300000",
-        qty: 1,
-      },
-
-      tax: 20000,
-      discount: 10000,
-      total: 270000,
-    },
-  ];
-
-
-  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTableV2(detail, headCells, filterFn);
+  const { TblContainer, TblHead, recordsAfterPagingAndSorting } = useTableV2(
+    detail,
+    headCells,
+    filterFn
+  );
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -112,8 +82,7 @@ const OrderDetail = () => {
                     Order ID #{booking.bookingId}
                   </h4>
                   <div>
-                    <EventNoteIcon fontSize="inherit" />{" "}
-                    {moment(booking.bookingTime).format("DD/MM/YY hh:mm:ss")}
+                    <EventNoteIcon fontSize="inherit" /> {booking.bookingTime}
                   </div>
                   <div className="d-flex flex-wrap gap-3">
                     <div className="badge-soft-info font-weight-bold d-flex align-items-center rounded py-1 px-2">
@@ -174,178 +143,49 @@ const OrderDetail = () => {
                   </div>
                 </div>
               </div>
-              <div className="mb-5"></div>
-              {/* Table */}
-              <div className="table-responsive">
-                <TblContainer>
-                  <TblHead />
-                  <TableBody>
-                    {recordsAfterPagingAndSorting().map((item) => (
-                      <>
-                        <TableRow hover key={item.bookingDetailId}>
-                          <TableCell sx={{ border: "none" }}>
-                            <IconButton
-                              aria-label="expand row"
-                              size="small"
-                              onClick={() => {
-                                setBid(item.bookingDetailId);
-                                setOpen(!open);
-                              }}
-                            >
-                              {item.bookingDetailId === bid && open ? (
-                                <KeyboardArrowUpIcon />
-                              ) : (
-                                <KeyboardArrowDownIcon />
-                              )}
-                            </IconButton>
-                          </TableCell>
-                          <TableCell sx={{ border: "none" }}>
-                            <div className="media align-items-center gap-3">
-                              <img
-                                className="avatar avatar-60 rounded"
-                                src={item.serviceBookingDetailDto.serviceImage}
-                                alt="Description"
-                              />
-                              <div>
-                                <h6 className="title-color font-semibold">
-                                  {item.serviceBookingDetailDto.serviceName}
-                                </h6>
-                                <div>
-                                  <strong>Price:</strong>{" "}
-                                  {item.serviceBookingDetailDto.servicePrice}
-                                </div>
-                              </div>
-                            </div>
-                          </TableCell>
-
-                          <TableCell sx={{ border: "none" }}>
-                            {item.serviceCost}
-                          </TableCell>
-                          <TableCell sx={{ border: "none" }}>
-                            {item.productCost}
-                          </TableCell>
-                          <TableCell sx={{ border: "none" }}>
-                            <div className="d-flex justify-content-center gap-2">
-                              <Tooltip title="More mechanics" arrow>
-                                <Link
-                                  to={`${item.bookingDetailId}`}
-                                  className="btn btn-outline--primary btn-sm edit square-btn"
-                                >
-                                  <VisibilityIcon fontSize="small" />
-                                </Link>
-                              </Tooltip>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                        {/*  PRODUCT */}
-                        {item.bookingDetailId === bid ? (
-                          <TableRow key={item.productCost}>
-                            <TableCell
-                              style={{
-                                paddingBottom: 0,
-                                paddingTop: 0,
-                                border: "none",
-                              }}
-                              colSpan={6}
-                            >
-                              <Collapse
-                                in={open}
-                                timeout="auto"
-                                unmountOnExit
-                                key={item.bookingDetailId}
-                              >
-                                <Box>
-                                  <Typography
-                                    variant="h6"
-                                    gutterBottom
-                                    component="div"
-                                  >
-                                    Product
-                                  </Typography>
-                                </Box>
-                                <Table aria-label="purchases">
-                                  <TableHead>
-                                    <TableRow>
-                                      <TableCell
-                                        sx={{
-                                          fontSize: "12px",
-                                          fontWeight: 600,
-                                        }}
-                                      >
-                                        Id
-                                      </TableCell>
-                                      <TableCell
-                                        sx={{
-                                          fontSize: "12px",
-                                          fontWeight: 600,
-                                        }}
-                                      >
-                                        Name
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableHead>
-                                  <TableBody>
-                                    <TableRow hover>
-                                      <TableCell sx={{ border: "none" }}>
-                                        {item.productBookingDetailDto.productId}
-                                      </TableCell>
-                                      <TableCell sx={{ border: "none" }}>
-                                        {
-                                          item.productBookingDetailDto
-                                            .productName
-                                        }
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableBody>
-                                </Table>
-                              </Collapse>
-                            </TableCell>
-                          </TableRow>
-                        ) : (
-                          ""
-                        )}
-                      </>
+              <div className="mb-7">
+                <div
+                  className="js-nav-scroller hs-nav-scroller-horizontal"
+                  style={{ backgroundColor: "#f9f9fb", margin: "0 -1.315rem" }}
+                >
+                  <ul className="nav nav-tabs flex-wrap page-header-tabs">
+                    {tabs.map((tap) => (
+                      <li
+                        style={{ backgroundColor: "#f9f9fb" }}
+                        className="nav-item"
+                        key={tap}
+                      >
+                        <Link
+                          className={
+                            tap === type
+                              ? "nav-link active"
+                              : "nav-link capitalize"
+                          }
+                          onClick={() => setType(tap)}
+                        >
+                          {tap}
+                        </Link>
+                      </li>
                     ))}
-                  </TableBody>
-                </TblContainer>
-              </div>
-              <hr className="my-3" />
-
-              {/* Total Price */}
-              <div className="row justify-content-md-end mb-3">
-                <div className="col-md-9 col-lg-8">
-                  <dl className="row gy-1 text-sm-right">
-                    <dt className="col-5">Repair costs</dt>
-                    <dd className="col-6 title-color">
-                      <strong>
-                        {" "}
-                        {/* <CurrencyFormat
-                          value={booking.totalPrice}
-                          displayType={"text"}
-                          format={"###,###,### VND"}
-                        /> */}
-                        {booking.totalPrice}
-                      </strong>
-                    </dd>
-                    <dt className="col-5">Coupon discount</dt>
-                    <dd className="col-6 title-color">- 0.0</dd>
-                    <dt className="col-5 ">
-                      <strong>Total</strong>
-                    </dt>
-                    <dd className="col-6 title-color">
-                      <strong>
-                        {" "}
-                        {/* <CurrencyFormat
-                          value={booking.totalPrice}
-                          displayType={"text"}
-                          format={"###,###,### VND"}
-                        /> */}
-                        {booking.totalPrice}
-                      </strong>
-                    </dd>
-                  </dl>
+                  </ul>
                 </div>
               </div>
+              {type === "detail" && (
+                <TableOrderDetail
+                  detail={recordsAfterPagingAndSorting()}
+                  booking={booking}
+                  TblContainer={TblContainer}
+                  TblHead={TblHead}
+                  setBid={setBid}
+                  bid={bid}
+                  setOpen={setOpen}
+                  open={open}
+                />
+              )}
+
+              {type === "allotment of repairman" && (
+                <MechanicsOrder  bookingId={id} />
+              )}
             </div>
           </div>
         </div>
@@ -361,21 +201,6 @@ const OrderDetail = () => {
             phone={customer.userPhone}
             email={customer.userEmail}
           />
-          {/* Mechanic
-          <StaffInfo
-            title="Mechanic Info"
-            name="Min Min"
-            contact="0921345012"
-            skill="wash, decoration"
-            location="Chi nhánh số 9"
-            activeDiv={activeDiv}
-          />
-          <StaffInfo
-            title="Customer Care Staff Info"
-            name="Min Min"
-            contact="092134553431"
-            location="Chi nhánh số 9"
-          /> */}
           <CustomerInfo
             title={"Garage Information"}
             srcIcon={

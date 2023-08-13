@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import authService from "./authService";
 
  const getUserFromLocalStorage = localStorage.getItem("user")
@@ -25,6 +25,8 @@ import authService from "./authService";
     }
  )
 
+ export const resetState = createAction("Reset_all");
+
 
  export const authSlice = createSlice ({
     name: "auth", 
@@ -48,6 +50,8 @@ import authService from "./authService";
             state.message = action.payload.response.data;
             state.isLoading = false;
         })  
+
+        .addCase(resetState, () => initialState);
         
     }
  })

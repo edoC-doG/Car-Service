@@ -1,44 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AccountInfo from "../card-info/AccountInfo";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getGarageDetail } from "../../features/garage/garageSlice";
+import { getRevenueOfGagage } from "../../features/book/bookingSlide";
 
 const Garage = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const id = location.pathname.split("/")[4];
+  useEffect(() => {
+    dispatch(getGarageDetail(id));
+    dispatch(getRevenueOfGagage(id));
+  }, [id]);
+
+  const garageDetail = useSelector((state) => state.garage.garage);
+  const manager = useSelector((state) => state.garage.manager);
+
+  const revenue = useSelector((state) => state.booking.booking);
   const infoAcc = [
     {
       name: "Status",
-      content: "Active",
+      content: `${manager.userStatus}` 
     },
     {
       name: "Name",
-      content: "Min Min",
+      content: `${manager.fullName}`,
     },
     {
       name: "Email",
-      content: "thanhminh145@gmail.con",
+      content: `${manager.userEmail}`,
     },
     {
       name: "phone",
-      content: "08123404985",
+      content: `${manager.userPhone}`,
     },
   ];
 
   const infoGarage = [
     {
       name: "Garage",
-      content: "Auto Garage",
-    },
-    {
-      name: "Onwer",
-      content: "Min Min",
+      content:  `${garageDetail.garageName}`,
     },
     {
       name: "Address",
-      content: "Chi Nhanh 9",
+      content: `${garageDetail.garageFullAddress}`,
     },
     {
       name: "Phone",
-      content: "028123213143",
+      content: `${garageDetail.garageContactInformation}`
+      ,
     },
+    {
+      name: "Hours",
+      content: `${garageDetail.isOpen}`  ,
+      more: `${garageDetail.hoursOfOperation}`
+      
+    },
+
   ];
+ 
   return (
     <>
       <div className="card mb-3">
@@ -69,7 +90,7 @@ const Garage = () => {
                     src="https://6valley.6amtech.com/public/assets/back-end/img/withdraw.png"
                     alt=""
                   />
-                  <h3 className="mb-0 fz-24 font-semibold">1.000.000 VND</h3>
+                  <h3 className="mb-0 fz-24 font-semibold">{revenue.amountEarned}</h3>
                   <div className="font-weight-bold text-capitalize mb-30">
                     amount earned
                   </div>
@@ -84,10 +105,10 @@ const Garage = () => {
                     <div className="d-flex gap-2 justify-content-between align-items-center">
                       <div className="d-flex flex-column align-items-start">
                         <h3 className="mb-1 fz-24 font-semibold">
-                          600.000 VND
+                        {revenue.sumUnPaid} - {revenue.countUnpaid}
                         </h3>
                         <div className="text-capitalize mb-0">
-                          Collected Cash
+                          Unpaid amount - number
                         </div>
                       </div>
                       {/* icon */}
@@ -102,23 +123,23 @@ const Garage = () => {
                   </div>
                 </div>
 
-                {/* Total mechanic charge earned */}
+                {/* Total Paid charge earned */}
                 <div className="col-md-6">
                   <div className="card card-body h-100 justify-content-center py-4">
                     <div className="d-flex gap-2 justify-content-between align-items-center">
                       <div className="d-flex flex-column align-items-start">
                         <h3 className="mb-1 fz-24 font-semibold">
-                          400.000 VND
+                        {revenue.sumPaid} - {revenue.countPaid}
                         </h3>
                         <div className="text-capitalize mb-0">
-                          total mechanic charge earned
+                          Paid Amounut - number
                         </div>
                       </div>
                       {/* icon */}
                       <div>
                         <img
-                          width={50}
-                          src="https://static.vecteezy.com/system/resources/previews/004/621/033/original/income-raising-rgb-color-icon-fundraising-financial-growth-money-earning-mechanics-investment-profit-symbol-with-abstract-meaning-isolated-illustration-simple-filled-line-drawing-vector.jpg"
+                          width={40}
+                          src="https://6valley.6amtech.com/public/assets/back-end/img/inhouse-earning.png"
                           alt=""
                         />
                       </div>
@@ -132,7 +153,7 @@ const Garage = () => {
                     <div className="d-flex gap-2 justify-content-between align-items-center">
                       <div className="d-flex flex-column align-items-start">
                         <h3 className="mb-1 fz-24 font-semibold">
-                          400.000 VND
+                        {revenue.serviceEarned}
                         </h3>
                         <div className="text-capitalize mb-0">
                           total amount of service sold
@@ -156,7 +177,7 @@ const Garage = () => {
                     <div className="d-flex gap-2 justify-content-between align-items-center">
                       <div className="d-flex flex-column align-items-start">
                         <h3 className="mb-1 fz-24 font-semibold">
-                          400.000 VND
+                        {revenue.productEarned}
                         </h3>
                         <div className="text-capitalize mb-0">
                           total amount of products in service sold
@@ -181,9 +202,9 @@ const Garage = () => {
 
       <div className="row">
         {/* Owner Account */}
-        <AccountInfo title={"Owner Account"} items={infoAcc} />
+        <AccountInfo title={"Manager Account"} items={infoAcc} />
         {/* Garage Info */}
-        <AccountInfo title={"Shop Info"} items={infoGarage} />
+        <AccountInfo title={"Garage Info"} items={infoGarage} />
       </div>
     </>
   );

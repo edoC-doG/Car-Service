@@ -1,10 +1,12 @@
 import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
 
-import Button from "../ButtonClose";
+import ButtonClose from "../ButtonClose";
 import { userProfileData } from "../../data/data";
 import { useStateContext } from "../../contexts/ContextProvider";
 import "../../styles/userProfile.scss";
+
+import LogOut from "../LogOut";
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
@@ -13,7 +15,7 @@ const UserProfile = () => {
     <div className="nav-item absolute right-1 w-96 frame-user">
       <div className="flex justify-between items-center">
         <p className="font-semibold text-lg">User Profile</p>
-        <Button
+        <ButtonClose
           icon={<MdOutlineCancel />}
           color="rgb(153, 171, 180)"
           bgHoverColor="light-gray"
@@ -52,13 +54,12 @@ const UserProfile = () => {
         ))}
       </div>
       <div style={{ marginTop: "1.25rem" }}>
-        <Button
+        <LogOut
           color="white"
           bgColor={currentColor}
           text="Logout"
           borderRadius="10px"
           width="full"
-        
         />
       </div>
     </div>

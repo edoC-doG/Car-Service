@@ -37,6 +37,7 @@ const headCells = [
 ];
 
 const Customers = () => {
+
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -54,6 +55,9 @@ const Customers = () => {
   });
 
   const updateSuccessAction = useSelector((state) => state.customer.isSuccessAction);
+  useEffect(()=>{
+    document.title = "List of customers"
+  })
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };

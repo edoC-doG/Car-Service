@@ -62,6 +62,10 @@ const Review = () => {
     (state) => state.review.isSuccessAction
   );
 
+  useEffect(()=> {
+    document.title ="List of cutomers's review"
+  },[])
+
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getReviews(data));
@@ -262,7 +266,7 @@ const Review = () => {
                       <div>{item.content}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.createdAt}</div>si
+                      <div>{item.createdAt}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <Switches

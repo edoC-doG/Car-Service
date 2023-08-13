@@ -49,6 +49,41 @@ export const getBookingsCustomer = createAsyncThunk(
   }
 );
 
+export const getBookingsByGarage = createAsyncThunk(
+  "booking/booking-garage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log("page and id: ", data);
+      return await bookingService.getBookingsByGarage(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getCountBookingStatus = createAsyncThunk(
+  "booking/booking-count-status",
+  async (id, thunkAPI) => {
+    try {
+      // console.log("id: ", id);
+      return await bookingService.getCountBookingStatus(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getRevenueOfGagage = createAsyncThunk(
+  "booking/revenue-gararge",
+  async (id, thunkAPI) => {
+    try {
+      return await bookingService.getRevenueOfGagage(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const initialState = {
   bookings: [],
   booking: {},
@@ -139,7 +174,58 @@ export const bookingSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
-      });
+      })
+
+      .addCase(getBookingsByGarage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBookingsByGarage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.bookings = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getBookingsByGarage.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getCountBookingStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCountBookingStatus.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.booking = action.payload;
+        state.message = "success";
+      })
+      .addCase(getCountBookingStatus.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getRevenueOfGagage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getRevenueOfGagage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.booking = action.payload;
+        state.message = "success";
+      })
+      .addCase(getRevenueOfGagage.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      ;
   },
 });
 

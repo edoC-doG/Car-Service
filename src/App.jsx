@@ -6,8 +6,8 @@ import Customers from "./pages/Customer/Customers";
 import MainLayout from "./pages/MainLayout";
 import Review from "./pages/Customer/Review";
 import CustomerDetail from "./pages/Customer/CustomerDetail";
-import AddOwner from "./pages/Onwer/AddOwner";
-import Onwers from "./pages/Onwer/Onwers";
+import AddOwner from "./pages/Garage/AddOwner";
+import Garages from "./pages/Garage/Garages";
 import AddMechanic from "./pages/Mechanic/AddMechanic";
 import Mechanics from "./pages/Mechanic/Mechanics";
 import Chat from "./pages/Mechanic/MechanicDetail";
@@ -24,7 +24,7 @@ import Confirm from "./pages/Order/Confirm";
 import Cancel from "./pages/Order/Cancel";
 
 import OrderDetail from "./pages/Order/OrderDetail";
-import OwnerDetail from "./pages/Onwer/OwnerDetail";
+import GarageDetail from "./pages/Garage/GarageDetail";
 import authService from "./features/auth/authService";
 import ServiceDetail from "./pages/Service/ServiceDetail/ServiceDetail";
 
@@ -50,8 +50,8 @@ function App() {
             <Route path="review-list-customer" element={<Review />} />
             {/* Garage */}
             <Route path="add-garage" element={<AddOwner />} />
-            <Route path="garage-list" element={<Onwers />} />
-            <Route path="garage/view/:id" element={<OwnerDetail />} />
+            <Route path="garage-list" element={<Garages />} />
+            <Route path="garage/view/:id" element={<GarageDetail />} />
 
             {/* MECHANIC */}
             <Route path="add-new-mechanics" element={<AddMechanic />} />

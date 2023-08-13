@@ -6,7 +6,7 @@ import SignIn from "../pages/SignIn/SignIn";
 import { useDispatch } from "react-redux";
 import { resetState } from "../features/auth/authSlide";
 
-const ButtonClose = ({
+const LogOut = ({
   icon,
   bgColor,
   color,
@@ -16,15 +16,23 @@ const ButtonClose = ({
   borderRadius,
   width,
 }) => {
+  const dispatch = useDispatch();
   const { setIsClicked, initialState } = useStateContext();
+  const navigate = useNavigate();
+  const user = authService.getCurrentUser();
+  function handleLogout() {
+    user !== null ? authService.logout() : navigate("/admin");
 
-  function setCloseButton()  {
-    setIsClicked(initialState);
-  };
+    navigate("/login");
+    dispatch(resetState());
+    setIsClicked(initialState)
+  }
+
+ 
   return (
     <button
       type="button"
-      onClick={setCloseButton}
+      onClick={handleLogout}
       style={{
         backgroundColor: bgColor,
         color,
@@ -38,4 +46,4 @@ const ButtonClose = ({
   );
 };
 
-export default ButtonClose;
+export default LogOut;

@@ -24,9 +24,31 @@ const getMechanics = async (page) => {
     return response.data;
   }
   
+const getMechanicsByBookingId = async (id) => {
+  const response = await instance.get(
+    `${base_url}mechanic/ffilter-mechanic-by-booking/${id}`,
+    
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+}
+
+const updateMechanicByBookingId = async (data) => {
+  const response = await instance.put(
+    `${base_url}mechanic/remove-mechanic-from-booking`,
+    data,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+}
+
 const mechanicService = {
     getMechanics, 
-    updateMechanicStatus
+    updateMechanicStatus, 
+    getMechanicsByBookingId,
+    updateMechanicByBookingId
 }
 
 export default mechanicService;

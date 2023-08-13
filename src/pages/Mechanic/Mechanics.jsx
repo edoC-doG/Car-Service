@@ -9,7 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
-import StarIcon from "@mui/icons-material/Star";
+
 import ConfirmDialog from "../../components/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";

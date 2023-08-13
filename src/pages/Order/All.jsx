@@ -15,7 +15,10 @@ import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineSharp";
 import { useDispatch, useSelector } from "react-redux";
-import { getBookings } from "../../features/book/bookingSlide";
+import {
+  getBookings,
+  getCountBookingStatus,
+} from "../../features/book/bookingSlide";
 
 const headCells = [
   { id: "bookingCode", label: "Code" },
@@ -38,140 +41,6 @@ const All = () => {
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
-  const rows = [
-    {
-      id: 1,
-      order: 1020392,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Min Min",
-        phone: "081233423432",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "5.000.000",
-        status: "Unpaid",
-      },
-      status: "Pending",
-    },
-    {
-      id: 2,
-      order: 1020393,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Long ",
-        phone: "0324234",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "1.000.000",
-        status: "unpaid",
-      },
-      status: "Pending",
-    },
-    {
-      id: 3,
-      order: 1020394,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Hello",
-        phone: "032131231",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "5.000.000",
-        status: "Paid",
-      },
-      status: "Confirmed",
-    },
-    {
-      id: 4,
-      order: 1020395,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Hello word",
-        phone: "03213123132423",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "10.000.000",
-        status: "Paid",
-      },
-      status: "Confirmed",
-    },
-    {
-      id: 5,
-      order: 1020396,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Dung",
-        phone: "",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "25.000.000",
-        status: "unPaid",
-      },
-      status: "Canceled",
-    },
-    {
-      id: 6,
-      order: 1020399,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Quyen",
-        phone: "",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "9000.000",
-        status: "Paid",
-      },
-      status: "Confirmed",
-    },
-  ];
   const [age, setAge] = React.useState("");
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
@@ -185,12 +54,14 @@ const All = () => {
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getBookings(data));
+    dispatch(getCountBookingStatus());
   }, [page, rowsPerPage]);
-
 
   const recordsBooking = useSelector((state) => state.booking.bookings);
   // console.log(recordsBooking);
   const count = useSelector((state) => state.booking.number);
+  const statusDetail = useSelector((state) => state.booking.booking);
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsBooking,
@@ -254,7 +125,7 @@ const All = () => {
                 "https://6valley.6amtech.com/public/assets/back-end/img/pending.png"
               }
               content={"Pending"}
-              quantity={"58"}
+              quantity={statusDetail.pending}
             />
 
             <BoxOrder
@@ -263,7 +134,7 @@ const All = () => {
                 "https://6valley.6amtech.com/public/assets/back-end/img/confirmed.png"
               }
               content={"Confirmed"}
-              quantity={"21"}
+              quantity={statusDetail.completed}
             />
             <BoxOrder
               link={"cancel-order"}
@@ -271,7 +142,7 @@ const All = () => {
                 "https://6valley.6amtech.com/public/assets/back-end/img/canceled.png"
               }
               content={"Canceled"}
-              quantity={"10"}
+              quantity={statusDetail.canceled}
             />
           </div>
           {/* Search and export */}
@@ -310,10 +181,10 @@ const All = () => {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow hover key={item.bookingCode}>
+                  <TableRow hover key={item.bookingId}>
                     <TableCell sx={{ border: "none" }}>
                       <Link
-                        to={`/admin/orders/details/${item.bookingCode}`}
+                        to={`/admin/orders/details/${item.bookingId}`}
                         className="title-color hover-c1"
                       >
                         {item.bookingCode}
@@ -323,9 +194,10 @@ const All = () => {
                       <div>{item.bookingTime}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
-                      <Link to={``} className="text-body text-capitalize">
-                        <strong>{item.userBookingDto.fullName}</strong>
-                      </Link>
+                      <strong className="text-body text-capitalize">
+                        {item.userBookingDto.fullName}
+                      </strong>
+
                       <Link
                         to={`tel:${item.userBookingDto.userPhone}`}
                         className="d-block title-color"

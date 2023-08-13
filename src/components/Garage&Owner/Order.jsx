@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PendingIcon from "@mui/icons-material/Pending";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckCircleSharpIcon from "@mui/icons-material/CheckCircleSharp";
 import WidthFullIcon from "@mui/icons-material/WidthFull";
 import useTable from "../../components/table/useTable";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCountBookingStatus,
+  getBookingsByGarage,
+} from "../../features/book/bookingSlide";
+import useTableV2 from "../table/useTableV2";
+
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "order", label: "Order" },
-  { id: "date", label: "Date" },
-  { id: "customer", label: "Customer" },
+  { id: "bookingCode", label: "Code" },
+  { id: "bookingTime", label: "Order Date" },
+  { id: "userBookingDto", label: "Customer Info" },
 
-  { id: "payStatus", label: "Payment Status" },
-  { id: "total", label: "Total" },
-
-  { id: "orderStatus", label: "Order Status" },
-
+  { id: "garageName", label: "Garage" },
+  { id: "total", label: "Total Amount" },
+  { id: "bookingStatus", label: "Order Status" },
   {
     id: "action",
     label: "Action",
@@ -26,7 +30,31 @@ const headCells = [
     align: "center",
   },
 ];
+
 const Order = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const id = location.pathname.split("/")[4];
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
+  useEffect(() => {
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage, garageId: id };
+    dispatch(getBookingsByGarage(data));
+    dispatch(getCountBookingStatus(id));
+  }, [id, page, rowsPerPage]);
+
+  const records = useSelector((state) => state.booking.bookings);
+  const count = useSelector((state) => state.booking.number);
+
+  const statusDetail = useSelector((state) => state.booking.booking);
+
+
   const rows = [
     {
       id: 1,
@@ -83,8 +111,19 @@ const Order = () => {
       orderStatus: "Canceled",
     },
   ];
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(
+      records,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <div className="tab-content">
       <div className="tab-pane fade show active">
@@ -105,7 +144,7 @@ const Order = () => {
                         <WidthFullIcon fontSize="inherit" />
                         <h6 className="order-stats__subtitle">All</h6>
                       </div>
-                      <div className="order-stats__title"> 23</div>
+                      <div className="order-stats__title">{count}</div>
                     </div>
                   </div>
 
@@ -116,7 +155,9 @@ const Order = () => {
                         <CheckCircleSharpIcon fontSize="inherit" />
                         <h6 className="order-stats__subtitle">Confirmed</h6>
                       </div>
-                      <div className="order-stats__title"> 20</div>
+                      <div className="order-stats__title">
+                        {statusDetail.completed}
+                      </div>
                     </div>
                   </div>
                   {/* Pending */}
@@ -126,7 +167,9 @@ const Order = () => {
                         <PendingIcon fontSize="inherit" />
                         <h6 className="order-stats__subtitle">Pending</h6>
                       </div>
-                      <div className="order-stats__title">2</div>
+                      <div className="order-stats__title">
+                        {statusDetail.pending}
+                      </div>
                     </div>
                   </div>
                   {/* Canceled */}
@@ -136,7 +179,9 @@ const Order = () => {
                         <HighlightOffIcon fontSize="inherit" />
                         <h6 className="order-stats__subtitle">Cancel</h6>
                       </div>
-                      <div className="order-stats__title">1</div>
+                      <div className="order-stats__title">
+                        {statusDetail.canceled}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -146,64 +191,77 @@ const Order = () => {
                 <TblContainer>
                   <TblHead />
                   <TableBody>
-                    {rows.map((item) => (
-                      <TableRow hover key={item.id}>
-                        <TableCell sx={{ border: "none" }}>{item.id}</TableCell>
+                    {recordsAfterPagingAndSorting().map((item) => (
+                      <TableRow hover key={item.bookingCode}>
                         <TableCell sx={{ border: "none" }}>
                           <Link
-                            to={`/admin/orders/details/${item.order}`}
+                            to={`/admin/orders/details/${item.bookingCode}`}
                             className="title-color hover-c1"
                           >
-                            {item.order}
+                            {item.bookingCode}
                           </Link>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          {item.date}
+                          <div>{item.bookingTime}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
+                          <Link to={``} className="text-body text-capitalize">
+                            <strong>{item.userBookingDto.fullName}</strong>
+                          </Link>
                           <Link
-                            to={`/admin/customer/view/1`}
-                            className="title-color hover-c1"
+                            to={`tel:${item.userBookingDto.userPhone}`}
+                            className="d-block title-color"
                           >
-                            {item.customer}
+                            {item.userBookingDto.userPhone}
                           </Link>
                         </TableCell>
+
                         <TableCell sx={{ border: "none" }}>
+                          <div>{item.garageBookingDto.garageName}</div>
+                        </TableCell>
+
+                        <TableCell sx={{ border: "none" }}>
+                          <div>{item.totalPrice}</div>
                           <span
                             className={
-                              item.payStatus === "Paid"
-                                ? "badge badge-soft-info fz-12"
-                                : "badge badge-soft-danger fz-12"
+                              item.paymentStatus === "Unpaid"
+                                ? "badge text-danger fz-12 px-0"
+                                : "badge text-success fz-12 px-0"
                             }
                           >
-                            {item.payStatus}
+                            {item.paymentStatus}
                           </span>
-                        </TableCell>
-                        <TableCell sx={{ border: "none" }}>
-                          {item.total}
                         </TableCell>
 
                         <TableCell
-                          sx={{ border: "none", textDecoration: "capitalize" }}
+                          sx={{
+                            border: "none",
+                            textDecoration: "capitalize",
+                           
+                          }}
                         >
                           <span
                             className={
-                              item.orderStatus === "Confirmed"
-                                ? "badge badge-soft-success fz-12"
-                                : item.orderStatus === "Canceled"
+                              item.bookingStatus === "Pending"
                                 ? "badge badge-soft-danger fz-12"
-                                : "badge badge-soft-info fz-12"
+                                : item.bookingStatus === "CheckIn"
+                                ? "badge badge-soft-warning fz-12"
+                                : item.bookingStatus === "Processing"
+                                ? "badge badge-soft-info fz-12"
+                                : item.bookingStatus === "Completed"
+                                ? "badge badge-soft-success fz-12"
+                                : "badge badge-danger fz-12"
                             }
                           >
-                            {item.orderStatus}
+                            {item.bookingStatus}
                           </span>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
-                          <div className="d-flex justify-content-center">
+                          <div className="d-flex justify-content-center gap-2">
                             <Tooltip title="view" arrow>
                               <Link
-                                to={`/admin/orders/details/${item.order}`}
-                                className="btn btn-outline-info btn-sm square-btn"
+                                to={`/admin/orders/details/${item.bookingId}`}
+                                className="btn btn-outline--primary btn-sm edit square-btn"
                               >
                                 <VisibilityIcon fontSize="small" />
                               </Link>

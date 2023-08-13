@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import { login } from "../../features/auth/authSlide";
+import { login, resetState } from "../../features/auth/authSlide";
 import Notification from "../../components/Notification";
+import authService from "../../features/auth/authService";
 
 // validation input text
 let schema = yup.object().shape({
@@ -15,9 +16,7 @@ let schema = yup.object().shape({
 });
 
 const SignIn = () => {
-  // const getTokenFromLocalStorage = localStorage.getItem("user")
-  //   ? JSON.parse(localStorage.getItem("user"))
-  //   : null;
+  const currentUser = authService.getCurrentUser();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -45,11 +44,21 @@ const SignIn = () => {
   const authState = useSelector((state) => state.auth);
 
   const { user, isError, isSuccess, isLoading, message } = authState;
+ 
+  useEffect(()=>{
+     document.title = "Sign In"
+  }, [])
 
   useEffect(() => {
     if (isSuccess) {
-      // window.location.reload('/admin');
-      navigate("admin");
+      
+         navigate("/admin")
+       
+      setNotify({
+        isOpen: true,
+        message: "Hi Admin, Welcome to car service management",
+        type: "success",
+      });
     } else {
       if (message?.status === 404) {
         setNotify({
@@ -58,6 +67,7 @@ const SignIn = () => {
           type: "error",
         });
         navigate("");
+        dispatch(resetState());
       }
     }
   }, [user, isError, isSuccess, isLoading, message, navigate]);
@@ -80,7 +90,6 @@ const SignIn = () => {
         <div className="container py-5 py-sm-7">
           <a className="d-flex justify-content-center " href="/">
             <img
-             
               className="z-index-2"
               // 'src="https://6valley.6amtech.com/storage/app/public/company/2022-04-20-625fa32105ddf.png"
               // src="https://firebasestorage.googleapis.com/v0/b/book-2223b.appspot.com/o/logo.png?alt=media&token=993a2db6-7459-4fb8-967f-c139c002105a"

@@ -24,6 +24,29 @@ export const updateMechanicStatus = createAsyncThunk(
   }
 );
 
+export const getMechanicsByBookingId = createAsyncThunk(
+  "mechanic/mechanic-by-booking",
+  async (id, thunkAPI) => {
+    try {
+      return await mechanicService.getMechanicsByBookingId(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const updateMechanicByBookingId = createAsyncThunk(
+  "mechanic/update-mechanic-booking",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      return await mechanicService.updateMechanicByBookingId(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -67,7 +90,7 @@ export const mechanicSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccessAction = true;
-        state.customer = action.payload;
+        state.mechanic = action.payload;
         state.message = "success";
       })
       .addCase(updateMechanicStatus.rejected, (state, action) => {
@@ -76,9 +99,40 @@ export const mechanicSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-
+      .addCase(getMechanicsByBookingId.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMechanicsByBookingId.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.mechanics = action.payload;
+        state.message = "success";
+      })
+      .addCase(getMechanicsByBookingId.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(updateMechanicByBookingId.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateMechanicByBookingId.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAction = true;
+        state.mechanic = action.payload;
+        state.message = "success";
+      })
+      .addCase(updateMechanicByBookingId.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAction = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
       .addCase(resetState, () => initialState);
   },
 });
 
-export default  mechanicSlice.reducer;
+export default mechanicSlice.reducer;

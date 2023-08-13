@@ -63,12 +63,14 @@ export const sidebarData = [
     key: "um",
     icon: null,
     label: "USER MANAGEMENT",
+    roles: ["Admin", "Manager"],
     type: "group",
     children: [
       {
         key: "customer",
         icon: <GiWallet />,
         label: "Customers",
+        roles: ["Admin", "Manager"],
         children: [
           {
             key: "list-customer",

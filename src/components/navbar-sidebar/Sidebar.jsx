@@ -38,7 +38,7 @@ const Sidebar = () => {
             <img
               height="40px"
               className="z-index-2"
-              src="https://firebasestorage.googleapis.com/v0/b/book-2223b.appspot.com/o/logo.png?alt=media&token=993a2db6-7459-4fb8-967f-c139c002105a"
+              src="https://firebasestorage.googleapis.com/v0/b/car-service-bf62f.appspot.com/o/logo.png?alt=media&token=ec9161af-b632-4d9e-a849-4e07dcce7ce3"
               alt="Logo"
             />
 

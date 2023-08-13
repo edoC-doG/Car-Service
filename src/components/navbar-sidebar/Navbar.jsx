@@ -5,6 +5,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import Tooltip from "@mui/material/Tooltip";
 import UserProfile from "./UserProfile";
 import "../../styles/navbar.scss";
+import authService from "../../features/auth/authService";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => {
   return (
@@ -42,6 +43,8 @@ const NavBar = () => {
 
     handleResize();
 
+ 
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -53,7 +56,7 @@ const NavBar = () => {
     }
   }, [screenSize]);
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
-
+  const user = authService.getCurrentUser()
   return (
     <div className="flex justify-between md:ml-6 md:mr-6 relative frame-nav">
       <NavButton
@@ -76,7 +79,7 @@ const NavBar = () => {
             />
             <p>
               <span className="text-gray-400 text-14">Hi, </span>
-              <span className="text-gray-400 font-bold ml-1 text-14">Min</span>
+              <span className="text-gray-400 font-bold ml-1 text-14">{user.userFullName}</span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
           </div>

@@ -164,11 +164,6 @@ export const sidebarData = [
             icon: <RxDotFilled />,
             label: "List Product",
           },
-          {
-            key: "import",
-            icon: <RxDotFilled />,
-            label: "Import",
-          },
         ],
       },
       {

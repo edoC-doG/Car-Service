@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -30,6 +32,7 @@ function ModalEdit(props) {
         });
       });
     };
+    const category = useSelector((state) => state.category.categories);
     const [imageAsFile, setImageAsFile] = useState();
     const handleImageAsFile = (e) => {
       const img = e.target.files[0];
@@ -75,7 +78,8 @@ function ModalEdit(props) {
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Row className="mb-3">
+            <Form.Group as={Col} md="6">
               <Form.Label>Giá sản phẩm</Form.Label>
               <Form.Control
                 type="text"
@@ -84,7 +88,7 @@ function ModalEdit(props) {
                 onChange={(e) => setPrice(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group as={Col} md="6">
               <Form.Label>Số lượng sản phẩm</Form.Label>
               <Form.Control
                 type="text" 
@@ -93,14 +97,30 @@ function ModalEdit(props) {
                 onChange={(e) => setQuantity(e.target.value)}
               />
             </Form.Group>
+            </Row>
             <Form.Group className="mb-3">
               <Form.Label>Loại sản phẩm</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="text"
                 autoFocus
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-              />
+              /> */}
+               <Form.Select
+                className="form-control"
+                aria-label="Default select example"
+                onChange={(e) => setCategoryId(e.target.value)}
+              >
+                {category
+                  ? category.map((cate) => {
+                      return (
+                        <option key={cate.categoryId} value={cate.categoryId}>
+                          {cate.categoryName}
+                        </option>
+                      );
+                    })
+                  : null}
+              </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" hidden={true}>
               <Form.Label>Dịch vụ sản phẩm cung ứng</Form.Label>

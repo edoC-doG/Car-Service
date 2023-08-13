@@ -132,7 +132,6 @@ const Review = () => {
               <Search
                 label="Search here"
                 onChange={() => {}}
-                size="small"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -151,7 +150,6 @@ const Review = () => {
                     Choose Service
                   </label>
                   <Select
-                    size="small"
                     title={"--Select service--"}
                     value={age}
                     onChange={handleChange}
@@ -166,7 +164,6 @@ const Review = () => {
                     Choose Customer
                   </label>
                   <Select
-                    size="small"
                     title={"--Select customer--"}
                     value={age}
                     onChange={handleChange}
@@ -182,7 +179,6 @@ const Review = () => {
                     Choose status
                   </label>
                   <Select
-                    size="small"
                     title={"--Select status--"}
                     value={age}
                     onChange={handleChange}

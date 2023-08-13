@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -60,14 +62,14 @@ function ModalEdit(props) {
         transform: "translate(-50%, -50%)",
       }}
     >
-      <Modal
+       <Modal
         show={show}
         onHide={handleClose}
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Cập nhật dịch vụ sửa chữa </Modal.Title>
+          <Modal.Title>Thêm mới dịch vụ sửa chữa </Modal.Title>
         </Modal.Header>
           <Form onSubmit={handleSubmit}>
           <Modal.Body>
@@ -82,29 +84,59 @@ function ModalEdit(props) {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Loại dịch vụ</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="text"
                 autoFocus
                 value={serviceGroup}
                 onChange={(e) => setGroup(e.target.value)}
-              />
+              /> */}  
+                <Form.Select  
+                className="form-control"
+                aria-label="Default select example"
+                onChange={(e) => setGroup(e.target.value)}
+              >
+                <option>Chọn gói dịch vụ</option>
+                <option value={1}>Gói dịch vụ vệ sinh + Bảo dưỡng</option>
+                <option value={2}>Gói dịch vụ ngoại thất</option>
+                <option value={3}>Gói dịch vụ nội thất</option>
+              </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Row   className="mb-3">
+            <Form.Group as={Col} md="6">
               <Form.Label>Số lần</Form.Label>
-              <Form.Control
+              {/* <Form.Control
                 type="text" 
                 autoFocus
                 value={serviceUnit}
                 onChange={(e) => setUnit(e.target.value)}
-              />
+              /> */}
+               <Form.Select
+                className="form-control"
+                aria-label="Default select example"
+                onChange={(e) => setUnit(e.target.value)}
+              > 
+                <option>Chọn số lần</option>
+                <option value={1}>Lần</option>
+                <option value={2}>Gói</option>
+              </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group as={Col} md="6">
               <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
                 value={serviceDuration}
                 onChange={(e) => setDuration(e.target.value)}
+              />
+            </Form.Group>
+            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label>Mô tả dịch vụ</Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                value={serviceDetailDescription}
+                onChange={(e) => setDes(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -116,23 +148,14 @@ function ModalEdit(props) {
                 onChange={handleImageAsFile}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Mô tả dịch vụ</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                autoFocus
-                value={serviceDetailDescription}
-                onChange={(e) => setDes(e.target.value)}
-              />
-            </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 Đóng
               </Button>
-              <Button variant="warning" type="submit">
-                Cập nhật
+              <Button variant="warning" type="submit" 
+              >
+                Cập Nhật
               </Button>
             </Modal.Footer>
           </Form>

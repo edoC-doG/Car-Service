@@ -24,6 +24,17 @@ export const editServices = createAsyncThunk(
     }
   }
 );
+export const editDetail = createAsyncThunk(
+  "service/edit",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      return await serviceService.editServices(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const addServices = createAsyncThunk(
   "service/addSer",
   async (data, thunkAPI) => {

@@ -208,14 +208,14 @@ const Coupon = () => {
                         {/* Action */}
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="edit" arrow>
+                            {/* <Tooltip title="edit" arrow>
                               <Link
                                 onClick={()=> handleEdit(item)}
                                 className="btn btn-outline-info btn-sm square-btn"
                               >
                                 <EditIcon fontSize="small" />
                               </Link>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             <Tooltip title="delelte" arrow>
                               <Link

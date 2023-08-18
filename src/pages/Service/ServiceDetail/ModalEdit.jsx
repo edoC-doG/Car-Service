@@ -6,34 +6,43 @@ import Row from "react-bootstrap/Row";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 // import { addServices, getServices, resetState } from './../../features/service/serviceSlide';
-
+import { useForm } from "react-hook-form";
+import { editDetail} from './../../../features/service/serviceSlide';
 function ModalEdit(props) {
   const dispatch = useDispatch();
   const { show, handleClose, serEdit } = props;
-  console.log(serEdit);
-  const [servicePrice, setPrice] = useState("");
+  console.log("check", serEdit)
   const [minNumberOfCarLot, setMin] = useState("");
   const [maxNumberOfCarLot, setMax] = useState("");
   const [serviceDetailId, setId] = useState("");
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      servicePrice: "",
+    },
+  });
+  const onHandleSubmit = (data) => {
     const ser = {
-      servicePrice,
+      servicePrice: data.servicePrice,
       minNumberOfCarLot,
       maxNumberOfCarLot,
       serviceDetailId,
     };
-   
+    dispatch(editDetail(ser))
     console.log(ser);
   };
   useEffect(() => {
     if (show) {
-      setId(serEdit.serviceDetailId);
-      setPrice(serEdit.servicePrice);
-      setMax(serEdit.maxNumberOfCarLot);
-      setMin(serEdit.minNumberOfCarLot);
+      setValue(
+        "servicePrice",
+        `${serEdit.servicePrice}`
+      );
+      setId(serEdit.serviceDetailId)
     }
-    console.log(serEdit);
   }, [serEdit]);
   return (
     <div
@@ -52,10 +61,10 @@ function ModalEdit(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Thêm mới chi tiết dịch vụ # {serviceDetailId}{" "}
+            Chỉnh sửa chi tiết dịch vụ 
           </Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
             <Form.Group className="mb-3" hidden={true}>
               <Form.Label>Mã dịch vụ</Form.Label>
@@ -64,16 +73,23 @@ function ModalEdit(props) {
                 autoFocus
                 value={serviceDetailId}
                 onChange={(e) => setId(e.target.value)}
-              />
+                />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Gía chi tiết dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={servicePrice}
-                onChange={(e) => setPrice(e.target.value)}
+                name="servicePrice"
+                {...register("servicePrice", {
+                  required: true,
+                })}
               />
+              {errors.servicePrice?.type === "required" && (
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  Không để trống giá sản phẩm !!!
+                </p>
+              )}
             </Form.Group>
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
@@ -89,11 +105,11 @@ function ModalEdit(props) {
                   aria-label="Default select example"
                   onChange={(e) => setMin(e.target.value)}
                 >
-                  <option defaultValue={2} value="2">
+                  <option value={2}>
                     2
                   </option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} md="6">
@@ -109,11 +125,11 @@ function ModalEdit(props) {
                   aria-label="Default select example"
                   onChange={(e) => setMax(e.target.value)}
                 >
-                  <option defaultValue={5} value="5">
+                  <option value={5}>
                     5
                   </option>
-                  <option value="7">7</option>
-                  <option value="12">12</option>
+                  <option value={7}>7</option>
+                  <option value={12}>12</option>
                 </Form.Select>
               </Form.Group>
             </Row>

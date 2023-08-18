@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
-import { addDetail} from './../../../features/service/serviceSlide';
-
+import { addDetail } from "./../../../features/service/serviceSlide";
+import { useForm } from "react-hook-form";
 
 function ModalAddDetail(props) {
   const dispatch = useDispatch();
-  const { show, handleClose, serAdd} = props;
-  const [servicePrice, setPrice] = useState("");
+  const { show, handleClose, serAdd } = props;
   const [minNumberOfCarLot, setMin] = useState("");
   const [maxNumberOfCarLot, setMax] = useState("");
   const [serviceId, setId] = useState("");
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm({
+    defaultValues: {
+      servicePrice: "",
+      serviceId:`${serAdd}`
+    },
+  });
+  const onHandleSubmit = (data) => {
     const ser = {
-      servicePrice,
+      servicePrice: data.servicePrice,
       minNumberOfCarLot,
       maxNumberOfCarLot,
       serviceId,
@@ -27,11 +36,11 @@ function ModalAddDetail(props) {
     console.log(ser);
   };
   useEffect(() => {
-    if (show) {
-      setId(serAdd);
+    if (isSubmitSuccessful) {
+      setId(serAdd)
+      reset();
     }
-    console.log(serAdd);
-  }, [serAdd]);
+  }, [reset, isSubmitSuccessful, serAdd]);
   return (
     <div
       className="modal show"
@@ -50,10 +59,10 @@ function ModalAddDetail(props) {
         <Modal.Header closeButton>
           <Modal.Title>Thêm mới chi tiết dịch vụ </Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
-            <Form.Group className="mb-3" hidden={true} >
-              <Form.Label>Mã  dịch vụ</Form.Label>
+            <Form.Group className="mb-3" hidden={true}>
+              <Form.Label>Mã dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
@@ -66,47 +75,61 @@ function ModalAddDetail(props) {
               <Form.Control
                 type="text"
                 autoFocus
-                value={servicePrice}
-                onChange={(e) => setPrice(e.target.value)}
+                // value={servicePrice}
+                // onChange={(e) => setPrice(e.target.value)}
+                {...register("servicePrice", {
+                  required: true,
+                  maxLength: 30,
+                  minLength: 4,
+                })}
               />
+              {errors.servicePrice?.type === "required" && (
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  Không để trống giá sản phẩm !!!
+                </p>
+              )}
             </Form.Group>
-            <Row   className="mb-3">
-            <Form.Group as={Col} md="6">
-              <Form.Label>Sô ghế nhỏ nhất của xe </Form.Label>
-              {/* <Form.Control
+            <Row className="mb-3">
+              <Form.Group as={Col} md="6">
+                <Form.Label>Sô ghế nhỏ nhất của xe </Form.Label>
+                {/* <Form.Control
                 type="text"
                 autoFocus
                 value={minNumberOfCarLot}
                 onChange={(e) => setMin(e.target.value)}
               /> */}
-               <Form.Select  
-                className="form-control"
-                aria-label="Default select example"
-                onChange={(e) => setMin(e.target.value)}
-              >
-                <option defaultValue={2} value="2">2</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </Form.Select>
-            </Form.Group>
-            <Form.Group as={Col} md="6">
-              <Form.Label>Số ghế lớn nhất của xe</Form.Label>
-              {/* <Form.Control
+                <Form.Select
+                  className="form-control"
+                  aria-label="Default select example"
+                  onChange={(e) => setMin(e.target.value)}
+                >
+                  <option defaultValue={2} value="2">
+                    2
+                  </option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} md="6">
+                <Form.Label>Số ghế lớn nhất của xe</Form.Label>
+                {/* <Form.Control
                 type="text"
                 autoFocus
                 value={maxNumberOfCarLot}
                 onChange={(e) => setMax(e.target.value)}
               /> */}
-               <Form.Select  
-                className="form-control"
-                aria-label="Default select example"
-                onChange={(e) => setMax(e.target.value)}
-              >
-                <option defaultValue={5} value="5">5</option>
-                <option value="7">7</option>
-                <option value="12">12</option>
-              </Form.Select>
-            </Form.Group>
+                <Form.Select
+                  className="form-control"
+                  aria-label="Default select example"
+                  onChange={(e) => setMax(e.target.value)}
+                >
+                  <option defaultValue={5} value="5">
+                    5
+                  </option>
+                  <option value="7">7</option>
+                  <option value="12">12</option>
+                </Form.Select>
+              </Form.Group>
             </Row>
           </Modal.Body>
           <Modal.Footer>

@@ -22,13 +22,12 @@ const LogOut = ({
   const user = authService.getCurrentUser();
   function handleLogout() {
     user !== null ? authService.logout() : navigate("/admin");
-
-    navigate("/login");
     dispatch(resetState());
-    setIsClicked(initialState)
+    navigate("/login");
+
+    setIsClicked(initialState);
   }
 
- 
   return (
     <button
       type="button"

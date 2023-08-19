@@ -83,8 +83,6 @@ function ModalAdd(props) {
               <Form.Control
                 type="text"
                 autoFocus
-                // value={serviceName}
-                // onChange={(e) => setName(e.target.value)}
                 name="serviceName"
                 {...register("serviceName", {
                   required: true,

@@ -13,6 +13,7 @@ import {
   updateMechanicByBookingId,
   resetState,
 } from "../../features/mechanic/mechanicSlice";
+import ActionButton from "../ActionButton";
 const headCells = [
   { id: "fullName", label: "Name" },
   { id: "contact", label: "Contact Info" },
@@ -137,7 +138,7 @@ const MechanicsOrder = ({ bookingId }) => {
                 <TableCell sx={{ border: "none" }}>
                   <div className="d-flex justify-content-center gap-2">
                     <Tooltip title="delelte" arrow>
-                      <Link
+                      <div
                         className="btn btn-outline-danger btn-sm delete square-btn"
                         onClick={() => {
                           setConfirmDialog({
@@ -151,7 +152,7 @@ const MechanicsOrder = ({ bookingId }) => {
                         }}
                       >
                         <DeleteIcon fontSize="small" />
-                      </Link>
+                      </div>
                     </Tooltip>
                   </div>
                 </TableCell>

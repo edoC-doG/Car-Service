@@ -16,14 +16,14 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
-const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, setOpen, open }) => {
+const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, setOpen, open, key }) => {
   return (
     <>
       {/* Table */}
       <div className="table-responsive">
         <TblContainer>
           <TblHead />
-          <TableBody key={open}>
+          <TableBody key={key}>
             {detail.map((item) => (
               <>
               

@@ -1,6 +1,6 @@
 import React from "react";
 import SignIn from "./pages/SignIn/SignIn";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Customers from "./pages/Customer/Customers";
 import MainLayout from "./pages/MainLayout";
@@ -25,7 +25,7 @@ import Cancel from "./pages/Order/Cancel";
 
 import OrderDetail from "./pages/Order/OrderDetail";
 import GarageDetail from "./pages/Garage/GarageDetail";
-import authService from "./features/auth/authService";
+
 import ServiceDetail from "./pages/Service/ServiceDetail/ServiceDetail";
 import { useSelector } from "react-redux";
 
@@ -38,7 +38,7 @@ function App() {
 
   const authState = useSelector((state) => state.auth);
 
-  const { user, isError, isSuccess, isLoading, message } = authState;
+  const { user, isSuccess} = authState;
 
 
   return (
@@ -51,7 +51,7 @@ function App() {
             <Route path="login" element={<SignIn />} />
           </Route>
 
-          {isSuccess &&  user.roleDto.roleName === "Admin" ? (
+          {  user.roleName === "Admin" ? (
             <Route path="admin" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               {/* CUSTOMER */}
@@ -100,7 +100,7 @@ function App() {
                 />
                 <Route path="owner-report" element={<OnwerReport />} /> */}
             </Route>
-          ) : isSuccess &&  user.roleDto.roleName === "Manager" ? (
+          ) :   user.roleName === "Manager" ? (
             <Route path="manager" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               {/* Viết route cho manager  */}

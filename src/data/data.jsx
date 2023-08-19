@@ -1,12 +1,12 @@
 import { BsChatDots } from "react-icons/bs";
-import { AiOutlineHome, AiFillStar } from "react-icons/ai";
+import { AiOutlineHome } from "react-icons/ai";
 import { GiWallet, GiRadarSweep, GiMechanicGarage } from "react-icons/gi";
 import { RiUserSettingsFill, RiCouponLine } from "react-icons/ri";
 import { FaUserShield } from "react-icons/fa";
 import { GrUserAdmin, GrServices } from "react-icons/gr";
 import { RxDotFilled } from "react-icons/rx";
 import { MdFilterList } from "react-icons/md";
-import { VscGraphLine } from "react-icons/vsc";
+// import { VscGraphLine } from "react-icons/vsc";
 
 export const userProfileData = [
   {

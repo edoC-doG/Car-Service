@@ -179,6 +179,7 @@ const OrderDetail = () => {
                   bid={bid}
                   setOpen={setOpen}
                   open={open}
+                  key={booking}
                 />
               )}
 

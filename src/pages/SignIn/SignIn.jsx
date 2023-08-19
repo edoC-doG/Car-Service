@@ -9,7 +9,7 @@ import * as yup from "yup";
 import { login, resetState } from "../../features/auth/authSlide";
 import Notification from "../../components/Notification";
 import authService from "../../features/auth/authService";
-import MainLayout from "../MainLayout";
+
 
 // validation input text
 let schema = yup.object().shape({
@@ -52,8 +52,9 @@ const SignIn = () => {
   const { user, isError, isSuccess, isLoading, message } = authState;
   useEffect(() => {
     if (isSuccess) {
-      if (user.roleDto?.roleName === "Admin") navigate("/admin");
-      if (user.roleDto?.roleName === "Manager") navigate("/manager", );
+      if (user?.roleName === "Admin") navigate("/admin");
+      if (user?.roleName === "Manager") navigate("/manager" );
+      
     } else {
       if (message?.status === 404) {
         setNotify({

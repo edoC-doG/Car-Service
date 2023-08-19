@@ -9,18 +9,17 @@ import { Menu } from "antd";
 import "../../styles/sidebar.scss";
 import { sidebarData } from "../../data/data";
 import { useSelector } from "react-redux";
-import authService from "../../features/auth/authService";
+
 
 const Sidebar = () => {
   const authState = useSelector((state) => state.auth);
 
-  const { user, isError, isSuccess, isLoading, message } = authState;
+  const { user } = authState;
 
 
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
   const navigate = useNavigate();
-// const user = authService.getCurrentUser()
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 1200) {
       setActiveMenu(false);
@@ -40,8 +39,8 @@ const Sidebar = () => {
     });
   };
   
-  const filteredSidebarData = filterDataByRole(sidebarData,user.roleDto.roleName );
-  console.log(filteredSidebarData);
+  const filteredSidebarData = filterDataByRole(sidebarData, user.roleName  );
+  
   return (
     <div className="h-screen overflow-auto frame-sidebar">
       <>

@@ -24,13 +24,6 @@ const headCells = [
   },
   { id: "serviceCost", label: "Service cost" },
   { id: "productCost", label: "Product cost" },
-  {
-    id: "action",
-    label: "Action",
-    disableSorting: true,
-
-    align: "center",
-  },
 ];
 
 const tabs = ["detail", "allotment of repairman"];
@@ -184,7 +177,7 @@ const OrderDetail = () => {
               )}
 
               {type === "allotment of repairman" && (
-                <MechanicsOrder  bookingId={id} />
+                <MechanicsOrder  bookingId={id} status={booking.bookingStatus}/>
               )}
             </div>
           </div>

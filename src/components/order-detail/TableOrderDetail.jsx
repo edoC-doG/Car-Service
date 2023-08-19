@@ -69,18 +69,7 @@ const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, 
                   <TableCell sx={{ border: "none" }}>
                     {item.productCost}
                   </TableCell>
-                  <TableCell sx={{ border: "none" }}>
-                    <div className="d-flex justify-content-center gap-2">
-                      <Tooltip title="More mechanics" arrow>
-                        <Link
-                          to={`${item.bookingDetailId}`}
-                          className="btn btn-outline--primary btn-sm edit square-btn"
-                        >
-                          <VisibilityIcon fontSize="small" />
-                        </Link>
-                      </Tooltip>
-                    </div>
-                  </TableCell>
+                  
                 </TableRow>
                 {/*  PRODUCT */}
                 {item.bookingDetailId === bid ? (

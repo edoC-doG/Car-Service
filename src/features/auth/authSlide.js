@@ -22,7 +22,7 @@ import authService from "./authService";
     }
  )
 
- export const resetState = createAction("Reset_all");
+ export const resetState = createAction("Reset_all_auth");
 
 
  export const authSlice = createSlice ({

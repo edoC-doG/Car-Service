@@ -27,18 +27,18 @@ const UserProfile = () => {
       <div className="flex gap-5 items-center info-user">
         <img
           className="rounded-full h-24 w-24"
-          src={user.userImage}
+          src={user?.userImage}
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl"> {user.userFullName} </p>
+          <p className="font-semibold text-xl"> {user?.userFullName} </p>
           <p className="text-gray-500 text-sm">
             {" "}
             {user.roleName === "Admin" ? "Administrator" : "Manager"}{" "}
           </p>
           <p className="text-gray-500 text-sm font-semibold">
             {" "}
-            {user.userEmail}
+            {user?.userEmail}
           </p>
         </div>
       </div>

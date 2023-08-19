@@ -66,7 +66,7 @@ const SignIn = () => {
         dispatch(resetState());
       }
     }
-  });
+  }, [isSuccess, message]);
 
   // console.log(user);
 

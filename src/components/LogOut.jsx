@@ -20,7 +20,7 @@ const LogOut = ({
   const navigate = useNavigate();
   const user = authService.getCurrentUser();
   function handleLogout() {
-    user !== null ? authService.logout() : navigate("/admin");
+    user !== null ? authService.logout() : navigate("/login");
     dispatch(resetState());
     navigate("/login");
 

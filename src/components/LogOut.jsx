@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import authService from "../features/auth/authService.js";
-import SignIn from "../pages/SignIn/SignIn";
 import { useDispatch } from "react-redux";
 import { resetState } from "../features/auth/authSlide";
 
@@ -21,14 +20,13 @@ const LogOut = ({
   const navigate = useNavigate();
   const user = authService.getCurrentUser();
   function handleLogout() {
-    user !== null ? authService.logout() : navigate("/admin");
-
-    navigate("/login");
+    user !== null ? authService.logout() : navigate("/login");
     dispatch(resetState());
-    setIsClicked(initialState)
+    navigate("/login");
+
+    setIsClicked(initialState);
   }
 
- 
   return (
     <button
       type="button"

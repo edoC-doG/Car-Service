@@ -13,21 +13,25 @@ import {
   updateMechanicByBookingId,
   resetState,
 } from "../../features/mechanic/mechanicSlice";
-const headCells = [
-  { id: "fullName", label: "Name" },
-  { id: "contact", label: "Contact Info" },
-  { id: "userStatus", label: "Status" },
-  {
-    id: "action",
-    label: "Action",
-    disableSorting: true,
+import ActionButton from "../ActionButton";
+import Popup from "../Popup";
 
-    align: "center",
-  },
-];
-const MechanicsOrder = ({ bookingId }) => {
+const MechanicsOrder = ({ bookingId, status }) => {
+  const headCells = [
+    { id: "fullName", label: "Name" },
+    { id: "contact", label: "Contact Info" },
+    { id: "userStatus", label: "Status" },
+    status !== "Completed" ?
+    {
+      id: "action",
+      label: "Action",
+      disableSorting: true,
+  
+      align: "center",
+    } : {disableSorting: true,},
+  ];
   const dispatch = useDispatch();
-
+  const [openPopup, setOpenPopup] = useState(false);
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -61,7 +65,6 @@ const MechanicsOrder = ({ bookingId }) => {
         type: "success",
       });
     }
-   
   }, [bookingId, updateSuccessAction]);
   const recordsMechanic = useSelector((state) => state.mechanic.mechanics);
 
@@ -82,7 +85,9 @@ const MechanicsOrder = ({ bookingId }) => {
             <Button
               className="add-button"
               size="small"
-              onClick={() => {}}
+              onClick={() => {
+                setOpenPopup(true);
+              }}
               startIcon={<AddIcon fontSize="small" />}
               text="Add new"
             />
@@ -134,32 +139,39 @@ const MechanicsOrder = ({ bookingId }) => {
                 </TableCell>
 
                 {/* Action */}
-                <TableCell sx={{ border: "none" }}>
-                  <div className="d-flex justify-content-center gap-2">
-                    <Tooltip title="delelte" arrow>
-                      <Link
-                        className="btn btn-outline-danger btn-sm delete square-btn"
-                        onClick={() => {
-                          setConfirmDialog({
-                            isOpen: true,
-                            title: "Are you sure to delete this record?",
-                            subTitle: "You can't undo this operation",
-                            onConfirm: () => {
-                              handleDeleteMechanic(item.userId);
-                            },
-                          });
-                        }}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </Link>
-                    </Tooltip>
-                  </div>
-                </TableCell>
+                {status === "Completed" ? (
+                  ""
+                ) : (
+                  <TableCell sx={{ border: "none" }}>
+                    <div className="d-flex justify-content-center gap-2">
+                      <Tooltip title="delelte" arrow>
+                        <div
+                          className="btn btn-outline-danger btn-sm delete square-btn"
+                          onClick={() => {
+                            setConfirmDialog({
+                              isOpen: true,
+                              title: "Are you sure to delete this record?",
+                              subTitle: "You can't undo this operation",
+                              onConfirm: () => {
+                                handleDeleteMechanic(item.userId);
+                              },
+                            });
+                          }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </div>
+                      </Tooltip>
+                    </div>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
         </TblContainer>
       </div>
+      <Popup title="Add new" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        Continue ....
+      </Popup>
       <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}

@@ -16,14 +16,14 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
-const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, setOpen, open }) => {
+const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, setOpen, open, key }) => {
   return (
     <>
       {/* Table */}
       <div className="table-responsive">
         <TblContainer>
           <TblHead />
-          <TableBody key={open}>
+          <TableBody key={key}>
             {detail.map((item) => (
               <>
               
@@ -69,18 +69,7 @@ const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, 
                   <TableCell sx={{ border: "none" }}>
                     {item.productCost}
                   </TableCell>
-                  <TableCell sx={{ border: "none" }}>
-                    <div className="d-flex justify-content-center gap-2">
-                      <Tooltip title="More mechanics" arrow>
-                        <Link
-                          to={`${item.bookingDetailId}`}
-                          className="btn btn-outline--primary btn-sm edit square-btn"
-                        >
-                          <VisibilityIcon fontSize="small" />
-                        </Link>
-                      </Tooltip>
-                    </div>
-                  </TableCell>
+                  
                 </TableRow>
                 {/*  PRODUCT */}
                 {item.bookingDetailId === bid ? (

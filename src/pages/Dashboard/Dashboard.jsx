@@ -3,24 +3,12 @@ import React, { useEffect, useState } from "react";
 import Notification from "../../components/Notification";
 
 const Dashboard = () => {
-  const user = authService.getCurrentUser();
-  const [notify, setNotify] = useState({
-    isOpen: false,
-    message: "",
-    type: "",
-  });
   useEffect(() => {
     document.title = "Dashboard"
-    if (user != null) {
-      setNotify({
-        isOpen: true,
-        message: "Welcome to Admin",
-        type: "success",
-        
-      });
-    }
   }, []);
+ 
 
+ 
   return (
     <>
       <div className="md:pt-24 md:px-8">
@@ -42,7 +30,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <Notification notify={notify} setNotify={setNotify} />
+     
     </>
   );
 };

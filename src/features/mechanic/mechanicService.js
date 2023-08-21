@@ -8,7 +8,17 @@ const getMechanics = async (page) => {
       page,
       instance
     );
-    console.log("mechanic response: ", response.data);
+    // console.log("mechanic response: ", response.data);
+  
+    return response.data;
+  };
+
+  const getMechanicDetail = async (id) => {
+    const response = await instance.post(
+      `${base_url}mechanic/detail-mechanic/${id}`,
+      instance
+    );
+    // console.log("mechanic response: ", response.data);
   
     return response.data;
   };
@@ -48,7 +58,8 @@ const mechanicService = {
     getMechanics, 
     updateMechanicStatus, 
     getMechanicsByBookingId,
-    updateMechanicByBookingId
+    updateMechanicByBookingId, 
+    getMechanicDetail
 }
 
 export default mechanicService;

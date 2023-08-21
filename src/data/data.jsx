@@ -1,12 +1,13 @@
 import { BsChatDots } from "react-icons/bs";
-import { AiOutlineHome, AiFillStar } from "react-icons/ai";
+import { AiOutlineHome } from "react-icons/ai";
 import { GiWallet, GiRadarSweep, GiMechanicGarage } from "react-icons/gi";
 import { RiUserSettingsFill, RiCouponLine } from "react-icons/ri";
 import { FaUserShield } from "react-icons/fa";
 import { GrUserAdmin, GrServices } from "react-icons/gr";
 import { RxDotFilled } from "react-icons/rx";
 import { MdFilterList } from "react-icons/md";
-import { VscGraphLine } from "react-icons/vsc";
+// import { VscGraphLine } from "react-icons/vsc";
+
 export const userProfileData = [
   {
     icon: <GrUserAdmin />,
@@ -24,38 +25,14 @@ export const userProfileData = [
   },
 ];
 
-export const themeColors = [
-  {
-    name: "blue-theme",
-    color: "#1A97F5",
-  },
-  {
-    name: "green-theme",
-    color: "#03C9D7",
-  },
-  {
-    name: "purple-theme",
-    color: "#7352FF",
-  },
-  {
-    name: "red-theme",
-    color: "#FF5C8E",
-  },
-  {
-    name: "indigo-theme",
-    color: "#1E4DB7",
-  },
-  {
-    color: "#FB9678",
-    name: "orange-theme",
-  },
-];
+export const themeColors = [];
 
 export const sidebarData = [
   // Dashboard
   {
     key: "",
     icon: <AiOutlineHome />,
+    roles: ["Admin", "Manager"],
     label: "Dashboard",
   },
   // USER MANAGEMENT
@@ -63,8 +40,8 @@ export const sidebarData = [
     key: "um",
     icon: null,
     label: "USER MANAGEMENT",
-    roles: ["Admin", "Manager"],
     type: "group",
+    roles: ["Admin", "Manager"],
     children: [
       {
         key: "customer",
@@ -76,28 +53,32 @@ export const sidebarData = [
             key: "list-customer",
             icon: <RxDotFilled />,
             label: "Customer List",
+            roles: ["Admin", "Manager"],
           },
           {
             key: "review-list-customer",
             icon: <RxDotFilled />,
             label: "Customer Reviews",
+            roles: ["Admin", "Manager"],
           },
-        
         ],
       },
       {
         key: "garage",
         icon: <FaUserShield />,
         label: "All Garages",
+        roles: ["Admin"],
         children: [
           {
             key: "add-garage",
             icon: <RxDotFilled />,
             label: "Add New Garage",
+            roles: ["Admin"],
           },
           {
             key: "garage-list",
             icon: <RxDotFilled />,
+            roles: ["Admin"],
             label: "Garage List",
           },
         ],
@@ -106,14 +87,17 @@ export const sidebarData = [
         key: "mechanic",
         icon: <RiUserSettingsFill />,
         label: "Mechanics",
+        roles: ["Admin", "Manager"],
         children: [
           {
             key: "add-new-mechanics",
             icon: <RxDotFilled />,
             label: "Add New",
+            roles: ["Manager"],
           },
           {
             key: "list-mechanics",
+            roles: ["Admin", "Manager"],
             icon: <RxDotFilled />,
             label: "List",
           },
@@ -123,9 +107,11 @@ export const sidebarData = [
         key: "employee",
         icon: <GrUserAdmin />,
         label: "Employees",
+        roles: ["Admin"],
         children: [
           {
             key: "list-employee",
+            roles: ["Admin"],
             icon: <RxDotFilled />,
             label: "Employees",
           },
@@ -140,15 +126,18 @@ export const sidebarData = [
     icon: null,
     label: "PRODUCT & SERVICE MANAGEMENT",
     type: "group",
+    roles: ["Admin"],
     children: [
       {
         key: "category",
         icon: <MdFilterList />,
+        roles: ["Admin"],
         label: "Category Setup",
         children: [
           {
             key: "view-category",
             icon: <RxDotFilled />,
+            roles: ["Admin"],
             label: "Categories Product",
           },
         ],
@@ -157,11 +146,13 @@ export const sidebarData = [
       {
         key: "product",
         icon: <GiRadarSweep />,
+        roles: ["Admin"],
         label: "In Garage Products",
         children: [
           {
             key: "list-product",
             icon: <RxDotFilled />,
+            roles: ["Admin"],
             label: "List Product",
           },
         ],
@@ -169,16 +160,19 @@ export const sidebarData = [
       {
         key: "service",
         icon: <GrServices />,
+        roles: ["Admin"],
         label: "Services",
         children: [
           {
             key: "add-new-service",
             icon: <RxDotFilled />,
+            roles: ["Admin"],
             label: "Add New Service",
           },
           {
             key: "list-service",
             icon: <RxDotFilled />,
+            roles: ["Admin"],
             label: "List Service",
           },
         ],
@@ -192,18 +186,20 @@ export const sidebarData = [
     icon: null,
     label: "PROMOTION MANAGEMENT",
     type: "group",
+    roles: ["Admin"],
     children: [
       {
         key: "offer",
         icon: <RiCouponLine />,
         label: "Offers & Deals",
+        roles: ["Admin"],
         children: [
           {
             key: "coupon",
             icon: <RxDotFilled />,
+            roles: ["Admin"],
             label: "Coupon",
           },
-          
         ],
       },
     ],
@@ -214,31 +210,37 @@ export const sidebarData = [
     icon: null,
     label: "ORDER MANAGEMENT",
     type: "group",
+    roles: ["Admin", "Manager"],
     children: [
       {
         key: "order",
         icon: <GiMechanicGarage />,
         label: "Orders",
+        roles: ["Admin", "Manager"],
         children: [
           {
             key: "all-orders",
             icon: <RxDotFilled />,
             label: "All",
+            roles: ["Admin", "Manager"],
           },
           {
             key: "pending-order",
             icon: <RxDotFilled />,
             label: "Pending",
+            roles: ["Admin", "Manager"],
           },
           {
             key: "confirm-order",
             icon: <RxDotFilled />,
             label: "Confirmed",
+            roles: ["Admin", "Manager"],
           },
           {
             key: "cancel-order",
             icon: <RxDotFilled />,
             label: "Canceled",
+            roles: ["Admin", "Manager"],
           },
         ],
       },
@@ -257,7 +259,7 @@ export const sidebarData = [
   //       label: "Sale & Transaction Report",
   //       children: [
   //         {
-  //           key: "admin-report",
+  //           key: "Admin-repMrt",
   //           icon: <RxDotFilled />,
   //           label: "Earning report",
   //         },

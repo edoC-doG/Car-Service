@@ -8,18 +8,39 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import { Menu } from "antd";
 import "../../styles/sidebar.scss";
 import { sidebarData } from "../../data/data";
+import { useSelector } from "react-redux";
+
 
 const Sidebar = () => {
+  const authState = useSelector((state) => state.auth);
+
+  const { user } = authState;
+
+
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
   const navigate = useNavigate();
-
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 1200) {
       setActiveMenu(false);
     }
   };
 
+
+  const filterDataByRole = (data, role) => {
+    return data.filter(item => {
+      if (item.roles && item.roles.includes(role)) {
+        if (item.children) {
+          item.children = filterDataByRole(item.children, role);
+        }
+        return true;
+      }
+      return false;
+    });
+  };
+  
+  const filteredSidebarData = filterDataByRole(sidebarData, user.roleName  );
+  
   return (
     <div className="h-screen overflow-auto frame-sidebar">
       <>
@@ -64,7 +85,7 @@ const Sidebar = () => {
               navigate(key);
             }}
             inlineCollapsed={!activeMenu}
-            items={sidebarData}
+            items={filteredSidebarData}
           />
         </div>
       </>

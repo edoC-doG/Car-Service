@@ -7,10 +7,11 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import "../../styles/userProfile.scss";
 
 import LogOut from "../LogOut";
+import authService from "../../features/auth/authService";
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
-
+  const user = authService.getCurrentUser();
   return (
     <div className="nav-item absolute right-1 w-96 frame-user">
       <div className="flex justify-between items-center">
@@ -26,13 +27,19 @@ const UserProfile = () => {
       <div className="flex gap-5 items-center info-user">
         <img
           className="rounded-full h-24 w-24"
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          src={user?.userImage}
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl"> Michael Roberts </p>
-          <p className="text-gray-500 text-sm"> Administrator </p>
-          <p className="text-gray-500 text-sm font-semibold"> info@shop.com </p>
+          <p className="font-semibold text-xl"> {user?.userFullName} </p>
+          <p className="text-gray-500 text-sm">
+            {" "}
+            {user.roleName === "Admin" ? "Administrator" : "Manager"}{" "}
+          </p>
+          <p className="text-gray-500 text-sm font-semibold">
+            {" "}
+            {user?.userEmail}
+          </p>
         </div>
       </div>
       <div>

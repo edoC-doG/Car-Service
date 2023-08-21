@@ -10,6 +10,7 @@ import { login, resetState } from "../../features/auth/authSlide";
 import Notification from "../../components/Notification";
 import authService from "../../features/auth/authService";
 
+
 // validation input text
 let schema = yup.object().shape({
   password: yup.string().required("Password must be 3 or more characters"),
@@ -19,6 +20,7 @@ const SignIn = () => {
   const currentUser = authService.getCurrentUser();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -41,24 +43,18 @@ const SignIn = () => {
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+
+  useEffect(() => {
+    document.title = "Sign In";
+  }, []);
   const authState = useSelector((state) => state.auth);
 
   const { user, isError, isSuccess, isLoading, message } = authState;
- 
-  useEffect(()=>{
-     document.title = "Sign In"
-  }, [])
-
   useEffect(() => {
     if (isSuccess) {
+      if (user?.roleName === "Admin") navigate("/admin");
+      if (user?.roleName === "Manager") navigate("/manager" );
       
-         navigate("/admin")
-       
-      setNotify({
-        isOpen: true,
-        message: "Hi Admin, Welcome to car service management",
-        type: "success",
-      });
     } else {
       if (message?.status === 404) {
         setNotify({
@@ -70,7 +66,10 @@ const SignIn = () => {
         dispatch(resetState());
       }
     }
-  }, [user, isError, isSuccess, isLoading, message, navigate]);
+  }, [isSuccess, message]);
+
+  // console.log(user);
+
   return (
     <>
       <main className="main">
@@ -106,7 +105,7 @@ const SignIn = () => {
                       <div className="mb-5">
                         <h1 className="display-4">Sign in</h1>
                         <br />
-                        <span>Welcome back Admin</span>
+                        <span>Welcome Admin</span>
                       </div>
                     </div>
                     {/* EMAIL INPUT */}
@@ -150,8 +149,8 @@ const SignIn = () => {
                           className="js-toggle-password form-control form-control-lg"
                           name="password"
                           id="signinSrPassword"
-                          placeholder="8+ characters required"
-                          aria-label="8+ characters required"
+                          placeholder="3+ characters required"
+                          aria-label="3+ characters required"
                           required
                           onChange={formik.handleChange("password")}
                           onBlur={formik.handleBlur("password")}
@@ -184,7 +183,6 @@ const SignIn = () => {
                       type="submit"
                       className="btn btn-lg btn-block btn--primary"
                       onClick={formik.handleSubmit}
-                      // onClick={navigate('/admin')}
                     >
                       <h1 className="text-2xl text-white">Sign in</h1>
                     </button>

@@ -19,6 +19,7 @@ const login = async (user) => {
 };
 
 const logout = () => {
+  
   localStorage.removeItem("user");
  
 };

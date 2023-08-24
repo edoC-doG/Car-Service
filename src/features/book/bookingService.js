@@ -19,7 +19,7 @@ const getBookingStatus = async (page) => {
     page,
     instance
   );
-  console.log("booking response: ", response.data);
+  // console.log("booking response: ", response.data);
 
   return response.data;
 };

@@ -3,7 +3,6 @@ import Header from "../../components/Header";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "../../components/filter/Button";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import "../../styles/button.scss";
 import Search from "../../components/filter/Search";
 import AddIcon from "@mui/icons-material/Add";
@@ -12,13 +11,18 @@ import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../features/product/productSlice";
+import {
+  getProducts,
+  updateProductStatus,
+  resetState,
+} from "../../features/product/productSlice";
 import ModalAdd from "./ModalAdd";
-import Notification from './../../components/Notification';
+import Notification from "./../../components/Notification";
 import ModalEdit from "./ModalEdit";
+import authService from "../../features/auth/authService";
 const headCells = [
   { id: "productId", label: "ID" },
   { id: "productImage", label: "Product Image", align: "left" },
@@ -26,7 +30,6 @@ const headCells = [
   { id: "productName", label: "Name" },
   { id: "productPrice", label: "Price" },
   { id: "productQuantity", label: "Quantity" },
-  // { id:"categoryName",  label: "Category" },
   { id: "productStatus", label: "Status" },
   {
     id: "action",
@@ -35,7 +38,23 @@ const headCells = [
     align: "center",
   },
 ];
+const headCellsManager = [
+  { id: "productId", label: "ID" },
+  { id: "productImage", label: "Product Image", align: "left" },
+
+  { id: "productName", label: "Name" },
+  { id: "productPrice", label: "Price" },
+  { id: "productQuantity", label: "Quantity" },
+  { id: "productStatus", label: "Status" },
+];
+
 const Products = () => {
+  useEffect(() => {
+    document.title = "Danh sách sản phẩm";
+  }, []);
+
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -52,39 +71,42 @@ const Products = () => {
     setShowEdit(false);
   };
   const [confirmDialog, setConfirmDialog] = useState({
-  isOpen: false,
+    isOpen: false,
     title: "",
     subTitle: "",
   });
   const [showEdit, setShowEdit] = useState(false);
   const [proEdit, setSerEdit] = useState({});
   const handleEdit = (pro) => {
-    setSerEdit(pro)
-    setShowEdit(true)
-  }
-   //Call API List
-   const proState = useSelector((state) => state.product);
-   const { isSuccessAdd,  message } =
-    proState;
-    const [notify, setNotify] = useState({
-      isOpen: false,
-      message: "",
-      type: "", 
-    });
-  
-   const getData = () => {
+    setSerEdit(pro);
+    setShowEdit(true);
+  };
+  //Call API List
+  const proState = useSelector((state) => state.product);
+  const { isSuccessAdd, message } = proState;
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  const updateSuccessAction = useSelector(
+    (state) => state.product.isSuccessAction
+  );
+
+  const getData = () => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getProducts(data));
   };
   useEffect(() => {
     getData();
-    if(isSuccessAdd ){
+    if (isSuccessAdd) {
       setNotify({
         isOpen: true,
         message: "Sản phẩm được được thêm thành công",
         type: "success",
-      })
-      handleClose()
+      });
+      handleClose();
     } else {
       if (message?.status === 400) {
         setNotify({
@@ -94,14 +116,31 @@ const Products = () => {
         });
       }
     }
-  }, [page, rowsPerPage, isSuccessAdd, message]);;
+    if (updateSuccessAction) {
+      dispatch(resetState());
+      setConfirmDialog({
+        ...confirmDialog,
+        isOpen: false,
+      });
+      setNotify({
+        isOpen: true,
+        message: "Update Successfully",
+        type: "success",
+      });
+    }
+  }, [page, rowsPerPage, isSuccessAdd, message, updateSuccessAction]);
+
   const recordsProduct = useSelector((state) => state.product.products);
   const count = useSelector((state) => state.product.number);
+
+  const handleSwitchToggle = (productId) => {
+    dispatch(updateProductStatus(productId));
+  };
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsProduct,
-      headCells,
-      filterFn, 
+      role === "Admin" ? headCells : headCellsManager,
+      filterFn,
       pages,
       page,
       rowsPerPage,
@@ -116,7 +155,7 @@ const Products = () => {
           icon="https://6valley.6amtech.com/public/assets/back-end/img/inhouse-product-list.png"
           alt="products"
           title="In-Garage Product List"
-          number="20"
+          number={count}
         />
         <div className="row mt-4">
           <div className="col-md-12">
@@ -137,27 +176,21 @@ const Products = () => {
                       }}
                     />
                   </div>
-                  <div className="col-lg-8 mt-3 mt-lg-0 d-flex flex-wrap gap-3 justify-content-lg-end">
-                    <div>
-                      <Button
-                        variant="outlined"
-                        className="export-button"
-                        size="large"
-                        onClick={() => {}}
-                        startIcon={<FileDownloadIcon fontSize="small" />}
-                        text="Export"
-                      />
+                  {role === "Admin" ? (
+                    <div className="col-lg-8 mt-3 mt-lg-0 d-flex flex-wrap gap-3 justify-content-lg-end">
+                      <div>
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => setShowModal(true)}
+                          startIcon={<AddIcon fontSize="small" />}
+                          text="Add new Product"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => setShowModal(true)}
-                        startIcon={<AddIcon fontSize="small" />}
-                        text="Add new Product"
-                      />
-                    </div>
-                  </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
 
@@ -189,45 +222,55 @@ const Products = () => {
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.productQuantity}</div>
                         </TableCell>
-                        {/* <TableCell sx={{ border: "none" }}>
-                          <div>{item.categoryProductDto.categoryName}</div>
-                        </TableCell> */}
-                        <TableCell sx={{ border: "none" }}>
-                          <Switches
-                            checked={
-                              item.productStatus === "Activate" ? true : false
-                            }
-                          />
-                        </TableCell>
-                        <TableCell sx={{ border: "none" }}>
-                          <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="edit" arrow>
-                              <Link
-                               onClick={() => handleEdit(item)}
-                                className="btn btn-outline--primary btn-sm square-btn"
-                              >
-                                <EditIcon fontSize="small" />
-                              </Link>
-                            </Tooltip>
+                        {role === "Admin" ? (
+                          <TableCell sx={{ border: "none" }}>
+                            <Switches
+                              checked={
+                                item.productStatus === "Activate" ? true : false
+                              }
+                              onChange={(event) => {
+                                setConfirmDialog({
+                                  isOpen: true,
+                                  title:
+                                    "Are you sure to change status this record?",
+                                  subTitle: "You can't undo this operation",
+                                  onConfirm: () => {
+                                    handleSwitchToggle(item.productId);
+                                  },
+                                });
+                              }}
+                            />
+                          </TableCell>
+                        ) : (
+                          <TableCell sx={{ border: "none" }}>
+                            <span
+                              className={
+                                item.productStatus === "Activate"
+                                  ? "badge badge-soft-success fz-12"
+                                  : "badge badge-soft-danger fz-12"
+                              }
+                            >
+                              {item.productStatus}
+                            </span>
+                          </TableCell>
+                        )}
 
-                            <Tooltip title="delelte" arrow>
-                              <Link
-                                className="btn btn-outline-danger btn-sm delete square-btn"
-                                onClick={() => {
-                                  setConfirmDialog({
-                                    isOpen: true,
-                                    title:
-                                      "Are you sure to delete this record?",
-                                    subTitle: "You can't undo this operation",
-                                    onConfirm: () => {},
-                                  });
-                                }}
-                              >
-                                <DeleteIcon fontSize="small" />
-                              </Link>
-                            </Tooltip>
-                          </div>
-                        </TableCell>
+                        {role === "Admin" ? (
+                          <TableCell sx={{ border: "none" }}>
+                            <div className="d-flex justify-content-center gap-2">
+                              <Tooltip title="edit" arrow>
+                                <Link
+                                  onClick={() => handleEdit(item)}
+                                  className="btn btn-outline--primary btn-sm square-btn"
+                                >
+                                  <EditIcon fontSize="small" />
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </TableCell>
+                        ) : (
+                          <></>
+                        )}
                       </TableRow>
                     ))}
                   </TableBody>
@@ -243,7 +286,7 @@ const Products = () => {
         setConfirmDialog={setConfirmDialog}
       />
       <ModalAdd show={showModal} handleClose={handleClose} />
-      <ModalEdit show={showEdit} handleClose={handleClose} proEdit={proEdit}/>
+      <ModalEdit show={showEdit} handleClose={handleClose} proEdit={proEdit} />
       <Notification notify={notify} setNotify={setNotify} />
     </>
   );

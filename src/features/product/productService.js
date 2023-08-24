@@ -9,7 +9,7 @@ const getProducts = async (page) => {
         page,
         instance
       );
-      console.log("product response: ",response.data);
+    //   console.log("product response: ",response.data);
     
       return response.data;
 }
@@ -32,10 +32,20 @@ const editProducts = async (data) => {
       console.log("product response: ",response.data);
       return response.data;
 }
+const updateProductStatus = async (id) => {
+    const response = await instance.put(
+      `${base_url}product/update-status/${id}`,
+      instance
+    );
+    // console.log(`update status`, response.data);
+    return response.data;
+  }
+
 const productService = {
     getProducts,
     addProducts,
-    editProducts
+    editProducts, 
+    updateProductStatus
 }
 
 export default productService;

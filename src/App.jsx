@@ -22,6 +22,7 @@ import All from "./pages/Order/All";
 import Pending from "./pages/Order/Pending";
 import Confirm from "./pages/Order/Confirm";
 import Cancel from "./pages/Order/Cancel";
+import Checkin from "./pages/Order/Checkin";
 
 import OrderDetail from "./pages/Order/OrderDetail";
 import GarageDetail from "./pages/Garage/GarageDetail";
@@ -33,16 +34,16 @@ import Staffs from "./pages/Staff/Staffs";
 import authService from "./features/auth/authService";
 
 function App() {
-  const user = authService.getCurrentUser();
-  const role = user?.roleName
+  const currentUser = authService.getCurrentUser();
+  const role = currentUser?.roleName
   // const isAdmin = user && user.roleName === "Admin";
   // const isManager = user && user.roleName === "Manager";
 
   // console.log("isAdmin", user);
 
-  // const authState = useSelector((state) => state.auth);
+  const authState = useSelector((state) => state.auth);
 
-  // const { user, isSuccess } = authState;
+  const { user, isSuccess } = authState;
 
   return (
     <>
@@ -54,7 +55,7 @@ function App() {
             <Route path="login" element={<SignIn />} />
           </Route>
 
-          {role === "Admin" ? (
+          {(role === "Admin" || user?.roleName === "Admin" ) ? (
             <Route path="admin" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               {/* CUSTOMER */}
@@ -92,28 +93,34 @@ function App() {
               <Route path="orders/details/:id" element={<OrderDetail />} />
 
               <Route path="pending-order" element={<Pending />} />
+              <Route path="checkin-order" element={<Checkin />} />
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
             </Route>
-          ) : role === "Manager" ? (
+          ) : (role === "Manager" || user?.roleName === "Manager") ? (
             <Route path="manager" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               <Route path="review-list-customer" element={<Review />} />
               {/* MECHANIC */}
-              <Route path="add-new-mechanics" element={<AddMechanic />} />
               <Route path="list-mechanics" element={<Mechanics />} />
               <Route path="mechanic/detail/:id" element={<MechanicDetail />} />
                {/* Staff */}
-               {/* <Route path="add-new-staff" element={<AddMechanic />} /> */}
               <Route path="list-staffs" element={<Staffs />} />
               <Route path="staff/detail/:id" element={<StaffDetail />} />
               {/* PRODUCT */}
               <Route path="list-product" element={<Products />} />
+              <Route
+                path="list-service/detail/:id"
+                element={<ServiceDetail />}
+              />
+              <Route path="list-service" element={<Services />} />
               {/* ORDER */}
               <Route path="all-orders" element={<All />} />
               <Route path="orders/details/:id" element={<OrderDetail />} />
 
               <Route path="pending-order" element={<Pending />} />
+              <Route path="checkin-order" element={<Checkin />} />
+
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
               {/* Viết route cho manager  */}

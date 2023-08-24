@@ -54,6 +54,9 @@ const OrderDetail = () => {
     message: "",
     type: "",
   });
+  useEffect(() => {
+    dispatch(getDetailBooking(id));
+  }, [id]);
 
   const booking = useSelector((state) => state.booking.booking);
   const orderId = booking.bookingId;
@@ -136,14 +139,6 @@ const OrderDetail = () => {
                   <div>
                     <EventNoteIcon fontSize="inherit" /> {booking.bookingTime}
                   </div>
-                  <div className="d-flex flex-wrap gap-3">
-                    <div className="badge-soft-info font-weight-bold d-flex align-items-center rounded py-1 px-2">
-                      Linked orderes (1):
-                    </div>
-                    <Link to={""} className="btn btn-info rounded py-1 px-2">
-                      1000179
-                    </Link>
-                  </div>
                 </div>
                 <div className="text-sm-right">
                   <div className="d-flex flex-wrap gap-3">
@@ -168,7 +163,23 @@ const OrderDetail = () => {
                   <div className="d-flex flex-column gap-2 mt-3">
                     <div className="order-status d-flex justify-content-sm-end gap-3 text-capitalize">
                       <span className="title-color">Status: </span>
-                      <span className="badge badge-soft-info font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm">
+
+                      <span
+                        className={
+
+                          booking.bookingStatus=== "Pending"
+                            ? "badge badge-soft-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm "
+                            : booking.bookingStatus=== "CheckIn"
+                            ? "badge badge-soft-warning fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : booking.bookingStatus=== "Processing"
+                            ? "badge badge-soft-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : booking.bookingStatus=== "Completed"
+                            ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : booking.bookingStatus=== "CheckOut"
+                            ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : "badge badge-danger fz-12"
+                        }
+                      >
                         {booking.bookingStatus}
                       </span>
                     </div>

@@ -21,13 +21,13 @@ import {
   getReviews,
   updateReviewStatus,
   resetState,
-  getReviewsByGarage
+  getReviewsByGarage,
 } from "../../features/review/reviewSlice";
+import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "reviewId", label: "ID" },
   { id: "garageReviewDto", label: "Garage" },
-
   { id: "fullName", label: "Customer Name" },
   { id: "rating", label: "Rating" },
   { id: "content", label: "Review" },
@@ -35,7 +35,21 @@ const headCells = [
 
   { id: "reviewStatus", label: "Status" },
 ];
+
+const headCellsManager = [
+  { id: "reviewId", label: "ID" },
+  { id: "fullName", label: "Customer Name" },
+  { id: "rating", label: "Rating" },
+  { id: "content", label: "Review" },
+  { id: "createdAt", label: "Date" },
+
+  { id: "reviewStatus", label: "Status" },
+];
+
 const Review = () => {
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
+
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -67,15 +81,12 @@ const Review = () => {
     document.title = "List of cutomers's review";
   }, []);
 
-  const authState = useSelector((state) => state.auth);
-
-  const { user } = authState;
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-    
-    if (user.roleName === "Admin") dispatch(getReviews(data));
-    
-    else if(user.roleName === "Manager") dispatch(getReviewsByGarage({...data, garageId: user.garageId }))
+
+    if (role === "Admin") dispatch(getReviews(data));
+    else if (role === "Manager")
+      dispatch(getReviewsByGarage({ ...data, garageId: user?.garageId }));
 
     if (updateSuccessAction) {
       dispatch(resetState());
@@ -92,7 +103,6 @@ const Review = () => {
   }, [page, rowsPerPage, updateSuccessAction]);
 
   const recordsReview = useSelector((state) => state.review.reviews);
- 
 
   const count = useSelector((state) => state.review.number);
   const handleChange = (event) => {
@@ -108,7 +118,7 @@ const Review = () => {
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsReview,
-      headCells,
+      role === "Admin" ? headCells : headCellsManager,
       filterFn,
       pages,
       page,
@@ -132,7 +142,7 @@ const Review = () => {
               <h5 className="text-capitalize d-flex gap-1 font-semibold">
                 Review Table
                 <span className="badge badge-soft-dark radius-50 fz-12">
-                  13
+                  {count}
                 </span>
               </h5>
             </div>
@@ -248,16 +258,20 @@ const Review = () => {
                     <TableCell sx={{ border: "none" }}>
                       <div>{item.reviewId}</div>
                     </TableCell>
+                    {role === "Admin" ? (
+                      <TableCell sx={{ border: "none" }}>
+                        <Link
+                          to={`/admin/garage/view/${item.garageReviewDto?.garageId}`}
+                          className="title-color hover-c1"
+                        >
+                          {item.garageReviewDto?.garageName}
+                        </Link>
+                      </TableCell>
+                    ) : (
+                      <></>
+                    )}
                     <TableCell sx={{ border: "none" }}>
-                      <Link
-                        to={`/admin/garage/view/${item.garageReviewDto.garageId}`}
-                        className="title-color hover-c1"
-                      >
-                        {item.garageReviewDto.garageName}
-                      </Link>
-                    </TableCell>
-                    <TableCell sx={{ border: "none" }}>
-                      <div>{item.userReviewDto.fullName}</div>
+                      <div>{item.userReviewDto?.fullName}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <label className="badge badge-soft-info mb-0">

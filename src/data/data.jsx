@@ -6,6 +6,7 @@ import { FaUserShield } from "react-icons/fa";
 import { GrUserAdmin, GrServices } from "react-icons/gr";
 import { RxDotFilled } from "react-icons/rx";
 import { MdFilterList } from "react-icons/md";
+import SensorOccupiedIcon from '@mui/icons-material/SensorOccupied';
 // import { VscGraphLine } from "react-icons/vsc";
 
 export const userProfileData = [
@@ -50,12 +51,7 @@ export const sidebarManager = [
         label: "Customers",
        
         children: [
-          {
-            key: "list-customer",
-            icon: <RxDotFilled />,
-            label: "Customer List",
-           
-          },
+         
           {
             key: "review-list-customer",
             icon: <RxDotFilled />,
@@ -71,12 +67,6 @@ export const sidebarManager = [
         
         children: [
           {
-            key: "add-new-mechanics",
-            icon: <RxDotFilled />,
-            label: "Add New",
-           
-          },
-          {
             key: "list-mechanics",
             icon: <RxDotFilled />,
             label: "List",
@@ -86,16 +76,10 @@ export const sidebarManager = [
       },
       {
         key: "staff",
-        icon: <RiUserSettingsFill />,
+        icon: <SensorOccupiedIcon />,
         label: "Staffs",
         
         children: [
-          {
-            key: "add-new-staff",
-            icon: <RxDotFilled />,
-            label: "Add New",
-           
-          },
           {
             key: "list-staffs",
             icon: <RxDotFilled />,
@@ -167,19 +151,25 @@ export const sidebarManager = [
           },
           {
             key: "pending-order",
-            icon: <RxDotFilled />,
+            icon: <RxDotFilled color="orange" />,
             label: "Pending",
             
           },
           {
+            key: "checkin-order",
+            icon: <RxDotFilled  color="yellow"/>,
+            label: "Check In",
+            
+          },
+          {
             key: "confirm-order",
-            icon: <RxDotFilled />,
+            icon: <RxDotFilled  color="green[500]"/>,
             label: "Confirmed",
             
           },
           {
             key: "cancel-order",
-            icon: <RxDotFilled />,
+            icon: <RxDotFilled  color="red"/>,
             label: "Canceled",
             
           },
@@ -233,12 +223,12 @@ export const sidebarDataAdmin = [
         label: "All Garages",
         
         children: [
-          {
-            key: "add-garage",
-            icon: <RxDotFilled />,
-            label: "Add New Garage",
+          // {
+          //   key: "add-garage",
+          //   icon: <RxDotFilled />,
+          //   label: "Add New Garage",
             
-          },
+          // },
           {
             key: "garage-list",
             icon: <RxDotFilled />,
@@ -253,37 +243,12 @@ export const sidebarDataAdmin = [
         label: "Mechanics",
         
         children: [
-          {
-            key: "add-new-mechanics",
-            icon: <RxDotFilled />,
-            label: "Add New",
-           
-          },
+          
           {
             key: "list-mechanics",
             icon: <RxDotFilled />,
             label: "List",
             
-          },
-        ],
-      },
-      {
-        key: "staff",
-        icon: <RiUserSettingsFill />,
-        label: "Staffs",
-       
-        children: [
-          {
-            key: "add-new-staff",
-            icon: <RxDotFilled />,
-            label: "Add New",
-           
-          },
-          {
-            key: "list-staffs",
-            icon: <RxDotFilled />,
-            label: "List Staff",
-           
           },
         ],
       },
@@ -310,19 +275,19 @@ export const sidebarDataAdmin = [
     icon: null,
     label: "PRODUCT & SERVICE MANAGEMENT",
     type: "group",
-    roles: ["Admin", "Manager"],
+    
     children: [
       {
         key: "category",
         icon: <MdFilterList />,
         label: "Category Setup",
-        roles: ["Admin"],
+        
         children: [
           {
             key: "view-category",
             icon: <RxDotFilled />,
             label: "Categories Product",
-            roles: ["Admin"],
+          
           },
         ],
       },
@@ -331,13 +296,13 @@ export const sidebarDataAdmin = [
         key: "product",
         icon: <GiRadarSweep />,
         label: "In Garage Products",
-        roles: ["Admin", "Manager"],
+       
         children: [
           {
             key: "list-product",
             icon: <RxDotFilled />,
             label: "List Product",
-            roles: ["Admin", "Manager"],
+           
           },
         ],
       },
@@ -345,19 +310,13 @@ export const sidebarDataAdmin = [
         key: "service",
         icon: <GrServices />,
         label: "Services",
-        roles: ["Admin", "Manager"],
+      
         children: [
-          {
-            key: "add-new-service",
-            icon: <RxDotFilled />,
-            label: "Add New Service",
-            roles: ["Admin"],
-          },
           {
             key: "list-service",
             icon: <RxDotFilled />,
             label: "List Service",
-            roles: ["Admin", "Manager"],
+            
           },
         ],
       },
@@ -410,19 +369,25 @@ export const sidebarDataAdmin = [
           },
           {
             key: "pending-order",
-            icon: <RxDotFilled />,
+            icon: <RxDotFilled color="orange" />,
             label: "Pending",
             
           },
           {
+            key: "checkin-order",
+            icon: <RxDotFilled  color="yellow"/>,
+            label: "Check In",
+            
+          },
+          {
             key: "confirm-order",
-            icon: <RxDotFilled />,
+            icon: <RxDotFilled  color="green[500]"/>,
             label: "Confirmed",
             
           },
           {
             key: "cancel-order",
-            icon: <RxDotFilled />,
+            icon: <RxDotFilled  color="red"/>,
             label: "Canceled",
             
           },

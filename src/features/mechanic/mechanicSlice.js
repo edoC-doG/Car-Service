@@ -56,6 +56,30 @@ export const getMechanicDetail = createAsyncThunk(
   }
 );
 
+export const getBookingByMechanic = createAsyncThunk(
+  "mechanic/booking-by-mechanic",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await mechanicService.getBookingByMechanic(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getMechanicsByGarage = createAsyncThunk(
+  "mechanic/mechanics-by-garage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await mechanicService.getMechanicsByGarage(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -151,6 +175,40 @@ export const mechanicSlice = createSlice({
         state.message = "success";
       })
       .addCase(getMechanicDetail.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getBookingByMechanic.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBookingByMechanic.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.mechanics = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getBookingByMechanic.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getMechanicsByGarage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMechanicsByGarage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.mechanics = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getMechanicsByGarage.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.payload.response.data;

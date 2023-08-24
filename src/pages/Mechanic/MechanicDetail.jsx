@@ -1,23 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import useTable from "../../components/table/useTable";
-import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
+import { TableBody, TableCell, TableRow } from "@mui/material";
 import Search from "../../components/filter/Search";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import AccountInfo from "../../components/card-info/AccountInfo";
-import HistoryIcon from "@mui/icons-material/History";
-import Button from "../../components/filter/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { getMechanicDetail } from "../../features/mechanic/mechanicSlice";
+import {
+  getMechanicDetail,
+  getBookingByMechanic,
+} from "../../features/mechanic/mechanicSlice";
+import useTableV2 from "../../components/table/useTableV2";
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "order", label: "Order No" },
+  { id: "bookingTime", label: "Order Date" },
+  { id: "userBookingDto", label: "Customer Info" },
 
-  { id: "total", label: "Earning" },
-  { id: "status", label: "Status" },
-  { id: "history", label: "History" },
+  { id: "garageName", label: "Garage" },
+  { id: "total", label: "Total Amount", align: "right" },
+  { id: "bookingStatus", label: "Order Status", align: "center" },
 ];
 const MechanicDetail = () => {
   const location = useLocation();
@@ -25,32 +26,27 @@ const MechanicDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = location.pathname.split("/")[4];
-  console.log(id);
-  const rows = [
-    {
-      id: 1,
-      order: 1020392,
-      total: "500.000 VND",
-      status: "Confirmed",
-      history: "ok",
+  const pages = [5, 10, 25];
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [age, setAge] = React.useState("");
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
     },
-    {
-      id: 2,
-      order: 1020393,
-      total: "1.000.000 VND",
-      status: "Confirmed",
-      history: "ok",
-    },
-  ];
+  });
 
   useEffect(() => {
     dispatch(getMechanicDetail(id));
-  }, [id]);
+
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage, userId: id };
+    dispatch(getBookingByMechanic(data));
+  }, [id, page, rowsPerPage]);
 
   const detail = useSelector((state) => state.mechanic.mechanic);
+  const recordsBooking = useSelector((state) => state.mechanic.mechanics);
+  const count = useSelector((state) => state.mechanic.number);
 
-
-  console.log(detail);
   const infoMechanic = [
     {
       name: "Name",
@@ -62,7 +58,17 @@ const MechanicDetail = () => {
     },
   ];
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(
+      recordsBooking,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
@@ -93,7 +99,7 @@ const MechanicDetail = () => {
                 <div className="row justify-content-between align-items-center g-2 mb-3">
                   <div className="col-sm-6">
                     <h4 className="d-flex align-items-center text-capitalize text-lg font-semibold">
-                      Earning statement
+                      Detail
                     </h4>
                   </div>
                 </div>
@@ -126,9 +132,9 @@ const MechanicDetail = () => {
                   <div className="row align-items-center">
                     <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
                       <h5 className="text-capitalize d-flex gap-1 font-semibold">
-                        Earning Statement
+                        Order received
                         <span className="badge badge-soft-dark radius-50 fz-12">
-                          13
+                          {count}
                         </span>
                       </h5>
                     </div>
@@ -157,44 +163,71 @@ const MechanicDetail = () => {
                         <TblContainer>
                           <TblHead />
                           <TableBody>
-                            {rows.map((item) => (
-                              <TableRow hover key={item.id}>
-                                <TableCell
-                                  sx={{ border: "none", fontSize: "14px" }}
-                                >
-                                  <div>{item.id}</div>
+                            {recordsAfterPagingAndSorting().map((item) => (
+                              <TableRow hover key={item.bookingId}>
+                                <TableCell sx={{ border: "none" }}>
+                                  <div>{item.bookingTime}</div>
+                                </TableCell>
+                                <TableCell sx={{ border: "none" }}>
+                                  <strong className="text-body text-capitalize">
+                                    {item.userBookingDto?.fullName}
+                                  </strong>
+
+                                  <Link
+                                    to={`tel:${item.userBookingDto?.userPhone}`}
+                                    className="d-block title-color"
+                                  >
+                                    {item.userBookingDto?.userPhone}
+                                  </Link>
+                                </TableCell>
+
+                                <TableCell sx={{ border: "none" }}>
+                                  <div>{item.garageBookingDto?.garageName}</div>
                                 </TableCell>
 
                                 <TableCell
-                                  sx={{ border: "none", fontSize: "14px" }}
+                                  sx={{ border: "none", textAlign: "right" }}
                                 >
-                                  <div>{item.order}</div>
-                                </TableCell>
-                                <TableCell
-                                  sx={{ border: "none", fontSize: "14px" }}
-                                >
-                                  <div>{item.total}</div>
-                                </TableCell>
-                                <TableCell
-                                  sx={{ border: "none", fontSize: "14px" }}
-                                >
-                                  <span className=" badge badge-soft-success fz-12">
-                                    {item.status}
+                                  <div>{item.totalPrice}</div>
+                                  <span
+                                    className={
+                                      item.paymentStatus === "Unpaid"
+                                        ? "badge text-danger fz-12 px-0"
+                                        : "badge text-success fz-12 px-0"
+                                    }
+                                  >
+                                    {item.paymentStatus}
                                   </span>
                                 </TableCell>
+
                                 <TableCell
-                                  sx={{ border: "none", fontSize: "14px" }}
+                                  sx={{
+                                    border: "none",
+                                    textDecoration: "capitalize",
+                                    textAlign: "center",
+                                  }}
                                 >
-                                  <div className="media align-items-center gap-2 flex-wrap">
-                                    <Link className="btn btn-info">
-                                      <HistoryIcon fontSize="small" />
-                                    </Link>
-                                  </div>
+                                  <span
+                                    className={
+                                      item.bookingStatus === "Pending"
+                                        ? "badge badge-soft-danger fz-12"
+                                        : item.bookingStatus === "CheckIn"
+                                        ? "badge badge-soft-warning fz-12"
+                                        : item.bookingStatus === "Processing"
+                                        ? "badge badge-soft-info fz-12"
+                                        : item.bookingStatus === "Completed"
+                                        ? "badge badge-soft-success fz-12"
+                                        : "badge badge-danger fz-12"
+                                    }
+                                  >
+                                    {item.bookingStatus}
+                                  </span>
                                 </TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
                         </TblContainer>
+                        <TblPagination className="pagination" />
                       </div>
                     </div>
                   </div>

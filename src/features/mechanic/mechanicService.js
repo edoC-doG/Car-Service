@@ -53,12 +53,40 @@ const updateMechanicByBookingId = async (data) => {
   return response.data;
 }
 
+
+const getBookingByMechanic = async (page) => {
+  const response = await instance.post(
+    `${base_url}mechanic/get-booking-mechanic-applied`,
+    page,
+    instance
+  );
+  // console.log("mechanic response: ", response.data);
+
+  return response.data;
+};
+
+
+const getMechanicsByGarage = async (page) => {
+  const response = await instance.post(
+    `${base_url}mechanic/filter-mechanic-by-garage`,
+    page,
+    instance
+  );
+  // console.log("mechanic response: ", response.data);
+
+  return response.data;
+};
+
+
+
 const mechanicService = {
     getMechanics, 
     updateMechanicStatus, 
     getMechanicsByBookingId,
     updateMechanicByBookingId, 
-    getMechanicDetail
+    getMechanicDetail, 
+    getBookingByMechanic, 
+    getMechanicsByGarage
 }
 
 export default mechanicService;

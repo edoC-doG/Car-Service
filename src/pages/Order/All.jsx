@@ -279,11 +279,6 @@ const All = () => {
                             </Link>
                           )}
                         </Tooltip>
-                        <Tooltip title="Invoice" arrow>
-                          <Link className="btn btn-outline-info btn-sm square-btn">
-                            <DownloadForOfflineSharpIcon fontSize="small" />
-                          </Link>
-                        </Tooltip>
                       </div>
                     </TableCell>
                   </TableRow>

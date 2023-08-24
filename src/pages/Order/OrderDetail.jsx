@@ -3,7 +3,6 @@ import Header from "../../components/Header";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import Button from "../../components/filter/Button";
 import "../../styles/button.scss";
-import MapIcon from "@mui/icons-material/Map";
 import PrintIcon from "@mui/icons-material/Print";
 import useTableV2 from "../../components/table/useTableV2";
 import { Link, useLocation } from "react-router-dom";
@@ -13,7 +12,11 @@ import { getDetailBooking } from "../../features/book/bookingSlide";
 import { useDispatch, useSelector } from "react-redux";
 import TableOrderDetail from "../../components/order-detail/TableOrderDetail";
 import MechanicsOrder from "../../components/order-detail/MechanicsOrder";
-
+import PaidIcon from "@mui/icons-material/Paid";
+import ModalMoney from "./ModalMoney";
+import Notification from "../../components/Notification";
+import NoteAltIcon from "@mui/icons-material/NoteAlt";
+import ModalStatus from "./ModalStatus";
 const headCells = [
   { id: "bookingDetailId", label: "Id" },
 
@@ -24,6 +27,13 @@ const headCells = [
   },
   { id: "serviceCost", label: "Service cost" },
   { id: "productCost", label: "Product cost" },
+  {
+    id: "action",
+    label: "Action",
+    disableSorting: true,
+
+    align: "center",
+  },
 ];
 
 const tabs = ["detail", "allotment of repairman"];
@@ -39,16 +49,69 @@ const OrderDetail = () => {
       return items;
     },
   });
-
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   useEffect(() => {
     dispatch(getDetailBooking(id));
   }, [id]);
 
   const booking = useSelector((state) => state.booking.booking);
+  const orderId = booking.bookingId;
   const garage = useSelector((state) => state.booking.garage);
   const detail = useSelector((state) => state.booking.detail);
   const customer = useSelector((state) => state.booking.customer);
-
+  const status = useSelector((state) => state.booking);
+  const { message, isSuccessAdd } = status;
+  const getData = () => {
+    dispatch(getDetailBooking(id));
+  };
+  useEffect(() => {
+    getData();
+    if (isSuccessAdd === true ) {
+      setNotify({
+        isOpen: true,
+        message:"Thành Công",
+        type: "success",
+      });
+      handleClose();
+    } else if ( message.status === 404
+    ) {
+      setNotify({
+        isOpen: true,
+        message: message.title,
+        type: "error",
+      });
+    }
+  }, [isSuccessAdd, message]);
+  //Add
+  const [showModal, setShowModal] = useState(false);
+  const [money, setMoney] = useState("");
+  const handleClose = () => {
+    setShowModal(false);
+    setShowStt(false);
+    setShowDetail(false)
+  };
+  const handleMoney = (orderId) => {
+    setShowModal(true);
+    setMoney(orderId);
+  };
+  //STT
+  const [showStt, setShowStt] = useState(false);
+  const [orderSta, setOrderSta] = useState("");
+  const handleStt = (orderId) => {
+    setShowStt(true);
+    setOrderSta(orderId);
+  };
+  //Detail
+  const [showDetail, setShowDetail]= useState(false);
+  const [detailService, setDetail] = useState("");
+  const handleDetail = (item) => {
+    setShowDetail(true)
+    setDetail(item)
+  }
   const { TblContainer, TblHead, recordsAfterPagingAndSorting } = useTableV2(
     detail,
     headCells,
@@ -83,16 +146,16 @@ const OrderDetail = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => {}}
-                        startIcon={<MapIcon fontSize="small" />}
-                        text="Show locations on map"
+                        onClick={() => handleMoney(orderId)}
+                        startIcon={<PaidIcon fontSize="small" />}
+                        text="Thanh toán"
                       />
                     </div>
                     <Button
                       className="add-button"
                       size="large"
-                      onClick={() => {}}
-                      startIcon={<PrintIcon fontSize="small" />}
+                      onClick={() => handleStt(orderId)}
+                      startIcon={<NoteAltIcon fontSize="small" />}
                       text="Print Invoice"
                     />
                   </div>
@@ -181,9 +244,13 @@ const OrderDetail = () => {
                   setOpen={setOpen}
                   open={open}
                   key={booking}
+                  showDetail={showDetail}
+                  handleDetail={handleDetail}
+                  handleClose={handleClose}
+                  setDetail={setDetail}
+                  detailService={detailService}
                 />
               )}
-
               {type === "allotment of repairman" && (
                 <MechanicsOrder bookingId={id} status={booking.bookingStatus} />
               )}
@@ -214,6 +281,13 @@ const OrderDetail = () => {
             location={garage.fullAddress}
           />
         </div>
+        <ModalMoney show={showModal} handleClose={handleClose} money={money} />
+        <ModalStatus
+          show={showStt}
+          handleClose={handleClose}
+          orderSta={orderSta}
+        />
+        <Notification notify={notify} setNotify={setNotify} />
       </div>
     </div>
   );

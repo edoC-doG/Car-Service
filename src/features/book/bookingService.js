@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import { instance } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 
@@ -71,6 +72,34 @@ const getRevenueOfGagage = async (id) => {
 
   return response.data;
 };
+const updatePaid = async (id) => {
+  const response = await instance.put(
+    `${base_url}booking/confirm-booking-are-paid/${id}`,
+    instance
+  );
+  // console.log(response.data);
+  return response.data;
+}
+
+const updateStt = async (data) => {
+  const response = await instance.put(
+    `${base_url}booking/update-status-booking/${data.orderSta}&${data.stt}`,
+    data,
+    instance
+  );
+  // console.log(response.data);
+  return response.data;
+}
+
+const updateDetail = async (data) => {
+  const response = await instance.put(
+    `${base_url}booking/update-booking-detail-status/${data.detailService}&${data.stt}`,
+    data,
+    instance
+  );
+  // console.log(response.data);
+  return response.data;
+}
 const bookingService = {
   getBookingDetail,
   getBookings,
@@ -79,6 +108,9 @@ const bookingService = {
   getBookingsByGarage,
   getCountBookingStatus,
   getRevenueOfGagage,
+  updatePaid,
+  updateStt,
+  updateDetail
 };
 
 export default bookingService;

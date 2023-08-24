@@ -38,6 +38,15 @@ const addDetail = async (data) => {
   console.log("service response: ", response.data);
   return response.data;
 };
+const editDetail = async (data) => {
+  const response = await instance.put(
+    `${base_url}service-detail/update-service-detail`,
+    data,
+    instance
+  );
+  console.log("service response: ", response.data);
+  return response.data;
+};
 const getDetailServices = async (data) => {
   const response = await instance.get(
     `${base_url}service/detail-service/${data}`,
@@ -64,7 +73,8 @@ const serviceService = {
   getDetailServices,
   addDetail,
   editServices, 
-  getServiceByGarage
+  getServiceByGarage,
+  editDetail
 };
 
 export default serviceService;

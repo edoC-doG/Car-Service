@@ -3,36 +3,78 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "./../../firebase";
-import { addProducts, getProducts } from './../../features/product/productSlice';
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+const phoneRegExp =/^[0-9\- ]{8,14}$/
+const schema = yup
+  .object({
+    userFirstName: yup
+      .string()
+      .required("Không để trống tên của nhân viên !!!")
+      .min(1, "Tên của nhân viên quá ngắn !")
+      .max(25, "Tên của nhân viên quá dài!"),
+    userLastName: yup
+      .string()
+      .required("Không để trống họ và tên đệm của nhân viên !!!")
+      .min(1, "Họ và tên đệm quá ngắn !")
+      .max(25, "Họ và tên đệm quá dài !"),
+    userEmail: yup
+      .string()
+      .email("Email không hợp lệ !")
+      .required("Không được để trống email !!!"),
+    userPhone: yup
+      .string()
+      .matches(phoneRegExp, "Phone number is not valid")
+      .required("Không để trống số điện thoại !!!")
+      .max(12, "Số điện thoại không hợp lệ !"),
+    userPassword: yup
+      .string()
+      .required("Không để trống mật khẩu !!!")
+      .min(1, "Mật khẩu quá ngắn !")
+      .max(25, "Mật khẩu quá dài !"),
+    passwordConfirm: yup
+      .string()
+      .required("Không để trống xác nhận mật khẩu !!!")
+      .oneOf(
+        [yup.ref("userPassword")],
+        "Mật khẩu xác nhận không khớp với mặt khẩu đã nhập ! "
+      ),
+  })
+  .required();
 function ModalAdd(props) {
   const dispatch = useDispatch();
   const { show, handleClose } = props;
-  const [productName, setName] = useState("");
-  const [serviceId, setServiceId] = useState("");
-  const [productQuantity, setQuantity] = useState("");
-  const [productDetailDescription, setDes] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [productPrice, setPrice] = useState("");
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const file = imageAsFile; 
-    if (!file) return null
-    const storageRef = ref(storage, `files/${file.name}`);
-    uploadBytes(storageRef, file).then((snapshot) => {
-      e.target[0].value = "";
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        const ser = { productName, productImage:downloadURL, productQuantity, productDetailDescription, categoryId, serviceId,productPrice}
-        // dispatch(addProducts(ser))           
-      });
-    });
+  const [roleId, setRole] = useState("");
+  const onHandleSubmit = (data) => {
+    const user = {
+      roleId,
+    };
+    // dispatch(addProducts(ser))
   };
-  const [imageAsFile, setImageAsFile] = useState();
-  const handleImageAsFile = (e) => {
-    const img = e.target.files[0];
-    setImageAsFile(img);
-  };
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm({
+    defaultValues: {
+      userFirstName: "",
+      userLastName: "",
+      userPhone: "",
+      userEmail: "",
+      userPassword: "",
+      passwordConfirm: "",
+    },
+    resolver: yupResolver(schema),
+  });
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
   return (
     <div
       className="modal show"
@@ -51,81 +93,104 @@ function ModalAdd(props) {
         <Modal.Header closeButton>
           <Modal.Title>Thêm mới nhân viên</Modal.Title>
         </Modal.Header>
-          <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
             <Form.Group className="mb-3">
-              <Form.Label>Tên sản phẩm</Form.Label>
+              <Form.Label>Vai trò của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+              <Form.Select
+                className="form-control"
+                aria-label="Default select example"
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option>Chọn vai trò của nhân viên</option>
+                <option value={2}>Quản lý garage</option>
+                <option value={5}>Nhân viên</option>
+              </Form.Select>
+            </Form.Group>
+            <Row className="mb-3">
+              <Form.Group as={Col} md="6">
+                <Form.Label>Tên đệm của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+                <Form.Control
+                  type="text"
+                  autoFocus
+                  name="userFirstName"
+                  {...register("userFirstName")}
+                />
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  {errors.userFirstName?.message}
+                </p>
+              </Form.Group>
+              <Form.Group as={Col} md="6">
+                <Form.Label>Tên của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+                <Form.Control
+                  type="text"
+                  autoFocus
+                  name="userLastName"
+                  {...register("userLastName")}
+                />
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  {errors.userLastName?.message}
+                </p>
+              </Form.Group>
+            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label>Email của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={productName}
-                onChange={(e) => setName(e.target.value)}
+                name="userEmail"
+                {...register("userEmail")}
               />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.userEmail?.message}
+              </p>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Giá sản phẩm</Form.Label>
+              <Form.Label>SĐT của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={productPrice}
-                onChange={(e) => setPrice(e.target.value)}
+                name="userPhone"
+                {...register("userPhone")}
               />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.userPhone?.message}
+              </p>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Số lượng sản phẩm</Form.Label>
-              <Form.Control
-                type="text" 
-                autoFocus
-                value={productQuantity}
-                onChange={(e) => setQuantity(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Loại sản phẩm</Form.Label>
+              <Form.Label>Mật khẩu của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
+                name="userPassword"
+                {...register("userPassword")}
               />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.userPassword?.message}
+              </p>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Dịch vụ sản phẩm cung ứng</Form.Label>
+              <Form.Label>Xác nhân mật khẩu <span style={{ color: "red" }}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                value={serviceId}
-                onChange={(e) => setServiceId(e.target.value)}
+                name="passwordConfirm"
+                {...register("passwordConfirm")}
               />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.passwordConfirm?.message}
+              </p>
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Mô tả sản phẩm</Form.Label>
-              <Form.Control
-                type="text"                
-                autoFocus
-                value={productDetailDescription}
-                onChange={(e) => setDes(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Hình ảnh sản phẩm</Form.Label>
-              <Form.Control
-                type="file"
-                autoFocus
-                name="productImage"
-                onChange={handleImageAsFile}
-              />
-            </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Đóng
-              </Button>
-              <Button variant="success" type="submit">
-                Thêm mới
-              </Button>
-            </Modal.Footer>
-          </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Đóng
+            </Button>
+            <Button variant="success" type="submit" style={{color: "black"}}>
+              Thêm mới
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </div>
   );

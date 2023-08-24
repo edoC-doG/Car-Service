@@ -30,17 +30,19 @@ import ServiceDetail from "./pages/Service/ServiceDetail/ServiceDetail";
 import { useSelector } from "react-redux";
 import StaffDetail from "./pages/Staff/StaffDetail";
 import Staffs from "./pages/Staff/Staffs";
+import authService from "./features/auth/authService";
 
 function App() {
-  // const user = authService.getCurrentUser();
+  const user = authService.getCurrentUser();
+  const role = user?.roleName
   // const isAdmin = user && user.roleName === "Admin";
   // const isManager = user && user.roleName === "Manager";
 
   // console.log("isAdmin", user);
 
-  const authState = useSelector((state) => state.auth);
+  // const authState = useSelector((state) => state.auth);
 
-  const { user, isSuccess } = authState;
+  // const { user, isSuccess } = authState;
 
   return (
     <>
@@ -52,7 +54,7 @@ function App() {
             <Route path="login" element={<SignIn />} />
           </Route>
 
-          {user.roleName === "Admin" ? (
+          {role === "Admin" ? (
             <Route path="admin" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               {/* CUSTOMER */}
@@ -93,7 +95,7 @@ function App() {
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
             </Route>
-          ) : user.roleName === "Manager" ? (
+          ) : role === "Manager" ? (
             <Route path="manager" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               <Route path="review-list-customer" element={<Review />} />

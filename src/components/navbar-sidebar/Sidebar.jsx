@@ -9,12 +9,12 @@ import { Menu } from "antd";
 import "../../styles/sidebar.scss";
 import { sidebarDataAdmin, sidebarManager } from "../../data/data";
 import { useSelector } from "react-redux";
+import authService from "../../features/auth/authService";
 
 
 const Sidebar = () => {
-  const authState = useSelector((state) => state.auth);
-
-  const { user } = authState;
+  const user = authService.getCurrentUser();
+  const role = user?.roleName
 
 
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
@@ -85,7 +85,7 @@ const Sidebar = () => {
               navigate(key);
             }}
             inlineCollapsed={!activeMenu}
-            items={ user.roleName === 'Admin' ? sidebarDataAdmin : sidebarManager}
+            items={  role === 'Admin' ? sidebarDataAdmin : sidebarManager}
           />
         </div>
       </>

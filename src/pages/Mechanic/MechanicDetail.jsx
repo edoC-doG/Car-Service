@@ -48,11 +48,13 @@ const MechanicDetail = () => {
   }, [id]);
 
   const detail = useSelector((state) => state.mechanic.mechanic);
+
+
   console.log(detail);
   const infoMechanic = [
     {
       name: "Name",
-      content: `${detail.userDetailMechanicDto.fullName}`,
+      content: `${detail.userDetailMechanicDto?.fullName}`,
     },
     {
       name: "Address",

@@ -6,11 +6,12 @@ import Sidebar from "../components/navbar-sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import Notification from "../components/Notification";
 import { useSelector } from "react-redux";
+import authService from "../features/auth/authService";
 
 const MainLayout = () => {
   const { activeMenu, screenSize } = useStateContext();
-  const authState = useSelector((state) => state.auth);
-  const { user, isError, isSuccess, isLoading, message } = authState;
+  const user = authService.getCurrentUser();
+  const role = user?.roleName
 
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -18,7 +19,7 @@ const MainLayout = () => {
     type: "",
   });
     useEffect(()=>{
-      isSuccess &&  user?.roleName === "Admin" ? 
+      role === "Admin" ? 
       setNotify({
         isOpen: true,
         message: "Welcome to Admin",
@@ -32,7 +33,7 @@ const MainLayout = () => {
         
       });
      
-    },[]);
+    },[role]);
   return (
     <>
       <div>

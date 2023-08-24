@@ -72,6 +72,7 @@ const Services = () => {
   const serState = useSelector((state) => state.service);
   const { service, isError, isSuccessAdd, isLoading, message, isSuccess } =
     serState;
+    console.log(message)
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -86,10 +87,10 @@ const Services = () => {
   };
   useEffect(() => {
     getData();
-    if(isSuccessAdd ){
+    if(isSuccessAdd){
       setNotify({
         isOpen: true,
-        message: "Chi tiết dịch vụ được được thêm thành công",
+        message: "Thành Công",
         type: "success",
       })
       handleClose()

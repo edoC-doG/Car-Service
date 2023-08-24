@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployees } from "../../features/employee/employeeSlice";
 import ModalAdd from "./AddEmploye";
 import ModalEdit from "./ModalEdit";
+import Notification from "./../../components/Notification";
 
 const headCells = [
   { id: "userId", label: "ID" },
@@ -34,6 +35,8 @@ const headCells = [
 ];
 
 const Employees = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const roleUser = user?.roleName;
   const rows = [
     {
       id: 1,
@@ -79,14 +82,38 @@ const Employees = () => {
     title: "",
     subTitle: "",
   });
-
-  useEffect(() => {
+  //Call API List
+  const getData = () => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getEmployees(data));
-  }, [page, rowsPerPage]);
-
+  };
+  const empState = useSelector((state) => state.employee);
+  const { isSuccessAdd, message } = empState;
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  useEffect(() => {
+    getData();
+    if (isSuccessAdd) {
+      setNotify({
+        isOpen: true,
+        message: "Thành Công",
+        type: "success",
+      });
+      handleClose();
+    } else {
+      if (message?.status === 400) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      }
+    }
+  }, [page, rowsPerPage, isSuccessAdd, message]);
   const recordsEmployee = useSelector((state) => state.employee.employees);
-
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsEmployee,
@@ -169,18 +196,22 @@ const Employees = () => {
                           }
                         />
                       </TableCell>
-                      <TableCell sx={{ border: "none" }}>
-                        <div className="d-flex justify-content-center ">
-                          <Tooltip title="edit" arrow>
-                            <Link
-                              onClick={()=> handleEdit(item)}
-                              className="btn btn-outline--primary btn-sm edit"
-                            >
-                              <EditIcon fontSize="small" />
-                            </Link>
-                          </Tooltip>
-                        </div>
-                      </TableCell>
+                      {roleUser === "Admin" ? (
+                        <TableCell sx={{ border: "none" }}>
+                          <div className="d-flex justify-content-center ">
+                            <Tooltip title="edit" arrow>
+                              <Link
+                                onClick={() => handleEdit(item)}
+                                className="btn btn-outline--primary btn-sm edit"
+                              >
+                                <EditIcon fontSize="small" />
+                              </Link>
+                            </Tooltip>
+                          </div>
+                        </TableCell>
+                      ) : (
+                        <></>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -196,6 +227,7 @@ const Employees = () => {
         handleClose={handleClose}
         employEdit={employEdit}
       />
+      <Notification notify={notify} setNotify={setNotify} />
     </div>
   );
 };

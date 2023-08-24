@@ -83,7 +83,36 @@ export const getRevenueOfGagage = createAsyncThunk(
     }
   }
 );
-
+export const updatePaid  = createAsyncThunk(
+  "booking/updatePaid",
+  async (id, thunkAPI) => {
+    try {
+      return await bookingService.updatePaid (id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const updateStt  = createAsyncThunk(
+  "booking/updateSTT",
+  async (data, thunkAPI) => {
+    try {
+      return await bookingService.updateStt (data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const updateDetail = createAsyncThunk(
+  "booking/updateDetail",
+  async (data, thunkAPI) => {
+    try {
+      return await bookingService.updateDetail (data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -96,6 +125,7 @@ const initialState = {
   isError: false,
   isLoading: false,
   isSuccess: false,
+  isSuccessAdd: false,
   message: "",
   number: 0,
 };
@@ -114,6 +144,7 @@ export const bookingSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.bookings = action.payload.list;
         state.number = action.payload.count;
         state.message = "success";
@@ -148,6 +179,7 @@ export const bookingSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.booking = action.payload;
         state.garage = action.payload.garageBookingDto;
         state.customer = action.payload.customerBookingDto;
@@ -227,8 +259,54 @@ export const bookingSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-      
-
+      .addCase(updatePaid.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePaid.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = true;
+        state.message = "success";
+        state.isLoading = false;
+      })
+      .addCase(updatePaid.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(updateStt.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateStt.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = true;
+        state.message = "success";
+        state.isLoading = false;
+      })
+      .addCase(updateStt.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(updateDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateDetail.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = true;
+        state.message = "success";
+        state.isLoading = false;
+      })
+      .addCase(updateDetail.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
       .addCase(resetState, () => initialState);
 
   },

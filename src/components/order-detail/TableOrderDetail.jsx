@@ -14,9 +14,26 @@ import {
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
-const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, setOpen, open, key }) => {
+import EditIcon from "@mui/icons-material/Edit";
+import ModalDetail from './../../pages/Order/ModalDetail';
+const TableOrderDetail = (
+  {
+  detail,
+  booking,
+  TblContainer,
+  TblHead,
+  setBid,
+  bid,
+  setOpen,
+  open,
+  key,
+  setDetail,
+  detailService,
+  showDetail,
+  handleClose,
+  handleDetail
+}) => {
   return (
     <>
       {/* Table */}
@@ -26,7 +43,6 @@ const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, 
           <TableBody key={key}>
             {detail.map((item) => (
               <>
-              
                 <TableRow hover key={item.bookingDetailId}>
                   <TableCell sx={{ border: "none" }}>
                     <IconButton
@@ -69,7 +85,18 @@ const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, 
                   <TableCell sx={{ border: "none" }}>
                     {item.productCost}
                   </TableCell>
-                  
+                  <TableCell sx={{ border: "none" }}>
+                    <div className="d-flex justify-content-center gap-2">
+                      <Tooltip title=" Sửa" arrow>
+                        <Link
+                        onClick={()=> handleDetail(item.bookingDetailId)}
+                          className="btn btn-outline--primary btn-sm edit square-btn"
+                        >
+                          <EditIcon fontSize="small" />
+                        </Link>
+                      </Tooltip>
+                    </div>
+                  </TableCell>
                 </TableRow>
                 {/*  PRODUCT */}
                 {item.bookingDetailId === bid ? (
@@ -157,6 +184,7 @@ const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, 
           </dl>
         </div>
       </div>
+      <ModalDetail show={showDetail} handleClose={handleClose} detailService={detailService} />
     </>
   );
 };

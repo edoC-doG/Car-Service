@@ -8,7 +8,11 @@ import Row from "react-bootstrap/Row";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-const phoneRegExp =/^[0-9\- ]{8,14}$/
+import {
+  addEmployees,
+  getEmployees,
+} from "./../../features/employee/employeeSlice";
+const phoneRegExp = /^[0-9\- ]{8,14}$/;
 const schema = yup
   .object({
     userFirstName: yup
@@ -27,9 +31,9 @@ const schema = yup
       .required("Không được để trống email !!!"),
     userPhone: yup
       .string()
-      .matches(phoneRegExp, "Phone number is not valid")
+      .matches(phoneRegExp, "Số điện thoại không hợp lệ !!!")
       .required("Không để trống số điện thoại !!!")
-      .max(12, "Số điện thoại không hợp lệ !"),
+      .max(10, "Số điện thoại quá dài !"),
     userPassword: yup
       .string()
       .required("Không để trống mật khẩu !!!")
@@ -51,8 +55,15 @@ function ModalAdd(props) {
   const onHandleSubmit = (data) => {
     const user = {
       roleId,
+      userFirstName: data.userFirstName,
+      userLastName: data.userLastName,
+      userPhone: data.userPhone,
+      userEmail: data.userEmail,
+      userPassword: data.userPassword,
+      passwordConfirm: data.passwordConfirm,
     };
-    // dispatch(addProducts(ser))
+    console.log(user);
+    dispatch(addEmployees(user))
   };
   const {
     register,
@@ -70,11 +81,18 @@ function ModalAdd(props) {
     },
     resolver: yupResolver(schema),
   });
+  const user = JSON.parse(localStorage.getItem("user"));
+  const roleUser = user?.roleName;
   useEffect(() => {
+    if (roleUser === "Admin") {
+      setRole(2);
+    } else {
+      setRole(5);
+    }
     if (isSubmitSuccessful) {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSubmitSuccessful, reset, roleUser]);
   return (
     <div
       className="modal show"
@@ -95,21 +113,21 @@ function ModalAdd(props) {
         </Modal.Header>
         <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
-            <Form.Group className="mb-3">
-              <Form.Label>Vai trò của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
-              <Form.Select
-                className="form-control"
-                aria-label="Default select example"
+            <Form.Group className="mb-3" hidden={true}>
+              <Form.Label>ID</Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="roleId"
+                value={roleId}
                 onChange={(e) => setRole(e.target.value)}
-              >
-                <option>Chọn vai trò của nhân viên</option>
-                <option value={2}>Quản lý garage</option>
-                <option value={5}>Nhân viên</option>
-              </Form.Select>
+              />
             </Form.Group>
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
-                <Form.Label>Tên đệm của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+                <Form.Label>
+                  Tên đệm của nhân viên <span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
                   type="text"
                   autoFocus
@@ -121,7 +139,9 @@ function ModalAdd(props) {
                 </p>
               </Form.Group>
               <Form.Group as={Col} md="6">
-                <Form.Label>Tên của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+                <Form.Label>
+                  Tên của nhân viên <span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
                   type="text"
                   autoFocus
@@ -134,7 +154,9 @@ function ModalAdd(props) {
               </Form.Group>
             </Row>
             <Form.Group className="mb-3">
-              <Form.Label>Email của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+              <Form.Label>
+                Email của nhân viên <span style={{ color: "red" }}>*</span>
+              </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
@@ -146,7 +168,9 @@ function ModalAdd(props) {
               </p>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>SĐT của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+              <Form.Label>
+                SĐT của nhân viên <span style={{ color: "red" }}>*</span>
+              </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
@@ -158,7 +182,9 @@ function ModalAdd(props) {
               </p>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Mật khẩu của nhân viên <span style={{ color: "red" }}>*</span></Form.Label>
+              <Form.Label>
+                Mật khẩu của nhân viên <span style={{ color: "red" }}>*</span>
+              </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
@@ -170,7 +196,9 @@ function ModalAdd(props) {
               </p>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Xác nhân mật khẩu <span style={{ color: "red" }}>*</span></Form.Label>
+              <Form.Label>
+                Xác nhân mật khẩu <span style={{ color: "red" }}>*</span>
+              </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
@@ -186,7 +214,7 @@ function ModalAdd(props) {
             <Button variant="secondary" onClick={handleClose}>
               Đóng
             </Button>
-            <Button variant="success" type="submit" style={{color: "black"}}>
+            <Button variant="success" type="submit" style={{ color: "black" }}>
               Thêm mới
             </Button>
           </Modal.Footer>

@@ -12,15 +12,25 @@ export const getEmployees = createAsyncThunk(
     }
   }
 );
+export const addEmployees = createAsyncThunk(
+  "employee/addEmp",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      return await employeeService.addEmployees(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
-
-
 const initialState = {
     employees: [],
     review: {},
     isError: false,
     isLoading: false,
     isSuccess: false,
+    isSuccessAdd: false,
     message: "",
     number: 0,
   };
@@ -46,8 +56,24 @@ const initialState = {
           state.isSuccess = false;
           state.message = action.payload.response.data;
           state.isLoading = false;
+          state.isSuccessAdd = false;
         })
-        .addCase(resetState, () => initialState);
+        //Add
+        .addCase(addEmployees.pending, (state) => {
+          state.isLoading = true;
+        })
+        .addCase(addEmployees.fulfilled, (state, action) => {
+          state.isError = false;
+          state.isLoading = false;
+          state.isSuccessAdd = true;
+          state.message = "success";
+        })
+        .addCase(addEmployees.rejected, (state, action) => {
+          state.isError = true;
+          state.isSuccessAdd = false;
+          state.message = action.payload.response.data;
+          state.isLoading = false;
+        })
     },
   });
 

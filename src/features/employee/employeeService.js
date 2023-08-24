@@ -8,11 +8,21 @@ const getEmployees = async (page) => {
     instance
   );
   // console.log("employee: ", response.data);
-
   return response.data;
 };
+
+const addEmployees = async (data) => {
+  const response = await instance.post(
+    `${base_url}/user/create-user`, data,
+    instance
+  );
+  console.log("employee: ", response.data);
+  return response.data;
+};
+
 const employeeService = {
   getEmployees,
+  addEmployees
 };
 
 export default employeeService;

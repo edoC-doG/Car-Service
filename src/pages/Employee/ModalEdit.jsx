@@ -16,23 +16,7 @@ function ModalEdit(props) {
   const [userPhone, setPhone] = useState("");
   const [roleName, setRole] = useState("");
   const handleSubmit = (e) => {
-    e.preventDefault();
-    //   const file = imageAsFile;
-    //   if (!file) return null
-    //   const storageRef = ref(storage, `files/${file.name}`);
-    //   uploadBytes(storageRef, file).then((snapshot) => {
-    //     e.target[0].value = "";
-    //     getDownloadURL(snapshot.ref).then((downloadURL) => {
-    const ser = { userId, fullName, userEmail, userPhone, roleName };
-    //   dispatch(editProducts(ser))
-    console.log(ser);
-    // });
-    //   });
-  };
-  const [imageAsFile, setImageAsFile] = useState();
-  const handleImageAsFile = (e) => {
-    const img = e.target.files[0];
-    setImageAsFile(img);
+   
   };
   useEffect(() => {
     if (show) {

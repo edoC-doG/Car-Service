@@ -22,7 +22,7 @@ const headCells = [
   { id: "fullName", label: "Name" },
 
   { id: "userEmail", label: "Email" },
-  { id: "phone", label: "Phone" },
+  { id: "userPhone", label: "Phone" },
   { id: "roleName", label: "Role" },
   { id: "userStatus", label: "Status" },
   {
@@ -184,7 +184,7 @@ const Employees = () => {
                         <div>{item.userEmail}</div>
                       </TableCell>
                       <TableCell sx={{ border: "none" }}>
-                        <div>{item.phone}</div>
+                        <div>{item.userPhone}</div>
                       </TableCell>
                       <TableCell sx={{ border: "none" }}>
                         <div>{item.roleDto.roleName}</div>

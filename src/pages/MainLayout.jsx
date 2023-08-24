@@ -32,7 +32,7 @@ const MainLayout = () => {
         
       });
      
-    },[])
+    },[]);
   return (
     <>
       <div>
@@ -75,7 +75,7 @@ const MainLayout = () => {
               <NavBar />
             </div>
             <div>
-              {/* {themeSettings && <ThemeSettings />} */}
+            
               <Outlet />
             </div>
           </div>

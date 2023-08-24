@@ -27,59 +27,40 @@ export const userProfileData = [
 
 export const themeColors = [];
 
-export const sidebarData = [
+
+export const sidebarManager = [
   // Dashboard
   {
     key: "",
     icon: <AiOutlineHome />,
-    roles: ["Admin", "Manager"],
     label: "Dashboard",
+    
   },
-  // USER MANAGEMENT
+
   {
     key: "um",
     icon: null,
     label: "USER MANAGEMENT",
     type: "group",
-    roles: ["Admin", "Manager"],
+    
     children: [
       {
         key: "customer",
         icon: <GiWallet />,
         label: "Customers",
-        roles: ["Admin", "Manager"],
+       
         children: [
           {
             key: "list-customer",
             icon: <RxDotFilled />,
             label: "Customer List",
-            roles: ["Admin", "Manager"],
+           
           },
           {
             key: "review-list-customer",
             icon: <RxDotFilled />,
             label: "Customer Reviews",
-            roles: ["Admin", "Manager"],
-          },
-        ],
-      },
-      {
-        key: "garage",
-        icon: <FaUserShield />,
-        label: "All Garages",
-        roles: ["Admin"],
-        children: [
-          {
-            key: "add-garage",
-            icon: <RxDotFilled />,
-            label: "Add New Garage",
-            roles: ["Admin"],
-          },
-          {
-            key: "garage-list",
-            icon: <RxDotFilled />,
-            roles: ["Admin"],
-            label: "Garage List",
+            
           },
         ],
       },
@@ -87,19 +68,222 @@ export const sidebarData = [
         key: "mechanic",
         icon: <RiUserSettingsFill />,
         label: "Mechanics",
-        roles: ["Admin", "Manager"],
+        
         children: [
           {
             key: "add-new-mechanics",
             icon: <RxDotFilled />,
             label: "Add New",
-            roles: ["Manager"],
+           
           },
           {
             key: "list-mechanics",
-            roles: ["Admin", "Manager"],
             icon: <RxDotFilled />,
             label: "List",
+            
+          },
+        ],
+      },
+      {
+        key: "staff",
+        icon: <RiUserSettingsFill />,
+        label: "Staffs",
+        
+        children: [
+          {
+            key: "add-new-staff",
+            icon: <RxDotFilled />,
+            label: "Add New",
+           
+          },
+          {
+            key: "list-staffs",
+            icon: <RxDotFilled />,
+            label: "List Staff",
+           
+          },
+        ],
+      }, 
+    ],
+  },
+
+   // Product & Service Management
+   {
+    key: "psm",
+    icon: null,
+    label: "PRODUCT & SERVICE MANAGEMENT",
+    type: "group",
+  
+    children: [
+     
+
+      {
+        key: "product",
+        icon: <GiRadarSweep />,
+        label: "Products",
+        children: [
+          {
+            key: "list-product",
+            icon: <RxDotFilled />,
+            label: "List Product",
+           
+          },
+        ],
+      },
+      {
+        key: "service",
+        icon: <GrServices />,
+        label: "Services",
+        
+        children: [
+          {
+            key: "list-service",
+            icon: <RxDotFilled />,
+            label: "List Service",
+           
+          },
+        ],
+      },
+    ],
+  },
+  {
+    key: "om",
+    icon: null,
+    label: "ORDER MANAGEMENT",
+    type: "group",
+  
+    children: [
+      {
+        key: "order",
+        icon: <GiMechanicGarage />,
+        label: "Orders",
+      
+        children: [
+          {
+            key: "all-orders",
+            icon: <RxDotFilled />,
+            label: "All",
+            
+          },
+          {
+            key: "pending-order",
+            icon: <RxDotFilled />,
+            label: "Pending",
+            
+          },
+          {
+            key: "confirm-order",
+            icon: <RxDotFilled />,
+            label: "Confirmed",
+            
+          },
+          {
+            key: "cancel-order",
+            icon: <RxDotFilled />,
+            label: "Canceled",
+            
+          },
+        ],
+      },
+    ],
+  },
+
+]
+
+
+export const sidebarDataAdmin = [
+  // Dashboard
+  {
+    key: "",
+    icon: <AiOutlineHome />,
+    label: "Dashboard",
+   
+  },
+  // USER MANAGEMENT
+  {
+    key: "um",
+    icon: null,
+    label: "USER MANAGEMENT",
+    type: "group",
+   
+    children: [
+      {
+        key: "customer",
+        icon: <GiWallet />,
+        label: "Customers",
+        
+        children: [
+          {
+            key: "list-customer",
+            icon: <RxDotFilled />,
+            label: "Customer List",
+            
+          },
+          {
+            key: "review-list-customer",
+            icon: <RxDotFilled />,
+            label: "Customer Reviews",
+            
+          },
+        ],
+      },
+      {
+        key: "garage",
+        icon: <FaUserShield />,
+        label: "All Garages",
+        
+        children: [
+          {
+            key: "add-garage",
+            icon: <RxDotFilled />,
+            label: "Add New Garage",
+            
+          },
+          {
+            key: "garage-list",
+            icon: <RxDotFilled />,
+            label: "Garage List",
+            
+          },
+        ],
+      },
+      {
+        key: "mechanic",
+        icon: <RiUserSettingsFill />,
+        label: "Mechanics",
+        
+        children: [
+          {
+            key: "add-new-mechanics",
+            icon: <RxDotFilled />,
+            label: "Add New",
+           
+          },
+          {
+            key: "list-mechanics",
+            icon: <RxDotFilled />,
+            label: "List",
+            
+          },
+        ],
+      },
+      {
+        key: "staff",
+        icon: <RiUserSettingsFill />,
+        label: "Staffs",
+       
+        children: [
+          {
+            key: "add-new-staff",
+            icon: <RxDotFilled />,
+            label: "Add New",
+           
+          },
+          {
+            key: "list-staffs",
+            icon: <RxDotFilled />,
+            label: "List Staff",
+           
           },
         ],
       },
@@ -107,13 +291,13 @@ export const sidebarData = [
         key: "employee",
         icon: <GrUserAdmin />,
         label: "Employees",
-        roles: ["Admin"],
+       
         children: [
           {
             key: "list-employee",
-            roles: ["Admin"],
             icon: <RxDotFilled />,
             label: "Employees",
+            
           },
         ],
       },
@@ -126,19 +310,19 @@ export const sidebarData = [
     icon: null,
     label: "PRODUCT & SERVICE MANAGEMENT",
     type: "group",
-    roles: ["Admin"],
+    roles: ["Admin", "Manager"],
     children: [
       {
         key: "category",
         icon: <MdFilterList />,
-        roles: ["Admin"],
         label: "Category Setup",
+        roles: ["Admin"],
         children: [
           {
             key: "view-category",
             icon: <RxDotFilled />,
-            roles: ["Admin"],
             label: "Categories Product",
+            roles: ["Admin"],
           },
         ],
       },
@@ -146,34 +330,34 @@ export const sidebarData = [
       {
         key: "product",
         icon: <GiRadarSweep />,
-        roles: ["Admin"],
         label: "In Garage Products",
+        roles: ["Admin", "Manager"],
         children: [
           {
             key: "list-product",
             icon: <RxDotFilled />,
-            roles: ["Admin"],
             label: "List Product",
+            roles: ["Admin", "Manager"],
           },
         ],
       },
       {
         key: "service",
         icon: <GrServices />,
-        roles: ["Admin"],
         label: "Services",
+        roles: ["Admin", "Manager"],
         children: [
           {
             key: "add-new-service",
             icon: <RxDotFilled />,
-            roles: ["Admin"],
             label: "Add New Service",
+            roles: ["Admin"],
           },
           {
             key: "list-service",
             icon: <RxDotFilled />,
-            roles: ["Admin"],
             label: "List Service",
+            roles: ["Admin", "Manager"],
           },
         ],
       },
@@ -186,19 +370,19 @@ export const sidebarData = [
     icon: null,
     label: "PROMOTION MANAGEMENT",
     type: "group",
-    roles: ["Admin"],
+    
     children: [
       {
         key: "offer",
         icon: <RiCouponLine />,
         label: "Offers & Deals",
-        roles: ["Admin"],
+       
         children: [
           {
             key: "coupon",
             icon: <RxDotFilled />,
-            roles: ["Admin"],
             label: "Coupon",
+            
           },
         ],
       },
@@ -210,43 +394,47 @@ export const sidebarData = [
     icon: null,
     label: "ORDER MANAGEMENT",
     type: "group",
-    roles: ["Admin", "Manager"],
+    
     children: [
       {
         key: "order",
         icon: <GiMechanicGarage />,
         label: "Orders",
-        roles: ["Admin", "Manager"],
+        
         children: [
           {
             key: "all-orders",
             icon: <RxDotFilled />,
             label: "All",
-            roles: ["Admin", "Manager"],
+            
           },
           {
             key: "pending-order",
             icon: <RxDotFilled />,
             label: "Pending",
-            roles: ["Admin", "Manager"],
+            
           },
           {
             key: "confirm-order",
             icon: <RxDotFilled />,
             label: "Confirmed",
-            roles: ["Admin", "Manager"],
+            
           },
           {
             key: "cancel-order",
             icon: <RxDotFilled />,
             label: "Canceled",
-            roles: ["Admin", "Manager"],
+            
           },
         ],
       },
     ],
   },
-  // Reports & Analysis
+  
+];
+
+
+// Reports & Analysis
   // {
   //   key: "r&a",
   //   icon: null,
@@ -277,4 +465,3 @@ export const sidebarData = [
   //     },
   //   ],
   // },
-];

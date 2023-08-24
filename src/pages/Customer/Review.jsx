@@ -21,6 +21,7 @@ import {
   getReviews,
   updateReviewStatus,
   resetState,
+  getReviewsByGarage
 } from "../../features/review/reviewSlice";
 
 const headCells = [
@@ -62,13 +63,19 @@ const Review = () => {
     (state) => state.review.isSuccessAction
   );
 
-  useEffect(()=> {
-    document.title ="List of cutomers's review"
-  },[])
+  useEffect(() => {
+    document.title = "List of cutomers's review";
+  }, []);
 
+  const authState = useSelector((state) => state.auth);
+
+  const { user } = authState;
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-    dispatch(getReviews(data));
+    
+    if (user.roleName === "Admin") dispatch(getReviews(data));
+    
+    else if(user.roleName === "Manager") dispatch(getReviewsByGarage({...data, garageId: user.garageId }))
 
     if (updateSuccessAction) {
       dispatch(resetState());
@@ -85,6 +92,7 @@ const Review = () => {
   }, [page, rowsPerPage, updateSuccessAction]);
 
   const recordsReview = useSelector((state) => state.review.reviews);
+ 
 
   const count = useSelector((state) => state.review.number);
   const handleChange = (event) => {

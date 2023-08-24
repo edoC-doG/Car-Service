@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import bookingService from "./bookingService";
 
 export const getBookings = createAsyncThunk(
@@ -83,6 +83,8 @@ export const getRevenueOfGagage = createAsyncThunk(
     }
   }
 );
+
+export const resetState = createAction("Reset_all");
 
 const initialState = {
   bookings: [],
@@ -225,7 +227,10 @@ export const bookingSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-      ;
+      
+
+      .addCase(resetState, () => initialState);
+
   },
 });
 

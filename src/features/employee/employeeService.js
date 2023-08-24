@@ -7,7 +7,7 @@ const getEmployees = async (page) => {
     page,
     instance
   );
-  console.log("employee: ", response.data);
+  // console.log("employee: ", response.data);
   return response.data;
 };
 

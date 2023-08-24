@@ -6,7 +6,7 @@ export const getBookings = createAsyncThunk(
 
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await bookingService.getBookings(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -19,7 +19,7 @@ export const getBookingsStatus = createAsyncThunk(
 
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await bookingService.getBookingStatus(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

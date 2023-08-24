@@ -18,7 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getBookings,
   getCountBookingStatus,
+  getBookingsByGarage,
 } from "../../features/book/bookingSlide";
+import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "bookingCode", label: "Code" },
@@ -37,6 +39,11 @@ const headCells = [
   },
 ];
 const All = () => {
+  useEffect(() => {
+    document.title = "Danh sách Tất cả Đơn hàng";
+  }, []);
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -53,8 +60,14 @@ const All = () => {
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-    dispatch(getBookings(data));
-    dispatch(getCountBookingStatus());
+
+    if (role === "Admin") {
+      dispatch(getBookings(data));
+      dispatch(getCountBookingStatus());
+    } else if (role === "Manager") {
+      dispatch(getBookingsByGarage({ ...data, garageId: user?.garageId }));
+      dispatch(getCountBookingStatus(user?.garageId));
+    }
   }, [page, rowsPerPage]);
 
   const recordsBooking = useSelector((state) => state.booking.bookings);
@@ -162,16 +175,6 @@ const All = () => {
                   }}
                 />
               </div>
-              <div className="col-sm-4 col-md-6 col-lg-8 d-flex justify-content-sm-end">
-                <Button
-                  variant="outlined"
-                  className="export-button"
-                  size="large"
-                  onClick={() => {}}
-                  startIcon={<FileDownloadIcon fontSize="small" />}
-                  text="Export"
-                />
-              </div>
             </div>
           </div>
 
@@ -183,31 +186,40 @@ const All = () => {
                 {recordsAfterPagingAndSorting().map((item) => (
                   <TableRow hover key={item.bookingId}>
                     <TableCell sx={{ border: "none" }}>
-                      <Link
-                        to={`/admin/orders/details/${item.bookingId}`}
-                        className="title-color hover-c1"
-                      >
-                        {item.bookingCode}
-                      </Link>
+                      {role === "Admin" ? (
+                        <Link
+                          to={`/admin/orders/details/${item.bookingId}`}
+                          className="title-color hover-c1"
+                        >
+                          {item.bookingCode}
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`/manager/orders/details/${item.bookingId}`}
+                          className="title-color hover-c1"
+                        >
+                          {item.bookingCode}
+                        </Link>
+                      )}
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <div>{item.bookingTime}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <strong className="text-body text-capitalize">
-                        {item.userBookingDto.fullName}
+                        {item.userBookingDto?.fullName}
                       </strong>
 
                       <Link
-                        to={`tel:${item.userBookingDto.userPhone}`}
+                        to={`tel:${item.userBookingDto?.userPhone}`}
                         className="d-block title-color"
                       >
-                        {item.userBookingDto.userPhone}
+                        {item.userBookingDto?.userPhone}
                       </Link>
                     </TableCell>
 
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.garageBookingDto.garageName}</div>
+                      <div>{item.garageBookingDto?.garageName}</div>
                     </TableCell>
 
                     <TableCell sx={{ border: "none", textAlign: "right" }}>
@@ -240,6 +252,8 @@ const All = () => {
                             ? "badge badge-soft-info fz-12"
                             : item.bookingStatus === "Completed"
                             ? "badge badge-soft-success fz-12"
+                            : item.bookingStatus === "CheckOut"
+                            ? "badge badge-soft-success fz-12"
                             : "badge badge-danger fz-12"
                         }
                       >
@@ -249,12 +263,21 @@ const All = () => {
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
                         <Tooltip title="view" arrow>
-                          <Link
-                            to={`/admin/orders/details/${item.bookingId}`}
-                            className="btn btn-outline--primary btn-sm edit square-btn"
-                          >
-                            <VisibilityIcon fontSize="small" />
-                          </Link>
+                          {role === "Admin" ? (
+                            <Link
+                              to={`/admin/orders/details/${item.bookingId}`}
+                              className="btn btn-outline--primary btn-sm edit square-btn"
+                            >
+                              <VisibilityIcon fontSize="small" />
+                            </Link>
+                          ) : (
+                            <Link
+                              to={`/manager/orders/details/${item.bookingId}`}
+                              className="btn btn-outline--primary btn-sm edit square-btn"
+                            >
+                              <VisibilityIcon fontSize="small" />
+                            </Link>
+                          )}
                         </Tooltip>
                         <Tooltip title="Invoice" arrow>
                           <Link className="btn btn-outline-info btn-sm square-btn">

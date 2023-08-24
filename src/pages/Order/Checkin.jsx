@@ -34,9 +34,9 @@ const headCells = [
   },
 ];
 
-const Pending = () => {
+const Checkin = () => {
   useEffect(() => {
-    document.title = "Danh sách đơn hàng đang chờ";
+    document.title = "Danh sách đơn hàng đang check";
   }, []);
   const user = authService.getCurrentUser();
   const role = user?.roleName;
@@ -61,7 +61,7 @@ const Pending = () => {
     const data = {
       pageIndex: page + 1,
       pageSize: rowsPerPage,
-      bookingStatus: 0,
+      bookingStatus: 2,
     };
     if(role === "Admin") dispatch(getBookingsStatus(data));
 
@@ -89,7 +89,7 @@ const Pending = () => {
         icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
         size={20}
         alt="all"
-        title="Pending Orders"
+        title="Check In Orders"
         number={count}
       />
 
@@ -213,7 +213,7 @@ const Pending = () => {
                     </TableCell>
 
                     <TableCell sx={{ border: "none", textAlign: "center" }}>
-                      <span className="badge badge-soft-danger fz-12">
+                      <span className="badge badge-soft-warning fz-12">
                         {item.bookingStatus}
                       </span>
                     </TableCell>
@@ -253,4 +253,4 @@ const Pending = () => {
   );
 };
 
-export default Pending;
+export default Checkin;

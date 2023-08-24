@@ -15,20 +15,32 @@ import {
 } from "../../features/mechanic/mechanicSlice";
 import ActionButton from "../ActionButton";
 import Popup from "../Popup";
+import authService from "../../features/auth/authService";
 
+const headCells = [
+  { id: "fullName", label: "Name" },
+  { id: "contact", label: "Contact Info" },
+  { id: "userStatus", label: "Status" },
+
+  {
+    id: "action",
+    label: "Action",
+    disableSorting: true,
+
+    align: "center",
+  },
+];
 const MechanicsOrder = ({ bookingId, status }) => {
-  const headCells = [
+  useEffect(() => {
+    document.title = "Danh sách thợ thực hiện";
+  }, []);
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
+
+  const headCellsCompleted = [
     { id: "fullName", label: "Name" },
     { id: "contact", label: "Contact Info" },
     { id: "userStatus", label: "Status" },
-    status !== "Completed" ?
-    {
-      id: "action",
-      label: "Action",
-      disableSorting: true,
-  
-      align: "center",
-    } : {disableSorting: true,},
   ];
   const dispatch = useDispatch();
   const [openPopup, setOpenPopup] = useState(false);
@@ -70,7 +82,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
 
   const { TblContainer, TblHead, recordsAfterPagingAndSorting } = useTableV2(
     recordsMechanic,
-    headCells,
+    status === "Completed" || status ===  "Canceled" ? headCellsCompleted : headCells,
     filterFn
   );
 
@@ -81,17 +93,21 @@ const MechanicsOrder = ({ bookingId, status }) => {
     <>
       <div className="row justify-content-end align-items-end mb-4">
         <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-          <div className="d-flex justify-content-sm-end">
-            <Button
-              className="add-button"
-              size="small"
-              onClick={() => {
-                setOpenPopup(true);
-              }}
-              startIcon={<AddIcon fontSize="small" />}
-              text="Add new"
-            />
-          </div>
+          {role === "Manager" ? (
+            <div className="d-flex justify-content-sm-end">
+              <Button
+                className="add-button"
+                size="small"
+                onClick={() => {
+                  setOpenPopup(true);
+                }}
+                startIcon={<AddIcon fontSize="small" />}
+                text="Add new"
+              />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 
@@ -109,17 +125,17 @@ const MechanicsOrder = ({ bookingId, status }) => {
                         to={`/admin/mechanic/detail/${item.userId}`}
                         className="title-color"
                       >
-                        {item.userMechanicDto.fullName}
+                        {item.userMechanicDto?.fullName}
                       </Link>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell sx={{ border: "none" }}>
                   <Link
-                    to={`tel:${item.userMechanicDto.userPhone}`}
+                    to={`tel:${item.userMechanicDto?.userPhone}`}
                     className="title-color hover-c1 lowercase "
                   >
-                    {item.userMechanicDto.userPhone}
+                    {item.userMechanicDto?.userPhone}
                   </Link>
                 </TableCell>
                 {/* status */}
@@ -127,20 +143,20 @@ const MechanicsOrder = ({ bookingId, status }) => {
                 <TableCell sx={{ border: "none" }}>
                   <span
                     className={
-                      item.userMechanicDto.userStatus === 1
+                      item.userMechanicDto?.userStatus === 1
                         ? "badge badge-soft-success fz-12"
                         : "badge badge-soft-danger fz-12"
                     }
                   >
-                    {item.userMechanicDto.userStatus === 1
+                    {item.userMechanicDto?.userStatus === 1
                       ? "Activate"
                       : "Disable"}
                   </span>
                 </TableCell>
 
                 {/* Action */}
-                {status === "Completed" ? (
-                  ""
+                {status === "Completed" ||  status ===  "Canceled"  ? (
+                 <></>
                 ) : (
                   <TableCell sx={{ border: "none" }}>
                     <div className="d-flex justify-content-center gap-2">

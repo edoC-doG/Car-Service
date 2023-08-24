@@ -48,16 +48,16 @@ const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, 
                     <div className="media align-items-center gap-3">
                       <img
                         className="avatar avatar-60 rounded"
-                        src={item.serviceBookingDetailDto.serviceImage}
+                        src={item.serviceBookingDetailDto?.serviceImage}
                         alt="Description"
                       />
                       <div>
                         <h6 className="title-color font-semibold">
-                          {item.serviceBookingDetailDto.serviceName}
+                          {item.serviceBookingDetailDto?.serviceName}
                         </h6>
                         <div>
                           <strong>Price:</strong>{" "}
-                          {item.serviceBookingDetailDto.servicePrice}
+                          {item.serviceBookingDetailDto?.servicePrice}
                         </div>
                       </div>
                     </div>
@@ -117,10 +117,10 @@ const TableOrderDetail = ({ detail, booking, TblContainer,TblHead, setBid, bid, 
                           <TableBody>
                             <TableRow hover>
                               <TableCell sx={{ border: "none" }}>
-                                {item.productBookingDetailDto.productId}
+                                {item.productBookingDetailDto?.productId}
                               </TableCell>
                               <TableCell sx={{ border: "none" }}>
-                                {item.productBookingDetailDto.productName}
+                                {item.productBookingDetailDto?.productName}
                               </TableCell>
                             </TableRow>
                           </TableBody>

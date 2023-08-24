@@ -6,6 +6,7 @@ const login = async (user) => {
 
    if (response.data) {
     const data =  {
+        garageId: response.data.garageId,
         userEmail: response.data.userEmail,
         userFullName:  response.data.userFullName, 
         userImage: response.data.userImage,

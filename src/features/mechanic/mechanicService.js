@@ -14,11 +14,10 @@ const getMechanics = async (page) => {
   };
 
   const getMechanicDetail = async (id) => {
-    const response = await instance.post(
+    const response = await instance.get(
       `${base_url}mechanic/detail-mechanic/${id}`,
       instance
     );
-    // console.log("mechanic response: ", response.data);
   
     return response.data;
   };
@@ -26,7 +25,7 @@ const getMechanics = async (page) => {
 
   const updateMechanicStatus = async (data) => {
     const response = await instance.put(
-      `${base_url}mechanic/update-mechanic-status`,
+      `${base_url}user/update-status`,
       data,
       instance
     );
@@ -36,7 +35,7 @@ const getMechanics = async (page) => {
   
 const getMechanicsByBookingId = async (id) => {
   const response = await instance.get(
-    `${base_url}mechanic/ffilter-mechanic-by-booking/${id}`,
+    `${base_url}mechanic/ffilter-mechanic-by-booking/${id}`, 
     
     instance
   );

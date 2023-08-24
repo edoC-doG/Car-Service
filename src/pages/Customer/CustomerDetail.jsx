@@ -74,6 +74,7 @@ const CustomerDetail = () => {
 
   const cars = useSelector((state) => state.customer.cars);
 
+  console.log(detail);
   // console.log("car", detail.userCustomerDto);
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -136,98 +137,89 @@ const CustomerDetail = () => {
             </div>
             {/* Table */}
             <div className="table-responsive">
-              <TblContainer>
-                <TblHead />
+              {recordsBookingOfCustomer.length > 0 ? (
+                <>
+                  <TblContainer>
+                    <TblHead />
+                    <TableBody>
+                      {recordsAfterPagingAndSorting().map((item) => (
+                        <TableRow hover key={item.bookingId}>
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            <Link
+                              to={`/admin/orders/details/${item.bookingId}`}
+                              className="title-color hover-c1 d-flex align-items-center gap-3 "
+                            >
+                              {item.bookingId}
+                            </Link>
+                          </TableCell>
+                          {/* Order ID */}
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            {item.bookingCode}
+                          </TableCell>
 
-                <TableBody>
-                  {recordsAfterPagingAndSorting().length > 0 ? (
-                    recordsAfterPagingAndSorting().map((item) => (
-                      <TableRow hover key={item.bookingId}>
-                        <TableCell sx={{ border: "none", fontSize: "14px" }}>
-                          <Link
-                            to={`/admin/orders/details/${item.bookingId}`}
-                            className="title-color hover-c1 d-flex align-items-center gap-3 "
-                          >
-                            {item.bookingId}
-                          </Link>
-                        </TableCell>
-                        {/* Order ID */}
-                        <TableCell sx={{ border: "none", fontSize: "14px" }}>
-                          {item.bookingCode}
-                        </TableCell>
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            <div
+                              className={
+                                item.bookingStatus === "Pending"
+                                  ? "badge badge-soft-danger fz-12"
+                                  : item.bookingStatus === "CheckIn"
+                                  ? "badge badge-soft-warning fz-12"
+                                  : item.bookingStatus === "Processing"
+                                  ? "badge badge-soft-info fz-12"
+                                  : item.bookingStatus === "Completed"
+                                  ? "badge badge-soft-success fz-12"
+                                  : "badge badge-danger fz-12"
+                              }
+                            >
+                              {item.bookingStatus}
+                            </div>
+                          </TableCell>
+                          {/* Total */}
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            {item.totalPrice}
+                          </TableCell>
 
-                        <TableCell sx={{ border: "none", fontSize: "14px" }}>
-                          <div
-                            className={
-                              item.bookingStatus === "Pending"
-                                ? "badge badge-soft-danger fz-12"
-                                : item.bookingStatus === "CheckIn"
-                                ? "badge badge-soft-warning fz-12"
-                                : item.bookingStatus === "Processing"
-                                ? "badge badge-soft-info fz-12"
-                                : item.bookingStatus === "Completed"
-                                ? "badge badge-soft-success fz-12"
-                                : "badge badge-danger fz-12"
-                            }
-                          >
-                            {item.bookingStatus}
-                          </div>
-                        </TableCell>
-                        {/* Total */}
-                        <TableCell sx={{ border: "none", fontSize: "14px" }}>
-                          {/* <CurrencyFormat
-                            value={item.totalPrice}
-                            displayType={"text"}
-                            format={"###,###,### VND"}
-                          /> */}
-                          {item.totalPrice}
-                        </TableCell>
+                          {/* Action */}
+                          <TableCell sx={{ border: "none" }}>
+                            <div className="d-flex justify-content-center gap-2">
+                              <Tooltip title="view" arrow>
+                                <Link
+                                  to={`/admin/orders/details/${item.bookingId}`}
+                                  className="btn btn-outline--primary btn-sm edit square-btn"
+                                >
+                                  <VisibilityIcon fontSize="small" />
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </TblContainer>
+                  <TblPagination />
+                </>
+              ):
+              (
+                <>
+                  <TblContainer>
+                    <TblHead />
+                  </TblContainer>
 
-                        {/* Action */}
-                        <TableCell sx={{ border: "none" }}>
-                          <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="view" arrow>
-                              <Link
-                                to={`/admin/orders/details/${item.bookingId}`}
-                                className="btn btn-outline--primary btn-sm edit square-btn"
-                              >
-                                <VisibilityIcon fontSize="small" />
-                              </Link>
-                            </Tooltip>
-                            <Tooltip title="Invoice" arrow>
-                              <Link className="btn btn-outline-info btn-sm square-btn">
-                                <DownloadForOfflineSharpIcon fontSize="small" />
-                              </Link>
-                            </Tooltip>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <div className="text-center p-4">
-                          <img
-                            src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
-                            alt=""
-                            className="mb-3 w-160"
-                          />
-                          <p>Không có dữ liệu</p>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </TblContainer>
+                  <div className="flex flex-col items-center p-4">
+                    <img
+                      src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
+                      alt=""
+                      className="mb-3 w-160"
+                    />
+                  <p>No Data</p>
+                   
+                  </div>
+                </>
+              )
+              
+              }
+             
 
-              <TblPagination />
               <div className="card-footer"></div>
             </div>
           </div>

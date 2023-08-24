@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import employeeService from "./employeeService";
 
 export const getEmployees = createAsyncThunk(
@@ -12,6 +12,7 @@ export const getEmployees = createAsyncThunk(
     }
   }
 );
+export const resetState = createAction("Reset_all");
 
 
 const initialState = {
@@ -45,7 +46,8 @@ const initialState = {
           state.isSuccess = false;
           state.message = action.payload.response.data;
           state.isLoading = false;
-        });
+        })
+        .addCase(resetState, () => initialState);
     },
   });
 

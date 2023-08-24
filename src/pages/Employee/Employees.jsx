@@ -21,7 +21,7 @@ const headCells = [
   { id: "fullName", label: "Name" },
 
   { id: "userEmail", label: "Email" },
-  { id: "phone", label: "Phone" },
+  { id: "userPhone", label: "Phone" },
   { id: "roleName", label: "Role" },
   { id: "userStatus", label: "Status" },
   {
@@ -34,24 +34,7 @@ const headCells = [
 ];
 
 const Employees = () => {
-  const rows = [
-    {
-      id: 1,
-      name: "admin",
-      email: "admin@gmail.com",
-      phone: "02921323131",
-      role: "Admin",
-      status: true,
-    },
-    {
-      id: 2,
-      name: "Hello world",
-      email: "test@gmail.com",
-      phone: "02921323131",
-      role: "customer service",
-      status: true,
-    },
-  ];
+
   //Add
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => {
@@ -157,7 +140,7 @@ const Employees = () => {
                         <div>{item.userEmail}</div>
                       </TableCell>
                       <TableCell sx={{ border: "none" }}>
-                        <div>{item.phone}</div>
+                        <div>{item.userPhone}</div>
                       </TableCell>
                       <TableCell sx={{ border: "none" }}>
                         <div>{item.roleDto.roleName}</div>

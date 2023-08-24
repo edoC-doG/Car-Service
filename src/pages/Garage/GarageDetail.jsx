@@ -3,11 +3,12 @@ import Header from "../../components/Header";
 import React, { useState } from "react";
 import Garage from "../../components/Garage&Owner/Garage";
 import Order from "../../components/Garage&Owner/Order";
-import Service from "../../components/Garage&Owner/Service";
+
 import ReviewGarage from "../../components/Garage&Owner/ReviewGarage";
 import { useSelector } from "react-redux";
+import EmployeeByGarage from "../../components/Garage&Owner/EmployeeGarage";
 
-const tabs = ["garage", "order", "review"];
+const tabs = ["garage", "order", "review", "employee"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
   const navigate = useNavigate();  
@@ -69,12 +70,11 @@ const OwnerDetail = () => {
       {type === "garage" && <Garage />}
       {/* Order */}
       {type === "order" && <Order />}
-      {/*  */}
-      {/* Service
-      {type === "service" && <Service />} */}
-      {/*  */}
+      
       {/* Review */}
       {type === "review" && <ReviewGarage />}
+      {/* Employee */}
+      {type === "employee" && <EmployeeByGarage />}
     </div>
   );
 };

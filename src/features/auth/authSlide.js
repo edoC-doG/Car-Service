@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import authService from "./authService";
 
- const initialState = {
+const initialState = {
     user: {},
     isError : false,
     isLoading : false, 
     isSuccess: false, 
     message: {},
- }
+}
 
 
- export const login = createAsyncThunk(
-    "auth/login" , 
+export const login = createAsyncThunk(
+    "auth/login" ,  
     async (userData, thunkAPI) => {
         try {        
             // console.log(userData);
@@ -20,12 +20,11 @@ import authService from "./authService";
             return thunkAPI.rejectWithValue(error)
         }
     }
- )
+)
 
- export const resetState = createAction("Reset_all_auth");
+export const resetStateAuth = createAction("Reset_all_auth");
 
-
- export const authSlice = createSlice ({
+export const authSlice = createSlice ({
     name: "auth", 
     initialState: initialState,
     reducers: {},
@@ -48,7 +47,7 @@ import authService from "./authService";
             state.isLoading = false;
         })  
 
-        .addCase(resetState, () => initialState);
+        .addCase(resetStateAuth, () => initialState);
         
     }
  })

@@ -66,10 +66,9 @@ const MechanicsOrder = ({ bookingId, status }) => {
     (state) => state.mechanic.isSuccessAction
   );
 
-  const addMechanicBooking = (mechanicId,resetForm) => {
-
-    console.log(mechanicId, bookingId );
-    dispatch(AddMechanicsByBooking({bookingId, mechanicId}))
+  const addMechanicBooking = (mechanicId, resetForm) => {
+    console.log(mechanicId, bookingId);
+    dispatch(AddMechanicsByBooking({ bookingId, mechanicId }));
     resetForm();
     setOpenPopup(false);
     if (updateSuccessAction) {
@@ -81,7 +80,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
         type: "success",
       });
     }
-  }
+  };
 
   useEffect(() => {
     dispatch(getMechanicsByBookingId(bookingId));
@@ -102,18 +101,21 @@ const MechanicsOrder = ({ bookingId, status }) => {
 
   const { TblContainer, TblHead, recordsAfterPagingAndSorting } = useTableV2(
     recordsMechanic,
-    status === "Completed" || status ===  "Canceled" ? headCellsCompleted : headCells,
+    status === "Completed" || status === "Canceled"
+      ? headCellsCompleted
+      : headCells,
     filterFn
   );
 
   const handleDeleteMechanic = (mechanicId) => {
     dispatch(updateMechanicByBookingId({ bookingId: bookingId, mechanicId }));
   };
+  // console.log(status);
   return (
     <>
-      <div className="row justify-content-end align-items-end mb-4">
-        <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-          {role === "Manager" ? (
+      {role === "Manager" && (status !== "Completed" || status !== "Canceled") ? (
+        <div className="row justify-content-end align-items-end mb-4">
+          <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
             <div className="d-flex justify-content-sm-end">
               <Button
                 className="add-button"
@@ -125,11 +127,11 @@ const MechanicsOrder = ({ bookingId, status }) => {
                 text="Add new"
               />
             </div>
-          ) : (
-            <></>
-          )}
+          </div>
         </div>
-      </div>
+      ) :
+        <></>
+      }
 
       {/* Table */}
       <div className="table-responsive">
@@ -175,8 +177,8 @@ const MechanicsOrder = ({ bookingId, status }) => {
                 </TableCell>
 
                 {/* Action */}
-                {status === "Completed" ||  status ===  "Canceled"  ? (
-                 <></>
+                {status === "Completed" || status === "Canceled" ? (
+                  <></>
                 ) : (
                   <TableCell sx={{ border: "none" }}>
                     <div className="d-flex justify-content-center gap-2">
@@ -206,7 +208,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
         </TblContainer>
       </div>
       <Popup title="Add new" openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        <AddNewMechanicForBooking  addMechanicBooking={addMechanicBooking}/>
+        <AddNewMechanicForBooking addMechanicBooking={addMechanicBooking} />
       </Popup>
       <ConfirmDialog
         confirmDialog={confirmDialog}

@@ -93,7 +93,7 @@ const Confirm = () => {
 
       <div className="card">
         {/* Filter */}
-        <div className="card">
+        {/* <div className="card">
           <div className="card-body">
             <form>
               <div className="row gy-3 gx-2">
@@ -122,7 +122,7 @@ const Confirm = () => {
               </div>
             </form>
           </div>
-        </div>
+        </div> */}
         <div className="card-body">
           {/* Search and export */}
           <div className="px-3 py-4 light-bg">

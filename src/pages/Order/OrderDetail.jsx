@@ -156,7 +156,7 @@ const OrderDetail = () => {
                       size="large"
                       onClick={() => handleStt(orderId)}
                       startIcon={<NoteAltIcon fontSize="small" />}
-                      text="Print Invoice"
+                      text="Thay đổi trạng thái đơn hàng"
                     />
                   </div>
                   {/* Status */}

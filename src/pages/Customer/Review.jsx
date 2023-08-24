@@ -160,7 +160,7 @@ const Review = () => {
               />
             </div>
           </div>
-          <form>
+          {/* <form>
             <div className="row gy-3 align-items-end">
               <div className="col-md-4">
                 <div>
@@ -176,7 +176,7 @@ const Review = () => {
               </div>
 
               {/* Customer */}
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="customer" className="title-color d-flex">
                     Choose Customer
@@ -187,11 +187,11 @@ const Review = () => {
                     onChange={handleChange}
                   />
                 </div>
-              </div>
+              </div> */}
 
               {/* Status */}
 
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="status" className="title-color d-flex">
                     Choose status
@@ -202,10 +202,10 @@ const Review = () => {
                     onChange={handleChange}
                   />
                 </div>
-              </div>
+              </div> */}
 
               {/* From */}
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="from" className="title-color d-flex">
                     From
@@ -214,16 +214,16 @@ const Review = () => {
                 </div>
               </div>
               {/* To */}
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="to" className="title-color d-flex">
                     To
                   </label>
                   <Date />
                 </div>
-              </div>
+              </div> */} 
               {/* Filter */}
-              <div className="col-md-2">
+              {/* <div className="col-md-2">
                 <Button
                   fullWidth
                   className="add-button"
@@ -245,7 +245,7 @@ const Review = () => {
                 />
               </div>
             </div>
-          </form>
+          </form> */} 
         </div>
 
         <div className="card mt-4">

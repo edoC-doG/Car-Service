@@ -80,10 +80,33 @@ export const getMechanicsByGarage = createAsyncThunk(
   }
 );
 
+export const getMechanicsAvaliable = createAsyncThunk(
+  "mechanic/mechanic-avaliable",
+  async (id, thunkAPI) => {
+    try {
+      return await mechanicService.getMechanicsAvaliable(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const AddMechanicsByBooking = createAsyncThunk(
+  "mechanic/add-mechanic-avaliable-booking",
+  async (data, thunkAPI) => {
+    try {
+      return await mechanicService.AddMechanicsByBooking(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
   mechanics: [],
+  mechanicsAvaliable: [],
   mechanic: {},
   isError: false,
   isLoading: false,
@@ -211,6 +234,38 @@ export const mechanicSlice = createSlice({
       .addCase(getMechanicsByGarage.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getMechanicsAvaliable.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMechanicsAvaliable.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.mechanicsAvaliable = action.payload;
+        state.message = "success";
+      })
+      .addCase(getMechanicsAvaliable.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(AddMechanicsByBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(AddMechanicsByBooking.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAction = true;
+        state.mechanic = action.payload;
+        state.message = "success";
+      })
+      .addCase(AddMechanicsByBooking.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAction = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
       })

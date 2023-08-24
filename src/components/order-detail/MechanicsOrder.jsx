@@ -11,11 +11,13 @@ import ConfirmDialog from "../ConfirmDialog";
 import {
   getMechanicsByBookingId,
   updateMechanicByBookingId,
+  AddMechanicsByBooking,
   resetState,
 } from "../../features/mechanic/mechanicSlice";
 import ActionButton from "../ActionButton";
 import Popup from "../Popup";
 import authService from "../../features/auth/authService";
+import AddNewMechanicForBooking from "./AddNewMechanicForBooking";
 
 const headCells = [
   { id: "fullName", label: "Name" },
@@ -63,6 +65,24 @@ const MechanicsOrder = ({ bookingId, status }) => {
   const updateSuccessAction = useSelector(
     (state) => state.mechanic.isSuccessAction
   );
+
+  const addMechanicBooking = (mechanicId,resetForm) => {
+
+    console.log(mechanicId, bookingId );
+    dispatch(AddMechanicsByBooking({bookingId, mechanicId}))
+    resetForm();
+    setOpenPopup(false);
+    if (updateSuccessAction) {
+      dispatch(resetState());
+      dispatch(getMechanicsByBookingId(bookingId));
+      setNotify({
+        isOpen: true,
+        message: "Add Successfully",
+        type: "success",
+      });
+    }
+  }
+
   useEffect(() => {
     dispatch(getMechanicsByBookingId(bookingId));
     if (updateSuccessAction) {
@@ -186,7 +206,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
         </TblContainer>
       </div>
       <Popup title="Add new" openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        Continue ....
+        <AddNewMechanicForBooking  addMechanicBooking={addMechanicBooking}/>
       </Popup>
       <ConfirmDialog
         confirmDialog={confirmDialog}

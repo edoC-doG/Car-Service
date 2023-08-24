@@ -21,6 +21,7 @@ import ModalEdit from "./ModalEdit";
 import {
   getMechanics,
   resetState,
+  updateMechanicStatus
 } from "../../features/mechanic/mechanicSlice";
 import useTableV2 from "../../components/table/useTableV2";
 
@@ -95,13 +96,14 @@ const Mechanics = () => {
     }
   }, [page, updateSuccessAction, rowsPerPage]);
 
-  const handleSwitchToggle = (mechanicId, userStatus) => {
-    // Dispatch the updateCustomerStatus action
-    console.log(mechanicId, userStatus);
-    // dispatch(updateCustomerStatus({ userId, userStatus }));
+  const handleSwitchToggle = (userId, userStatus) => {
+    dispatch(updateMechanicStatus({ userId, userStatus }));
   };
   const recordsMechanic = useSelector((state) => state.mechanic.mechanics);
   const count = useSelector((state) => state.mechanic.number);
+
+
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsMechanic,
@@ -211,7 +213,7 @@ const Mechanics = () => {
                           }}
                         >
                           <Link
-                            to={`/admin/orders/list/all?mechanic_id=${item.mechanicId}`}
+                            to={`/admin/orders/list/all?mechanic_id=${item.userId}`}
                             className="btn text--primary bg-soft--primary font-weight-bold px-3 py-1 mb-0 fz-12"
                           >
                             {item.totalOrders}
@@ -234,7 +236,7 @@ const Mechanics = () => {
                                 subTitle: "You can't undo this operation",
                                 onConfirm: () => {
                                   handleSwitchToggle(
-                                    item.mechanicId,
+                                    item.userId,
                                     event.target.checked ? 1 : 0
                                   );
                                 },

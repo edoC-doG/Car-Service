@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import categoryService from "./categoryService";
 
 
@@ -14,6 +14,9 @@ async (data, thunkAPI) => {
   }
 
 ) 
+
+export const resetState = createAction("Reset_all");
+
 
 const initialState = {
   
@@ -51,6 +54,8 @@ const initialState = {
           state.message = action.payload.response.data;
           state.isLoading = false;
         })
+
+        .addCase(resetState, () => initialState);
 
     },
 

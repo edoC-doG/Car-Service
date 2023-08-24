@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import authService from "../features/auth/authService.js";
 import { useDispatch } from "react-redux";
-import { resetState } from "../features/auth/authSlide";
+import { resetStateAuth } from "../features/auth/authSlide";
+import { resetState } from "../features/customer/customerSilde";
 
 const LogOut = ({
   icon,
@@ -15,14 +16,16 @@ const LogOut = ({
   borderRadius,
   width,
 }) => {
+  
   const dispatch = useDispatch();
   const { setIsClicked, initialState } = useStateContext();
   const navigate = useNavigate();
   const user = authService.getCurrentUser();
   function handleLogout() {
     user !== null ? authService.logout() : navigate("/login");
+    dispatch(resetStateAuth());
     dispatch(resetState());
-    navigate("/login");
+    navigate("/");
 
     setIsClicked(initialState);
   }

@@ -10,14 +10,14 @@ import AddOwner from "./pages/Garage/AddOwner";
 import Garages from "./pages/Garage/Garages";
 import AddMechanic from "./pages/Mechanic/AddMechanic";
 import Mechanics from "./pages/Mechanic/Mechanics";
-import Chat from "./pages/Mechanic/MechanicDetail";
+import MechanicDetail from "./pages/Mechanic/MechanicDetail";
 import Employees from "./pages/Employee/Employees";
 import Categories from "./pages/Category/Categories";
 import Products from "./pages/Product/Products";
 import AddService from "./pages/Service/AddService";
 import Services from "./pages/Service/Services";
 import Coupon from "./pages/Coupon/Coupon";
-import Authorization from './pages/Errors/401'
+import Authorization from "./pages/Errors/401";
 import All from "./pages/Order/All";
 import Pending from "./pages/Order/Pending";
 import Confirm from "./pages/Order/Confirm";
@@ -28,6 +28,8 @@ import GarageDetail from "./pages/Garage/GarageDetail";
 
 import ServiceDetail from "./pages/Service/ServiceDetail/ServiceDetail";
 import { useSelector } from "react-redux";
+import StaffDetail from "./pages/Staff/StaffDetail";
+import Staffs from "./pages/Staff/Staffs";
 
 function App() {
   // const user = authService.getCurrentUser();
@@ -38,8 +40,7 @@ function App() {
 
   const authState = useSelector((state) => state.auth);
 
-  const { user, isSuccess} = authState;
-
+  const { user, isSuccess } = authState;
 
   return (
     <>
@@ -51,7 +52,7 @@ function App() {
             <Route path="login" element={<SignIn />} />
           </Route>
 
-          {  user.roleName === "Admin" ? (
+          {user.roleName === "Admin" ? (
             <Route path="admin" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
               {/* CUSTOMER */}
@@ -66,7 +67,7 @@ function App() {
               {/* MECHANIC */}
               <Route path="add-new-mechanics" element={<AddMechanic />} />
               <Route path="list-mechanics" element={<Mechanics />} />
-              <Route path="mechanic/detail/:id" element={<Chat />} />
+              <Route path="mechanic/detail/:id" element={<MechanicDetail />} />
 
               {/* EMPLOYEE */}
               <Route path="list-employee" element={<Employees />} />
@@ -91,23 +92,32 @@ function App() {
               <Route path="pending-order" element={<Pending />} />
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
-              {/* REPORT */}
-              {/* <Route path="admin-report" element={<AdminReport />} />
-  
-                <Route
-                  path="order-transaction-list"
-                  element={<TransactionReport />}
-                />
-                <Route path="owner-report" element={<OnwerReport />} /> */}
             </Route>
-          ) :   user.roleName === "Manager" ? (
+          ) : user.roleName === "Manager" ? (
             <Route path="manager" element={<MainLayout />}>
               <Route path="" element={<Dashboard />} />
+              <Route path="review-list-customer" element={<Review />} />
+              {/* MECHANIC */}
+              <Route path="add-new-mechanics" element={<AddMechanic />} />
+              <Route path="list-mechanics" element={<Mechanics />} />
+              <Route path="mechanic/detail/:id" element={<MechanicDetail />} />
+               {/* Staff */}
+               {/* <Route path="add-new-staff" element={<AddMechanic />} /> */}
+              <Route path="list-staffs" element={<Staffs />} />
+              <Route path="staff/detail/:id" element={<StaffDetail />} />
+              {/* PRODUCT */}
+              <Route path="list-product" element={<Products />} />
+              {/* ORDER */}
+              <Route path="all-orders" element={<All />} />
+              <Route path="orders/details/:id" element={<OrderDetail />} />
+
+              <Route path="pending-order" element={<Pending />} />
+              <Route path="confirm-order" element={<Confirm />} />
+              <Route path="cancel-order" element={<Cancel />} />
               {/* Viết route cho manager  */}
             </Route>
           ) : (
-            <Route path="401" element={<Authorization />} />
-             
+            <Route path="403" element={<Authorization />} />
           )}
         </Routes>
       </BrowserRouter>

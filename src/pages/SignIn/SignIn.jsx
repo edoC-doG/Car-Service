@@ -6,10 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import { login, resetState } from "../../features/auth/authSlide";
+import { login, resetStateAuth } from "../../features/auth/authSlide";
 import Notification from "../../components/Notification";
-import authService from "../../features/auth/authService";
-
 
 // validation input text
 let schema = yup.object().shape({
@@ -17,10 +15,8 @@ let schema = yup.object().shape({
 });
 
 const SignIn = () => {
-  const currentUser = authService.getCurrentUser();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -48,7 +44,7 @@ const SignIn = () => {
     document.title = "Sign In";
   }, []);
   const authState = useSelector((state) => state.auth);
-
+   
   const { user, isError, isSuccess, isLoading, message } = authState;
   useEffect(() => {
     if (isSuccess) {
@@ -63,12 +59,11 @@ const SignIn = () => {
           type: "error",
         });
         navigate("");
-        dispatch(resetState());
+        dispatch(resetStateAuth());
       }
     }
   }, [isSuccess, message]);
 
-  // console.log(user);
 
   return (
     <>

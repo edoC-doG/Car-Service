@@ -74,7 +74,6 @@ const initialState = {
           state.message = action.payload.response.data;
           state.isLoading = false;
         })
-        .addCase(resetState, () => initialState);
     },
   });
 

@@ -98,9 +98,8 @@ const SignIn = () => {
                   <form>
                     <div className="text-center">
                       <div className="mb-5">
-                        <h1 className="display-4">Sign in</h1>
+                        <h1 className="display-4">Đăng nhập</h1>
                         <br />
-                        <span>Welcome Admin</span>
                       </div>
                     </div>
                     {/* EMAIL INPUT */}

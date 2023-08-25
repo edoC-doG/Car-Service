@@ -98,8 +98,8 @@ const Service = () => {
                           {/* Action */}
                           <TableCell sx={{ border: "none" }}>
                             <div className="d-flex justify-content-center gap-2">
-                              <Tooltip title="view" arrow>
-                                <Tooltip title="edit" arrow>
+                              <Tooltip title="Chi tiết" arrow>
+                                <Tooltip title="Cập nhật" arrow>
                                   <Link
                                     to={`/admin/service/edit/${item.id}`}
                                     className="btn btn-outline--primary btn-sm edit"
@@ -115,8 +115,8 @@ const Service = () => {
                                     setConfirmDialog({
                                       isOpen: true,
                                       title:
-                                        "Are you sure to delete this record?",
-                                      subTitle: "You can't undo this operation",
+                                        "Bạn có chắc chắn muốn thay đổi trạng thái ?",
+                                      subTitle: "Bạn không thể hoàn tác thao tác này",
                                       onConfirm: () => {},
                                     });
                                   }}

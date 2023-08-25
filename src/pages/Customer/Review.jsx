@@ -28,22 +28,22 @@ import authService from "../../features/auth/authService";
 const headCells = [
   { id: "reviewId", label: "ID" },
   { id: "garageReviewDto", label: "Garage" },
-  { id: "fullName", label: "Customer Name" },
-  { id: "rating", label: "Rating" },
-  { id: "content", label: "Review" },
-  { id: "createdAt", label: "Date" },
+  { id: "fullName", label: "Tên KH" },
+  { id: "rating", label: "Đánh giá" },
+  { id: "content", label: "Nội dung" },
+  { id: "createdAt", label: "Ngày viết" },
 
-  { id: "reviewStatus", label: "Status" },
+  { id: "reviewStatus", label: "Trạng thái" },
 ];
 
 const headCellsManager = [
   { id: "reviewId", label: "ID" },
-  { id: "fullName", label: "Customer Name" },
-  { id: "rating", label: "Rating" },
-  { id: "content", label: "Review" },
-  { id: "createdAt", label: "Date" },
+  { id: "fullName", label: "Tên KH" },
+  { id: "rating", label: "Đánh giá" },
+  { id: "content", label: "Nội dung" },
+  { id: "createdAt", label: "Ngày viết" },
 
-  { id: "reviewStatus", label: "Status" },
+  { id: "reviewStatus", label: "Trạng thái" },
 ];
 
 const Review = () => {
@@ -134,13 +134,13 @@ const Review = () => {
           icon="https://6valley.6amtech.com/public/assets/back-end/img/customer_review.png"
           size={20}
           alt="review"
-          title="Customer Reviews"
+          title="Đánh giá của Khách hàng"
         />
         <div className="card card-body">
           <div className="row border-bottom pb-3 align-items-center mb-4">
             <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
               <h5 className="text-capitalize d-flex gap-1 font-semibold">
-                Review Table
+                Danh sách đánh giá
                 <span className="badge badge-soft-dark radius-50 fz-12">
                   {count}
                 </span>
@@ -148,7 +148,7 @@ const Review = () => {
             </div>
             <div className="col-sm-8 col-md-6 col-lg-4">
               <Search
-                label="Search here"
+                label="Tìm kiếm"
                 onChange={() => {}}
                 InputProps={{
                   startAdornment: (
@@ -165,7 +165,7 @@ const Review = () => {
               <div className="col-md-4">
                 <div>
                   <label htmlFor="product" className="title-color d-flex">
-                    Choose Service
+                    Lọc dịch vụ
                   </label>
                   <Select
                     title={"--Select service--"}
@@ -179,7 +179,7 @@ const Review = () => {
               {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="customer" className="title-color d-flex">
-                    Choose Customer
+                    Lọc Khách Hàng
                   </label>
                   <Select
                     title={"--Select customer--"}
@@ -194,7 +194,7 @@ const Review = () => {
               {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="status" className="title-color d-flex">
-                    Choose status
+                    Lọc trạng thái
                   </label>
                   <Select
                     title={"--Select status--"}
@@ -208,7 +208,7 @@ const Review = () => {
               {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="from" className="title-color d-flex">
-                    From
+                    Bắt đầu
                   </label>
                   <Date />
                 </div>
@@ -217,7 +217,7 @@ const Review = () => {
               {/* <div className="col-md-4">
                 <div>
                   <label htmlFor="to" className="title-color d-flex">
-                    To
+                    Tới
                   </label>
                   <Date />
                 </div>
@@ -230,7 +230,7 @@ const Review = () => {
                   size="large"
                   onClick={() => {}}
                   startIcon={<MdFilterList fontSize="small" />}
-                  text="Filter"
+                  text="Lọc dữ liệu"
                 />
               </div>
               <div className="col-md-2">
@@ -241,7 +241,7 @@ const Review = () => {
                   size="large"
                   onClick={() => {}}
                   startIcon={<FileDownloadIcon fontSize="small" />}
-                  text="Export"
+                  text="Xuất dữ liệu"
                 />
               </div>
             </div>
@@ -294,8 +294,8 @@ const Review = () => {
                         onChange={(event) => {
                           setConfirmDialog({
                             isOpen: true,
-                            title: "Are you sure to change status this record?",
-                            subTitle: "You can't undo this operation",
+                            title: "Bạn có chắc chắn muốn thay đôi trạng thái?",
+                            subTitle: "Bạn không thể hoàn tác thao tác này",
                             onConfirm: () => {
                               handleSwitchToggle(
                                 item.reviewId,

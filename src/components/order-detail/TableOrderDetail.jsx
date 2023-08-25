@@ -117,7 +117,7 @@ const TableOrderDetail = (
                       >
                         <Box>
                           <Typography variant="h6" gutterBottom component="div">
-                            Product
+                            Sản phẩm
                           </Typography>
                         </Box>
                         <Table aria-label="purchases">
@@ -137,7 +137,7 @@ const TableOrderDetail = (
                                   fontWeight: 600,
                                 }}
                               >
-                                Name
+                                Sản phẩm đính kèm
                               </TableCell>
                             </TableRow>
                           </TableHead>
@@ -169,14 +169,14 @@ const TableOrderDetail = (
       <div className="row justify-content-md-end mb-3">
         <div className="col-md-9 col-lg-8">
           <dl className="row gy-1 text-sm-right">
-            <dt className="col-5">Repair costs</dt>
+            <dt className="col-5">Giá đơn hàng tạm tính</dt>
             <dd className="col-6 title-color">
               <strong>{booking.totalPrice}</strong>
             </dd>
-            <dt className="col-5">Coupon discount</dt>
+            <dt className="col-5">Giá trị khuyến mãi</dt>
             <dd className="col-6 title-color">- 0.0</dd>
             <dt className="col-5 ">
-              <strong>Total</strong>
+              <strong>Giá đơn hàng cuối cùng</strong>
             </dt>
             <dd className="col-6 title-color">
               <strong>{booking.totalPrice}</strong>

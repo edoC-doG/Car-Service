@@ -17,14 +17,13 @@ import { getDetailCustomer } from "../../features/customer/customerSilde";
 import { getBookingsCustomer } from "../../features/book/bookingSlide";
 const headCells = [
   { id: "bookingId", label: "ID" },
-
-  { id: "bookingCode", label: "Code" },
-  { id: "bookingStatus", label: "Status" },
-  { id: "totalPrice", label: "Total" },
+  { id: "bookingCode", label: "Mã đơn hàng" },
+  { id: "bookingStatus", label: "Trạng thái" },
+  { id: "totalPrice", label: "Giá trị đơn hàng" },
 
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -98,15 +97,15 @@ const CustomerDetail = () => {
               icon="https://6valley.6amtech.com/public/assets/back-end/img/customer.png"
               size={20}
               alt="customer"
-              title="Customer Details"
+              title="Chi tiết khách hàng"
             />
             <div className="d-sm-flex align-align-items-sm-center">
               <h3 className="page-header-title text-lg font-semibold">
-                Customer ID #{id}
+                ID Khách hàng #{id}
               </h3>
               <span className="ml-2 ml-sm-3 ">
                 <EventNoteIcon fontSize="inherit" />
-                Join At: {detail.createdAt}
+                Bắt đầu đơn hàng : {detail.createdAt}
               </span>
             </div>
           </div>
@@ -121,7 +120,7 @@ const CustomerDetail = () => {
               <div className="row justify-content-end">
                 <div className="col-auto">
                   <Search
-                    label="Search here"
+                    label="Tìm kiếm"
                     onChange={() => {}}
                     size="small"
                     InputProps={{
@@ -171,7 +170,19 @@ const CustomerDetail = () => {
                                   : "badge badge-danger fz-12"
                               }
                             >
-                              {item.bookingStatus}
+                              {" "}
+                              {item.bookingStatus === "Pending"
+                                ? "Sắp tới"
+                                : item.bookingStatus === "CheckIn"
+                                ? "Đang làm"
+                                : item.bookingStatus === "Completed"
+                                ? "Hoàn thành"
+                                : item.bookingStatus === "CheckOut"
+                                ? "Đã xong"
+                                :item.bookingStatus === "Processing"
+                                ? "Đang tiến hành"
+                                : "Hủy Bỏ"
+                              }{" "}
                             </div>
                           </TableCell>
                           {/* Total */}
@@ -182,7 +193,7 @@ const CustomerDetail = () => {
                           {/* Action */}
                           <TableCell sx={{ border: "none" }}>
                             <div className="d-flex justify-content-center gap-2">
-                              <Tooltip title="view" arrow>
+                              <Tooltip title="Chi tiết" arrow>
                                 <Link
                                   to={`/admin/orders/details/${item.bookingId}`}
                                   className="btn btn-outline--primary btn-sm edit square-btn"
@@ -227,7 +238,7 @@ const CustomerDetail = () => {
         {/* Info of Customer */}
         <div className="col-lg-4  d-flex flex-column gap-3">
           <CustomerInfo
-            title={"Customer"}
+            title={"Khách hàng"}
             srcIcon={
               "https://6valley.6amtech.com/public/assets/back-end/img/seller-information.png"
             }
@@ -240,7 +251,7 @@ const CustomerDetail = () => {
           {cars.map((item) => (
             <CarInfo
               key={item.carLicensePlate}
-              title={"Car Info"}
+              title={"Thông tin xe"}
               brand={item.carBrand}
               model={item.carFuelType}
               plate={item.carLicensePlate}

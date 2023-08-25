@@ -25,15 +25,15 @@ import ModalEdit from "./ModalEdit";
 import authService from "../../features/auth/authService";
 const headCells = [
   { id: "productId", label: "ID" },
-  { id: "productImage", label: "Product Image", align: "left" },
+  { id: "productImage", label: "Hình ảnh sản phẩm", align: "left" },
 
-  { id: "productName", label: "Name" },
-  { id: "productPrice", label: "Price" },
-  { id: "productQuantity", label: "Quantity" },
-  { id: "productStatus", label: "Status" },
+  { id: "productName", label: "Tên sản phẩm" },
+  { id: "productPrice", label: "Giá tiền" },
+  { id: "productQuantity", label: "Số lượng" },
+  { id: "productStatus", label: "Trạng thái" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
     align: "center",
   },
@@ -154,7 +154,7 @@ const Products = () => {
         <Header
           icon="https://6valley.6amtech.com/public/assets/back-end/img/inhouse-product-list.png"
           alt="products"
-          title="In-Garage Product List"
+          title="Sản phẩm đính kèm "
           number={count}
         />
         <div className="row mt-4">
@@ -164,7 +164,7 @@ const Products = () => {
                 <div className="row  align-items-center">
                   <div className="col-lg-4">
                     <Search
-                      label="Search by Name "
+                      label="Tìm kiếm bằng tên sản phẩm "
                       onChange={() => {}}
                       size="small"
                       InputProps={{
@@ -184,7 +184,7 @@ const Products = () => {
                           size="large"
                           onClick={() => setShowModal(true)}
                           startIcon={<AddIcon fontSize="small" />}
-                          text="Add new Product"
+                          text="Thêm mới sản phẩm"
                         />
                       </div>
                     </div>
@@ -232,8 +232,8 @@ const Products = () => {
                                 setConfirmDialog({
                                   isOpen: true,
                                   title:
-                                    "Are you sure to change status this record?",
-                                  subTitle: "You can't undo this operation",
+                                    "Bạn có chắc chắn muốn thay đổi trạng thái?",
+                                  subTitle: "Bạn không thể hoàn tác thao tác này",
                                   onConfirm: () => {
                                     handleSwitchToggle(item.productId);
                                   },
@@ -258,7 +258,7 @@ const Products = () => {
                         {role === "Admin" ? (
                           <TableCell sx={{ border: "none" }}>
                             <div className="d-flex justify-content-center gap-2">
-                              <Tooltip title="edit" arrow>
+                              <Tooltip title="Cập nhật" arrow>
                                 <Link
                                   onClick={() => handleEdit(item)}
                                   className="btn btn-outline--primary btn-sm square-btn"

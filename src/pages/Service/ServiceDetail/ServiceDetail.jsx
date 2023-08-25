@@ -18,15 +18,15 @@ import ModalEdit from "./ModalEdit";
 import authService from "../../../features/auth/authService";
 const headCells = [
   { id: "serviceDetailId", label: "ID" },
-  { id: "servicePrice", label: "Price" },
+  { id: "servicePrice", label: "Giá thành" },
   {
     id: "minNumberOfCarLot",
-    label: "Min Car slot",
+    label: "Số ghế nhỏ nhất",
   },
-  { id: "maxNumberOfCarLot", label: "Max Car slot" },
+  { id: "maxNumberOfCarLot", label: "Số ghế tối đa" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
     align: "center",
   },
@@ -34,12 +34,12 @@ const headCells = [
 
 const headCellsManager = [
   { id: "serviceDetailId", label: "ID" },
-  { id: "servicePrice", label: "Price" },
+  { id: "servicePrice", label: "Giá thành" },
   {
     id: "minNumberOfCarLot",
-    label: "Min Car slot",
+    label: "Số ghế nhỏ nhất",
   },
-  { id: "maxNumberOfCarLot", label: "Max Car slot" },
+  { id: "maxNumberOfCarLot", label: "Số ghế tối đa" },
   
 ];
 
@@ -139,7 +139,7 @@ const ServiceDetail = () => {
           icon="https://i.imgur.com/1EPVEZN.png"
           size={25}
           alt="services"
-          title="List detail services"
+          title="Chi tiết dịch vụ"
           number={count}
         />
         <div className="row mt-4">
@@ -149,7 +149,7 @@ const ServiceDetail = () => {
                 <div className="d-flex flex-wrap gap-3 justify-content-between mb-4">
                   <div className="d-flex flex-column gap-3">
                     <h4 className="capitalize font-semibold">
-                      Service ID: #{id}
+                       ID Dịch vụ: #{id}
                     </h4>
                     <div className="d-flex flex-wrap gap-3">
                       <div className="d-flex align-items-center rounded ">
@@ -158,13 +158,13 @@ const ServiceDetail = () => {
                     </div>
                     <div className="d-flex flex-wrap gap-3">
                       <div className="payment-method d-flex justify-content-sm-end gap-3 capitalize">
-                        <span className="title-color">Service Duration: </span>
-                        <div>{serviceInfo.serviceDuration} Hour</div>
+                        <span className="title-color">Thời gian tối đa hoàn thành: </span>
+                        <div>{serviceInfo.serviceDuration} Giờ</div>
                       </div>
                     </div>
                     <div className="d-flex flex-wrap gap-3">
                       <div className="order-status d-flex justify-content-sm-end gap-3 text-capitalize">
-                        <span className="title-color">Status: </span>
+                        <span className="title-color">Trạng thái: </span>
                         <span className="font-weight-bold radius-50 d-flex align-items-center px-2 text-sm">
                           <span
                             className={
@@ -195,7 +195,7 @@ const ServiceDetail = () => {
                             navigate(-1);
                           }}
                           startIcon={<KeyboardArrowLeftIcon fontSize="small" />}
-                          text="Back"
+                          text="Trở về"
                         />
                       </div>
                       {role === "Admin" ? (
@@ -241,7 +241,7 @@ const ServiceDetail = () => {
                           {role === "Admin" ? (
                             <TableCell sx={{ border: "none" }}>
                               <div className="d-flex justify-content-center gap-2">
-                                <Tooltip title="edit" arrow>
+                                <Tooltip title="Cập nhật" arrow>
                                   <Link
                                     onClick={() => handleEdit(item)}
                                     className="btn btn-outline--primary btn-sm square-btn"
@@ -257,9 +257,9 @@ const ServiceDetail = () => {
                                       setConfirmDialog({
                                         isOpen: true,
                                         title:
-                                          "Are you sure to delete this record?",
+                                          "Bạn có chắc chắn muốn thay đổi trạng thái ?",
                                         subTitle:
-                                          "You can't undo this operation",
+                                          "Bạn không thể hoàn tác thao tác này",
                                         onConfirm: () => {},
                                       });
                                     }}

@@ -24,17 +24,17 @@ import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "serviceId", label: "ID" },
-  { id: "serviceImage", label: "Image" },
-  { id: "serviceName", label: "Service name" },
-  { id: "serviceGroup", label: "Category" },
+  { id: "serviceImage", label: "Hình ảnh" },
+  { id: "serviceName", label: "Tên dịch vụ" },
+  { id: "serviceGroup", label: "Loại dịch vụ" },
 
-  { id: "serviceUnit", label: "Unit" },
+  { id: "serviceUnit", label: "Số lần" },
 
-  { id: "serviceStatus", label: "Status" },
+  { id: "serviceStatus", label: "Trạng thái" },
 
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -154,7 +154,7 @@ const Services = () => {
           icon="https://i.imgur.com/1EPVEZN.png"
           size={25}
           alt=""
-          title="Service List"
+          title="Danh sách dịch vụ"
           number={count}
         />
         <div className="row mt-4">
@@ -164,7 +164,7 @@ const Services = () => {
                 <div className="row  align-items-center">
                   <div className="col-lg-4">
                     <Search
-                      label="Search by Name "
+                      label="Tìm kiếm "
                       onChange={() => {}}
                       size="small"
                       InputProps={{
@@ -184,7 +184,7 @@ const Services = () => {
                           size="large"
                           onClick={() => setShowModal(true)}
                           startIcon={<AddIcon fontSize="small" />}
-                          text="Add new Service"
+                          text="Thêm mới dịch vụ"
                         />
                       </div>
                     </div>
@@ -248,8 +248,8 @@ const Services = () => {
                                 setConfirmDialog({
                                   isOpen: true,
                                   title:
-                                    "Are you sure to change status this record?",
-                                  subTitle: "You can't undo this operation",
+                                    "Bạn có chắc chắn muốn thay đổi trạng thái?",
+                                  subTitle: "Bạn không thể hoàn tác thao tác này",
                                   onConfirm: () => {
                                     handleSwitchToggle(item.serviceId);
                                   },
@@ -273,7 +273,7 @@ const Services = () => {
 
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="view" arrow>
+                            <Tooltip title="Chi tiết" arrow>
                               {role === "Admin" ? (
                                 <Link
                                   to={`/admin/list-service/detail/${item.serviceId}`}
@@ -291,7 +291,7 @@ const Services = () => {
                               )}
                             </Tooltip>
                             {role === "Admin" ? (
-                              <Tooltip title="edit" arrow>
+                              <Tooltip title="Cập nhật" arrow>
                                 <Link
                                   onClick={() => handleEdit(item)}
                                   className="btn btn-outline--primary btn-sm square-btn"

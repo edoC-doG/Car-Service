@@ -23,13 +23,13 @@ import Notification from "../../components/Notification";
 
 const headCells = [
   { id: "userId", label: "ID" },
-  { id: "fullName", label: "Customer Name" },
-  { id: "userEmail", label: "Contact Info" },
-  { id: "totalBooking", label: "Total Booking" },
-  { id: "userStatus", label: "Block/Unblock" },
+  { id: "fullName", label: "Tên khách hàng" },
+  { id: "userEmail", label: "Thông tin khách hàng" },
+  { id: "totalBooking", label: "SL đơn hàng" },
+  { id: "userStatus", label: "Hoạt động/Cấm" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -115,7 +115,7 @@ const Customers = () => {
           icon="https://6valley.6amtech.com/public/assets/back-end/img/customer.png"
           size={20}
           alt="customer"
-          title="Customer List"
+          title="Danh sách khách hàng"
           number={count}
         />
         <div className="card">
@@ -123,7 +123,7 @@ const Customers = () => {
             <div className="row gy-2 align-items-center">
               <div className="col-sm-8 col-md-6 col-lg-4">
                 <Search
-                  label="Search by Name or Email or Phone"
+                  label="Tìm kiếm bằng tên và số điện thoại"
                   onChange={() => {}}
                   size="small"
                   InputProps={{
@@ -143,7 +143,7 @@ const Customers = () => {
                     size="large"
                     onClick={() => {}}
                     startIcon={<FileDownloadIcon fontSize="small" />}
-                    text="Export"
+                    text="Xuất dữ liệu"
                   />
                 </div>
               </div>
@@ -205,8 +205,8 @@ const Customers = () => {
                         onChange={(event) => {
                           setConfirmDialog({
                             isOpen: true,
-                            title: "Are you sure to change status this record?",
-                            subTitle: "You can't undo this operation",
+                            title: "Bạn có chắc chắn muốn thay đổi trạng thái ?",
+                            subTitle: "Bạn không thể hoàn tác thao tác này",
                             onConfirm: () => {
                               handleSwitchToggle(
                                 item.userId,
@@ -220,7 +220,7 @@ const Customers = () => {
                     {/* Action */}
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
-                        <Tooltip title="view" arrow>
+                        <Tooltip title="Chi tiết" arrow>
                           <Link
                             to={`/admin/customer/view/${item.userId}`}
                             className="btn btn-outline-info btn-sm square-btn"

@@ -15,16 +15,16 @@ import {
 import useTableV2 from "../table/useTableV2";
 
 const headCells = [
-  { id: "bookingCode", label: "Code" },
-  { id: "bookingTime", label: "Order Date" },
-  { id: "userBookingDto", label: "Customer Info" },
+  { id: "bookingCode", label: "Mã đơn hàng" },
+  { id: "bookingTime", label: "Giờ bắt đầu" },
+  { id: "userBookingDto", label: "Thông tin khách hàng" },
 
   { id: "garageName", label: "Garage" },
-  { id: "total", label: "Total Amount" },
-  { id: "bookingStatus", label: "Order Status" },
+  { id: "total", label: "Giá trị đơn hàng" },
+  { id: "bookingStatus", label: "Trạng thái" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -127,12 +127,12 @@ const Order = () => {
   return (
     <div className="tab-content">
       <div className="tab-pane fade show active">
-        <div className="row pt-2">
+        <div className="row pt-2">  
           <div className="col-md-12">
             <div className="card w-100">
               {/* Title */}
               <div className="card-header">
-                <h5 className="mb-0 font-semibold"> Order Info</h5>
+                <h5 className="mb-0 font-semibold">Danh sách đơn hàng</h5>
               </div>
               {/* the number of the status */}
               <div className="card-body">
@@ -142,7 +142,7 @@ const Order = () => {
                     <div className="order-stats order-stats_pending">
                       <div className="order-stats__content">
                         <WidthFullIcon fontSize="inherit" />
-                        <h6 className="order-stats__subtitle">All</h6>
+                        <h6 className="order-stats__subtitle">Tất cả</h6>
                       </div>
                       <div className="order-stats__title">{count}</div>
                     </div>
@@ -153,7 +153,7 @@ const Order = () => {
                     <div className="order-stats order-stats_pending">
                       <div className="order-stats__content">
                         <CheckCircleSharpIcon fontSize="inherit" />
-                        <h6 className="order-stats__subtitle">Confirmed</h6>
+                        <h6 className="order-stats__subtitle">Hoàn thành</h6>
                       </div>
                       <div className="order-stats__title">
                         {statusDetail.completed}
@@ -165,7 +165,7 @@ const Order = () => {
                     <div className="order-stats order-stats_pending">
                       <div className="order-stats__content">
                         <PendingIcon fontSize="inherit" />
-                        <h6 className="order-stats__subtitle">Pending</h6>
+                        <h6 className="order-stats__subtitle">Sắp tới</h6>
                       </div>
                       <div className="order-stats__title">
                         {statusDetail.pending}
@@ -177,7 +177,7 @@ const Order = () => {
                     <div className="order-stats order-stats_pending">
                       <div className="order-stats__content">
                         <HighlightOffIcon fontSize="inherit" />
-                        <h6 className="order-stats__subtitle">Cancel</h6>
+                        <h6 className="order-stats__subtitle">Hủy bỏ</h6>
                       </div>
                       <div className="order-stats__title">
                         {statusDetail.canceled}
@@ -253,12 +253,24 @@ const Order = () => {
                                 : "badge badge-danger fz-12"
                             }
                           >
-                            {item.bookingStatus}
+                            {" "}
+                              {item.bookingStatus === "Pending"
+                                ? "Sắp tới"
+                                : item.bookingStatus === "CheckIn"
+                                ? "Đang làm"
+                                : item.bookingStatus === "Completed"
+                                ? "Hoàn thành"
+                                : item.bookingStatus === "CheckOut"
+                                ? "Đã xong"
+                                :item.bookingStatus === "Processing"
+                                ? "Đang tiến hành"
+                                : "Hủy Bỏ"
+                              }{" "}
                           </span>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="view" arrow>
+                            <Tooltip title="Chi tiết" arrow>
                               <Link
                                 to={`/admin/orders/details/${item.bookingId}`}
                                 className="btn btn-outline--primary btn-sm edit square-btn"

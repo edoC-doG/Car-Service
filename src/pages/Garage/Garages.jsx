@@ -18,17 +18,17 @@ import Notification from "../../components/Notification";
 
 const headCells = [
   { id: "garageId", label: "ID" },
-  { id: "garageName", label: "Name", disableSorting: true },
-  { id: "garageContactInformation", label: "Contact" },
+  { id: "garageName", label: "Tên garage", disableSorting: true },
+  { id: "garageContactInformation", label: "SĐT" },
 
-  { id: "garageStatus", label: "Status" },
-  { id: "totalServices", label: "Total Services" },
+  { id: "garageStatus", label: "Trạng thái" },
+  { id: "totalServices", label: "Tổng số dịch vụ" },
   // { id: "", label: "Total Product" },
-  { id: "totalOrders", label: "Total Orders" },
+  { id: "totalOrders", label: "Tổng đơn hàng" },
 
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -140,7 +140,7 @@ const Onwers = () => {
         <Header
           icon="https://6valley.6amtech.com/public/assets/back-end/img/add-new-seller.png"
           alt="onwers"
-          title="Garage List"
+          title="Danh sách garage"
           number="15"
         />
         <div className="row mt-4">
@@ -150,7 +150,7 @@ const Onwers = () => {
                 <div className="row justify-content-between align-items-center gy-2">
                   <div className="col-sm-8 col-md-6 col-lg-4">
                     <Search
-                      label="Search by Garage name"
+                      label="Tìm kiếm bằng tên garage"
                       onChange={() => {}}
                       size="small"
                       InputProps={{
@@ -169,7 +169,7 @@ const Onwers = () => {
                         size="large"
                         onClick={() => {}}
                         startIcon={<AddIcon fontSize="small" />}
-                        text="Add new gararge"
+                        text="Thêm mới garage"
                       />
                     </div>
                   </div>
@@ -224,8 +224,8 @@ const Onwers = () => {
                               setConfirmDialog({
                                 isOpen: true,
                                 title:
-                                  "Are you sure to change status this record?",
-                                subTitle: "You can't undo this operation",
+                                  "Bạn có chắc chắn muốn thay đổi trạng thái?",
+                                subTitle: "Bạn không thể hoàn tác thao tác này",
                                 onConfirm: () => {
                                   handleSwitchToggle(
                                     item.garageId,
@@ -280,7 +280,7 @@ const Onwers = () => {
 
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="view" arrow>
+                            <Tooltip title="Chi tiết" arrow>
                               <Link
                                 to={`/admin/garage/view/${item.garageId}`}
                                 className="btn btn-outline-info btn-sm square-btn"

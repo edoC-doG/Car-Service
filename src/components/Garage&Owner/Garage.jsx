@@ -20,11 +20,11 @@ const Garage = () => {
   const revenue = useSelector((state) => state.booking.booking);
   const infoAcc = [
     {
-      name: "Status",
+      name: "Trạng thái",
       content: `${manager.userStatus}` 
     },
     {
-      name: "Name",
+      name: "Tên",
       content: `${manager.fullName}`,
     },
     {
@@ -32,7 +32,7 @@ const Garage = () => {
       content: `${manager.userEmail}`,
     },
     {
-      name: "phone",
+      name: "Số điện thoại",
       content: `${manager.userPhone}`,
     },
   ];
@@ -43,16 +43,16 @@ const Garage = () => {
       content:  `${garageDetail.garageName}`,
     },
     {
-      name: "Address",
+      name: "Địa chỉ",
       content: `${garageDetail.garageFullAddress}`,
     },
     {
-      name: "Phone",
+      name: "Số điện thoại",
       content: `${garageDetail.garageContactInformation}`
       ,
     },
     {
-      name: "Hours",
+      name: "Hoạt động",
       content: `${garageDetail.isOpen}`  ,
       more: `${garageDetail.hoursOfOperation}`
       
@@ -74,7 +74,7 @@ const Garage = () => {
                   alt=""
                   className="mb-1"
                 />
-                Garage Wallet
+                Thu nhập của Garage
               </h4>
             </div>
           </div>
@@ -92,7 +92,7 @@ const Garage = () => {
                   />
                   <h3 className="mb-0 fz-24 font-semibold">{revenue.amountEarned}</h3>
                   <div className="font-weight-bold text-capitalize mb-30">
-                    amount earned
+                    Tổng thu nhập
                   </div>
                 </div>
               </div>
@@ -108,7 +108,7 @@ const Garage = () => {
                         {revenue.sumUnPaid} - {revenue.countUnpaid}
                         </h3>
                         <div className="text-capitalize mb-0">
-                          Unpaid amount - number
+                          Tiền chưa thanh toán - SL đơn
                         </div>
                       </div>
                       {/* icon */}
@@ -132,7 +132,7 @@ const Garage = () => {
                         {revenue.sumPaid} - {revenue.countPaid}
                         </h3>
                         <div className="text-capitalize mb-0">
-                          Paid Amounut - number
+                          Số tiền đã thanh toán - SL đơn
                         </div>
                       </div>
                       {/* icon */}
@@ -156,7 +156,7 @@ const Garage = () => {
                         {revenue.serviceEarned}
                         </h3>
                         <div className="text-capitalize mb-0">
-                          total amount of service sold
+                          Tổng thu nhập từ dịch vụ
                         </div>
                       </div>
                       {/* icon */}
@@ -180,7 +180,7 @@ const Garage = () => {
                         {revenue.productEarned}
                         </h3>
                         <div className="text-capitalize mb-0">
-                          total amount of products in service sold
+                          Tổng thu nhập từ sản phẩm
                         </div>
                       </div>
                       {/* icon */}
@@ -202,9 +202,9 @@ const Garage = () => {
 
       <div className="row">
         {/* Owner Account */}
-        <AccountInfo title={"Manager Account"} items={infoAcc} />
+        <AccountInfo title={"Tài khoản quản lý"} items={infoAcc} />
         {/* Garage Info */}
-        <AccountInfo title={"Garage Info"} items={infoGarage} />
+        <AccountInfo title={"Thông tin garage"} items={infoGarage} />
       </div>
     </>
   );

@@ -13,12 +13,12 @@ import {
 } from "../../features/mechanic/mechanicSlice";
 import useTableV2 from "../../components/table/useTableV2";
 const headCells = [
-  { id: "bookingTime", label: "Order Date" },
-  { id: "userBookingDto", label: "Customer Info" },
+  { id: "bookingTime", label: "Giờ bắt đầu" },
+  { id: "userBookingDto", label: "Thông tin KH" },
 
   { id: "garageName", label: "Garage" },
-  { id: "total", label: "Total Amount", align: "right" },
-  { id: "bookingStatus", label: "Order Status", align: "center" },
+  { id: "total", label: "Giá trị đơn hàng", align: "right" },
+  { id: "bookingStatus", label: "Trạng thái", align: "center" },
 ];
 const MechanicDetail = () => {
   const location = useLocation();
@@ -49,11 +49,11 @@ const MechanicDetail = () => {
 
   const infoMechanic = [
     {
-      name: "Name",
+      name: "Tên ",
       content: `${detail.userDetailMechanicDto?.fullName}`,
     },
     {
-      name: "Address",
+      name: "SĐT",
       content: `${detail.userDetailMechanicDto?.userPhone}`,
     },
   ];
@@ -74,7 +74,7 @@ const MechanicDetail = () => {
       <Header
         icon="https://6valley.6amtech.com/public/assets/back-end/img/support-ticket.png"
         alt="chat"
-        title="Mechanic detail"
+        title="Chi tiết thợ sửa chữa"
       />
       {/* Button back  */}
       <div className="flex-between d-sm-flex row align-items-center justify-content-between mb-2 mx-1">
@@ -85,7 +85,7 @@ const MechanicDetail = () => {
               navigate(-1);
             }}
           >
-            Back to mechanic list
+            Trở về trang danh sách thợ
           </Link>
         </div>
       </div>
@@ -99,7 +99,7 @@ const MechanicDetail = () => {
                 <div className="row justify-content-between align-items-center g-2 mb-3">
                   <div className="col-sm-6">
                     <h4 className="d-flex align-items-center text-capitalize text-lg font-semibold">
-                      Detail
+                      Chi tiết
                     </h4>
                   </div>
                 </div>
@@ -109,7 +109,7 @@ const MechanicDetail = () => {
                   <div className="col-sm-12 col-lg-12">
                     <div className="business-analytics">
                       <h5 className="business-analytics__subtitle font-semibold">
-                        Total Order Confirmed
+                        Tổng số đơn đã hoàn thành
                       </h5>
                       <h2 className="business-analytics__title font-semibold">
                         {detail.totalBookingApplied}
@@ -132,7 +132,7 @@ const MechanicDetail = () => {
                   <div className="row align-items-center">
                     <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
                       <h5 className="text-capitalize d-flex gap-1 font-semibold">
-                        Order received
+                        Đơn hàng đã nhận
                         <span className="badge badge-soft-dark radius-50 fz-12">
                           {count}
                         </span>
@@ -140,7 +140,7 @@ const MechanicDetail = () => {
                     </div>
                     <div className="col-sm-8 col-md-6 col-lg-4">
                       <Search
-                        label="Search orders"
+                        label="Tìm kiếm đơn hàng"
                         onChange={() => {}}
                         size="small"
                         InputProps={{
@@ -220,7 +220,19 @@ const MechanicDetail = () => {
                                         : "badge badge-danger fz-12"
                                     }
                                   >
-                                    {item.bookingStatus}
+                                    {" "}
+                              {item.bookingStatus === "Pending"
+                                ? "Sắp tới"
+                                : item.bookingStatus === "CheckIn"
+                                ? "Đang làm"
+                                : item.bookingStatus === "Completed"
+                                ? "Hoàn thành"
+                                : item.bookingStatus === "CheckOut"
+                                ? "Đã xong"
+                                :item.bookingStatus === "Processing"
+                                ? "Đang tiến hành"
+                                : "Hủy Bỏ"
+                              }{" "}
                                   </span>
                                 </TableCell>
                               </TableRow>
@@ -239,7 +251,7 @@ const MechanicDetail = () => {
           <div className="col-lg-3 d-flex flex-column">
             <AccountInfo
               name={"mechanic"}
-              title={"Mechanic Info"}
+              title={"Thông tin thợ sửa chữa"}
               items={infoMechanic}
             />
           </div>

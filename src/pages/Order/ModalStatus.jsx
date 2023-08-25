@@ -40,7 +40,7 @@ function ModalStatus(props) {
                 value={stt}
                 onChange={(e) => setStt(e.target.value)}
               >
-                <option value={0}>Đang chờ</option>
+                <option value={0}>Sắp tới</option>
                 <option value={2}>Check in</option>
                 <option value={1}>Hủy đơn hàng</option>
                 <option value={4}>Hoàn thành</option>

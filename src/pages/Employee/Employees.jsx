@@ -19,19 +19,19 @@ import Notification from "./../../components/Notification";
 
 const headCells = [
   { id: "userId", label: "ID" },
-  { id: "fullName", label: "Name" },
+  { id: "fullName", label: "Tên nhân viên" },
 
   { id: "userEmail", label: "Email" },
-  { id: "userPhone", label: "Phone" },
-  { id: "roleName", label: "Role" },
-  { id: "userStatus", label: "Status" },
-  {
-    id: "action",
-    label: "Action",
-    disableSorting: true,
+  { id: "userPhone", label: "SĐT" },
+  { id: "roleName", label: "Vai trò" },
+  { id: "userStatus", label: "Trạng thái" },
+  // {
+  //   id: "action",
+  //   label: "Thao tác",
+  //   disableSorting: true,
 
-    align: "center",
-  },
+  //   align: "center",
+  // },
 ];
 
 const Employees = () => {
@@ -132,19 +132,19 @@ const Employees = () => {
         icon="https://6valley.6amtech.com/public/assets/back-end/img/employee.png"
         size={20}
         alt="employee"
-        title="Employee List"
+        title="Danh sách nhân viên"
       />
       <div className="row">
         <div className="col-md-12">
           <div className="card">
             <div className="card-header flex-wrap gap-10">
               <h5 className="mb-0 d-flex gap-2 align-items-center font-semibold">
-                Employee table
+                Bảng danh sách
                 <span className="badge badge-soft-dark radius-50 fz-12">3</span>
               </h5>
               <div>
                 <Search
-                  label="Search by Name or Email or Phone"
+                  label="Tìm kiếm"
                   onChange={() => {}}
                   size="small"
                   InputProps={{
@@ -163,7 +163,7 @@ const Employees = () => {
                   size="large"
                   onClick={() => setShowModal(true)}
                   startIcon={<AddIcon fontSize="small" />}
-                  text="Add New"
+                  text="Thêm mới  "
                 />
               </div>
             </div>
@@ -196,10 +196,10 @@ const Employees = () => {
                           }
                         />
                       </TableCell>
-                      {roleUser === "Admin" ? (
+                      {/* {roleUser === "Admin" ? (
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center ">
-                            <Tooltip title="edit" arrow>
+                            <Tooltip title="Cập nhật" arrow>
                               <Link
                                 onClick={() => handleEdit(item)}
                                 className="btn btn-outline--primary btn-sm edit"
@@ -211,7 +211,7 @@ const Employees = () => {
                         </TableCell>
                       ) : (
                         <></>
-                      )}
+                      )} */}
                     </TableRow>
                   ))}
                 </TableBody>

@@ -24,14 +24,14 @@ import ModalEdit from "./ModalEdit";
 
 const headCells = [
   { id: "couponId", label: "ID" },
-  { id: "couponCode", label: "Name" },
-  { id: "couponStartDate", label: "Start date" },
-  { id: "couponEndDate", label: "End date" },
-  { id: "couponStatus", label: "Status" },
+  { id: "couponCode", label: "Mã khuyến mãi" },
+  { id: "couponStartDate", label: "Ngày bắt đầu" },
+  { id: "couponEndDate", label: "Ngày kết thúc" },
+  { id: "couponStatus", label: "Trạng thái" },
 
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -122,7 +122,7 @@ const Coupon = () => {
         <Header
           icon="https://6valley.6amtech.com/public/assets/back-end/img/coupon_setup.png"
           alt="coupon"
-          title="Coupon Setup"
+          title="Danh sách khuyến mãi"
         />
         <div className="row mt-4">
           <div className="col-md-12">
@@ -131,7 +131,7 @@ const Coupon = () => {
                 <div className="row justify-content-between align-items-center gy-2">
                   <div className="col-sm-8 col-md-6 col-lg-4">
                     <Search
-                      label="Search by Name"
+                      label="Tìm kiếm"
                       onChange={() => {}}
                       size="small"
                       InputProps={{
@@ -150,7 +150,7 @@ const Coupon = () => {
                         size="large"
                         onClick={() => setShowModal(true)}  
                         startIcon={<AddIcon fontSize="small" />}
-                        text="Add Promotion"
+                        text="Thêm mới khuyến mãi"
                       />
                     </div>
                   </div>
@@ -193,8 +193,8 @@ const Coupon = () => {
                               setConfirmDialog({
                                 isOpen: true,
                                 title:
-                                  "Are you sure to change status this record?",
-                                subTitle: "You can't undo this operation",
+                                  "Bạn có chắc chắn muốn thay đổi trạng thái?",
+                                subTitle: "Bạn không thể hoàn tác thao tác này",
                                 onConfirm: () => {
                                   handleSwitchToggle(
                                     item.couponId,
@@ -225,8 +225,8 @@ const Coupon = () => {
                                   setConfirmDialog({
                                     isOpen: true,
                                     title:
-                                      "Are you sure to delete this record?",
-                                    subTitle: "You can't undo this operation",
+                                      "Bạn có chắc chắn muốn thay đổi trạng thái ?",
+                                    subTitle: "Bạn không thể hoàn tác thao tác này",
                                     onConfirm: () => {},
                                   });
                                 }}
@@ -251,7 +251,7 @@ const Coupon = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
-       <ModalAdd show={showModal} handleClose={handleClose} />
+      <ModalAdd show={showModal} handleClose={handleClose} />
       <ModalEdit
         show={showEdit}
         handleClose={handleClose}

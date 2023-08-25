@@ -18,13 +18,13 @@ import Popup from "../Popup";
 import authService from "../../features/auth/authService";
 
 const headCells = [
-  { id: "fullName", label: "Name" },
-  { id: "contact", label: "Contact Info" },
-  { id: "userStatus", label: "Status" },
+  { id: "fullName", label: "Thợ phụ trách" },
+  { id: "contact", label: "Thông tin thợ" },
+  { id: "userStatus", label: "Trạng thái" },
 
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -38,9 +38,9 @@ const MechanicsOrder = ({ bookingId, status }) => {
   const role = user?.roleName;
 
   const headCellsCompleted = [
-    { id: "fullName", label: "Name" },
-    { id: "contact", label: "Contact Info" },
-    { id: "userStatus", label: "Status" },
+    { id: "fullName", label: "Thợ phụ trách" },
+    { id: "contact", label: "Thông tin thợ" },
+    { id: "userStatus", label: "Trạng thái" },
   ];
   const dispatch = useDispatch();
   const [openPopup, setOpenPopup] = useState(false);
@@ -102,7 +102,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
                   setOpenPopup(true);
                 }}
                 startIcon={<AddIcon fontSize="small" />}
-                text="Add new"
+                text="Thêm mới "
               />
             </div>
           ) : (
@@ -166,8 +166,8 @@ const MechanicsOrder = ({ bookingId, status }) => {
                           onClick={() => {
                             setConfirmDialog({
                               isOpen: true,
-                              title: "Are you sure to delete this record?",
-                              subTitle: "You can't undo this operation",
+                              title: "Bạn có chắc chắn muốn thay đổi trạng thái ?",
+                              subTitle: "Bạn không thể hoàn tác thao tác này",
                               onConfirm: () => {
                                 handleDeleteMechanic(item.userId);
                               },

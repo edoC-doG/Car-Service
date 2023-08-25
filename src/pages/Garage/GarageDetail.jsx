@@ -8,7 +8,7 @@ import ReviewGarage from "../../components/Garage&Owner/ReviewGarage";
 import { useSelector } from "react-redux";
 import EmployeeByGarage from "../../components/Garage&Owner/EmployeeGarage";
 
-const tabs = ["garage", "order", "review", "employee"];
+const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
   const navigate = useNavigate();  
@@ -20,7 +20,7 @@ const OwnerDetail = () => {
           "https://6valley.6amtech.com/public/assets/back-end/img/add-new-seller.png"
         }
         alt={"owner detail"}
-        title={"Garage Details"}
+        title={"Chi tiết garage"}
       />
 
       {/* Button back  */}
@@ -32,7 +32,7 @@ const OwnerDetail = () => {
               navigate(-1);
             }}
           >
-            Back to garage list
+            Trở về danh sách garage
           </Link>
         </div>
       </div>
@@ -69,12 +69,12 @@ const OwnerDetail = () => {
       {/* Garage */}
       {type === "garage" && <Garage />}
       {/* Order */}
-      {type === "order" && <Order />}
+      {type === "đơn hàng" && <Order />}
       
       {/* Review */}
-      {type === "review" && <ReviewGarage />}
+      {type === "đánh giá" && <ReviewGarage />}
       {/* Employee */}
-      {type === "employee" && <EmployeeByGarage />}
+      {type === "nhân viên" && <EmployeeByGarage />}
     </div>
   );
 };

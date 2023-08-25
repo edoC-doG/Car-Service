@@ -26,14 +26,14 @@ import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "userId", label: "ID" },
-  { id: "fullName", label: "Name" },
+  { id: "fullName", label: "Tên thợ" },
 
-  { id: "contact", label: "Contact Info" },
-  { id: "totalOrders", label: "Total Orders" },
-  { id: "userStatus", label: "Status" },
+  { id: "contact", label: "Thông tin liện hệ" },
+  { id: "totalOrders", label: "SL đơn" },
+  { id: "userStatus", label: "Trạng thái" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -125,7 +125,7 @@ const Mechanics = () => {
           icon="https://cdn-icons-png.flaticon.com/512/1995/1995470.png"
           size={20}
           alt="mechanics"
-          title="Mechanic List"
+          title="Danh sách thợ sửa chữa"
           number={count}
         />
 
@@ -136,7 +136,7 @@ const Mechanics = () => {
                 <div className="row justify-content-between align-items-center gy-2">
                   <div className="col-sm-8 col-md-6 col-lg-4">
                     <Search
-                      label="Search by Name"
+                      label="Tìm kiếm tên thợ"
                       onChange={() => {}}
                       size="small"
                       InputProps={{
@@ -156,7 +156,7 @@ const Mechanics = () => {
                           size="large"
                           onClick={() => setShowModal(true)}
                           startIcon={<AddIcon fontSize="small" />}
-                          text="Add Mechanic"
+                          text="Thêm thợ sửa chữa"
                         />
                       </div>
                     </div>
@@ -242,8 +242,8 @@ const Mechanics = () => {
                               setConfirmDialog({
                                 isOpen: true,
                                 title:
-                                  "Are you sure to change status this record?",
-                                subTitle: "You can't undo this operation",
+                                  "Bạn có chắc chắn muốn thay đổi trạng thái?",
+                                subTitle: "Bạn không thể hoàn tác thao tác này",
                                 onConfirm: () => {
                                   handleSwitchToggle(
                                     item.userId,
@@ -258,7 +258,7 @@ const Mechanics = () => {
                         {/* Action */}
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            <Tooltip title="Detail" arrow>
+                            <Tooltip title="Chi tiết" arrow>
                               {role === "Admin" ? (
                                 <Link
                                   to={`/admin/mechanic/detail/${item.userId}`}

@@ -15,12 +15,12 @@ import { Link, useLocation } from "react-router-dom";
 const headCells = [
   { id: "reviewId", label: "ID" },
 
-  { id: "fullName", label: "Customer Name" },
-  { id: "rating", label: "Rating" },
-  { id: "content", label: "Review" },
-  { id: "createdAt", label: "Date" },
+  { id: "fullName", label: "Tên KH" },
+  { id: "rating", label: "Đánh giá" },
+  { id: "content", label: "Nội dung" },
+  { id: "createdAt", label: "Ngày gửi" },
 
-  { id: "reviewStatus", label: "Status" },
+  { id: "reviewStatus", label: "Trạng thái" },
 ];
 const ReviewGarage = () => {
   const dispatch = useDispatch();
@@ -81,7 +81,7 @@ const ReviewGarage = () => {
               <div className="row align-items-center">
                 <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
                   <h5 className="text-capitalize d-flex gap-1 font-semibold">
-                    Review List
+                    Danh sách đánh giá
                     <span className="badge badge-soft-dark radius-50 fz-12">
                       {count}
                     </span>
@@ -89,7 +89,7 @@ const ReviewGarage = () => {
                 </div>
                 <div className="col-sm-8 col-md-6 col-lg-4">
                   <Search
-                    label="Search orders"
+                    label="Tìm kiếm đơn hàng"
                     onChange={() => {}}
                     size="small"
                     InputProps={{

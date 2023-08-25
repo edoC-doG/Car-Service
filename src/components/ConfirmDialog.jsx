@@ -25,12 +25,12 @@ const ConfirmDialog = ({ confirmDialog, setConfirmDialog }) => {
       </DialogContent>
       <DialogActions style={{ justifyContent: "center" }}>
         <Button
-          text="No"
+          text="Không"
           className="no"
           onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
         />
 
-        <Button text="Yes" className="yes" onClick={confirmDialog.onConfirm} />
+        <Button text="Có" className="yes" onClick={confirmDialog.onConfirm} />
       </DialogActions>
     </Dialog>
   );

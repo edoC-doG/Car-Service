@@ -41,21 +41,21 @@ export const sidebarManager = [
   {
     key: "um",
     icon: null,
-    label: "USER MANAGEMENT",
+    label: "Quản lý người dùng",
     type: "group",
     
     children: [
       {
         key: "customer",
         icon: <GiWallet />,
-        label: "Customers",
+        label: "Khách hàng",
        
         children: [
          
           {
             key: "review-list-customer",
             icon: <RxDotFilled />,
-            label: "Customer Reviews",
+            label: "Đánh giá khách hàng",
             
           },
         ],
@@ -63,13 +63,13 @@ export const sidebarManager = [
       {
         key: "mechanic",
         icon: <RiUserSettingsFill />,
-        label: "Mechanics",
+        label: "Thợ sửa chữa",
         
         children: [
           {
             key: "list-mechanics",
             icon: <RxDotFilled />,
-            label: "List",
+            label: "Danh sách thợ",
             
           },
         ],
@@ -77,13 +77,13 @@ export const sidebarManager = [
       {
         key: "staff",
         icon: <SensorOccupiedIcon />,
-        label: "Staffs",
+        label: "Nhân viên",
         
         children: [
           {
             key: "list-staffs",
             icon: <RxDotFilled />,
-            label: "List Staff",
+            label: "Danh sách nhân viên",
            
           },
         ],
@@ -95,7 +95,7 @@ export const sidebarManager = [
    {
     key: "psm",
     icon: null,
-    label: "PRODUCT & SERVICE MANAGEMENT",
+    label: "QUẢN LÝ SẢN PHẨM VÀ DỊCH VỤ",
     type: "group",
   
     children: [
@@ -104,12 +104,12 @@ export const sidebarManager = [
       {
         key: "product",
         icon: <GiRadarSweep />,
-        label: "Products",
+        label: "Sản phẩm",
         children: [
           {
             key: "list-product",
             icon: <RxDotFilled />,
-            label: "List Product",
+            label: "Danh sách sản phẩm",
            
           },
         ],
@@ -117,13 +117,13 @@ export const sidebarManager = [
       {
         key: "service",
         icon: <GrServices />,
-        label: "Services",
+        label: "Dịch vụ",
         
         children: [
           {
             key: "list-service",
             icon: <RxDotFilled />,
-            label: "List Service",
+            label: "Danh sách dịch vụ",
            
           },
         ],
@@ -133,44 +133,44 @@ export const sidebarManager = [
   {
     key: "om",
     icon: null,
-    label: "ORDER MANAGEMENT",
+    label: "QUẢN LÝ ĐƠN HÀNG",
     type: "group",
   
     children: [
       {
         key: "order",
         icon: <GiMechanicGarage />,
-        label: "Orders",
+        label: "Đơn hàng",
       
         children: [
           {
             key: "all-orders",
             icon: <RxDotFilled />,
-            label: "All",
+            label: "Tất cả đơn hàng",
             
           },
           {
             key: "pending-order",
             icon: <RxDotFilled color="orange" />,
-            label: "Pending",
+            label: "Sắp tới",
             
           },
           {
             key: "checkin-order",
             icon: <RxDotFilled  color="yellow"/>,
-            label: "Check In",
+            label: "Đang làm",
             
           },
           {
             key: "confirm-order",
             icon: <RxDotFilled  color="green[500]"/>,
-            label: "Confirmed",
+            label: "Hoàn thành",
             
           },
           {
             key: "cancel-order",
             icon: <RxDotFilled  color="red"/>,
-            label: "Canceled",
+            label: "Hủy bỏ",
             
           },
         ],
@@ -189,30 +189,78 @@ export const sidebarDataAdmin = [
     label: "Dashboard",
    
   },
+  // Orders
+  {
+    key: "om",
+    icon: null,
+    label: "QUẢN LÝ ĐƠN HÀNG",
+    type: "group",
+    
+    children: [
+      {
+        key: "order",
+        icon: <GiMechanicGarage />,
+        label: "Đơn hàng",
+        
+        children: [
+          {
+            key: "all-orders",
+            icon: <RxDotFilled />,
+            label: "Tất cả đơn hàng",
+            
+          },
+          {
+            key: "pending-order",
+            icon: <RxDotFilled color="orange" />,
+            label: "Sắp tới",
+            
+          },
+          {
+            key: "checkin-order",
+            icon: <RxDotFilled  color="yellow"/>,
+            label: "Đang làm",
+            
+          },
+          {
+            key: "confirm-order",
+            icon: <RxDotFilled  color="green[500]"/>,
+            label: "Hoàn thành",
+            
+          },
+          {
+            key: "cancel-order",
+            icon: <RxDotFilled  color="red"/>,
+            label: "Hủy bỏ",
+            
+          },
+        ],
+      },
+    ],
+  },
   // USER MANAGEMENT
   {
     key: "um",
     icon: null,
-    label: "USER MANAGEMENT",
+    label: "QUẢN LÝ TÀI KHOẢN",
     type: "group",
    
     children: [
       {
         key: "customer",
         icon: <GiWallet />,
-        label: "Customers",
+        label: "Khách hàng",
         
         children: [
           {
             key: "list-customer",
             icon: <RxDotFilled />,
-            label: "Customer List",
+            label: "Danh sách khách hàng",
             
           },
           {
             key: "review-list-customer",
             icon: <RxDotFilled />,
-            label: "Customer Reviews",
+            label: "Đánh giá khách hàng",
             
           },
         ],
@@ -220,7 +268,7 @@ export const sidebarDataAdmin = [
       {
         key: "garage",
         icon: <FaUserShield />,
-        label: "All Garages",
+        label: "Garage của hệ thống",
         
         children: [
           // {
@@ -232,7 +280,7 @@ export const sidebarDataAdmin = [
           {
             key: "garage-list",
             icon: <RxDotFilled />,
-            label: "Garage List",
+            label: "Danh sách garage",
             
           },
         ],
@@ -240,14 +288,14 @@ export const sidebarDataAdmin = [
       {
         key: "mechanic",
         icon: <RiUserSettingsFill />,
-        label: "Mechanics",
+        label: "Thợ sửa chữa",
         
         children: [
           
           {
             key: "list-mechanics",
             icon: <RxDotFilled />,
-            label: "List",
+            label: "Danh sách thợ",
             
           },
         ],
@@ -255,13 +303,13 @@ export const sidebarDataAdmin = [
       {
         key: "employee",
         icon: <GrUserAdmin />,
-        label: "Employees",
+        label: "Nhân viên",
        
         children: [
           {
             key: "list-employee",
             icon: <RxDotFilled />,
-            label: "Employees",
+            label: "Danh sách nhân viên",
             
           },
         ],
@@ -273,20 +321,20 @@ export const sidebarDataAdmin = [
   {
     key: "psm",
     icon: null,
-    label: "PRODUCT & SERVICE MANAGEMENT",
+    label: "QUẢN LÝ SẢN PHẨM VÀ DỊCH VỤ ",
     type: "group",
     
     children: [
       {
         key: "category",
         icon: <MdFilterList />,
-        label: "Category Setup",
+        label: "Danh mục sản phẩm ",
         
         children: [
           {
             key: "view-category",
             icon: <RxDotFilled />,
-            label: "Categories Product",
+            label: "Danh sách",
           
           },
         ],
@@ -295,13 +343,13 @@ export const sidebarDataAdmin = [
       {
         key: "product",
         icon: <GiRadarSweep />,
-        label: "In Garage Products",
+        label: "Sản phẩm",
        
         children: [
           {
             key: "list-product",
             icon: <RxDotFilled />,
-            label: "List Product",
+            label: "Danh sách",
            
           },
         ],
@@ -309,13 +357,13 @@ export const sidebarDataAdmin = [
       {
         key: "service",
         icon: <GrServices />,
-        label: "Services",
+        label: "Dịch vụ",
       
         children: [
           {
             key: "list-service",
             icon: <RxDotFilled />,
-            label: "List Service",
+            label: "Danh sách",
             
           },
         ],
@@ -327,75 +375,26 @@ export const sidebarDataAdmin = [
   {
     key: "pm",
     icon: null,
-    label: "PROMOTION MANAGEMENT",
+    label: "QUẢN LÝ MÃ GIẢM GIÁ",
     type: "group",
     
     children: [
       {
         key: "offer",
         icon: <RiCouponLine />,
-        label: "Offers & Deals",
+        label: "Mã giảm giá",
        
         children: [
           {
             key: "coupon",
             icon: <RxDotFilled />,
-            label: "Coupon",
+            label: "Danh sách",
             
           },
         ],
       },
     ],
   },
-  // Orders
-  {
-    key: "om",
-    icon: null,
-    label: "ORDER MANAGEMENT",
-    type: "group",
-    
-    children: [
-      {
-        key: "order",
-        icon: <GiMechanicGarage />,
-        label: "Orders",
-        
-        children: [
-          {
-            key: "all-orders",
-            icon: <RxDotFilled />,
-            label: "All",
-            
-          },
-          {
-            key: "pending-order",
-            icon: <RxDotFilled color="orange" />,
-            label: "Pending",
-            
-          },
-          {
-            key: "checkin-order",
-            icon: <RxDotFilled  color="yellow"/>,
-            label: "Check In",
-            
-          },
-          {
-            key: "confirm-order",
-            icon: <RxDotFilled  color="green[500]"/>,
-            label: "Confirmed",
-            
-          },
-          {
-            key: "cancel-order",
-            icon: <RxDotFilled  color="red"/>,
-            label: "Canceled",
-            
-          },
-        ],
-      },
-    ],
-  },
-  
 ];
 
 

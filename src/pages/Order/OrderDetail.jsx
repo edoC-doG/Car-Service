@@ -22,26 +22,26 @@ const headCells = [
 
   {
     id: "serviceBookingDetailDto",
-    label: "Service Details",
+    label: "Chi tiết dịch vụ",
     disableSorting: true,
   },
-  { id: "serviceCost", label: "Service cost" },
-  { id: "productCost", label: "Product cost" },
+  { id: "serviceCost", label: "Giá dịch vụ" },
+  { id: "productCost", label: "Giá sản phẩm" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
   },
 ];
 
-const tabs = ["detail", "allotment of repairman"];
+const tabs = ["Chi tiết", "Thợ phụ trách"];
 const OrderDetail = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const id = location.pathname.split("/")[4];
-  const [type, setType] = useState("detail");
+  const [type, setType] = useState("Chi tiết");
   const [open, setOpen] = React.useState(false);
   const [bid, setBid] = useState("");
   const [filterFn, setFilterFn] = useState({
@@ -123,7 +123,7 @@ const OrderDetail = () => {
         icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
         size={20}
         alt="order-detail"
-        title="Order Details"
+        title="Chi tiết đơn hàng"
       />
       {/* Info Invoice */}
       <div className="row gy-3">
@@ -134,7 +134,7 @@ const OrderDetail = () => {
               <div className="d-flex flex-wrap gap-3 justify-content-between mb-4">
                 <div className="d-flex flex-column gap-3">
                   <h4 className="capitalize font-semibold">
-                    Order ID #{booking.bookingId}
+                    ID Đơn hàng #{booking.bookingId}
                   </h4>
                   <div>
                     <EventNoteIcon fontSize="inherit" /> {booking.bookingTime}
@@ -156,13 +156,13 @@ const OrderDetail = () => {
                       size="large"
                       onClick={() => handleStt(orderId)}
                       startIcon={<NoteAltIcon fontSize="small" />}
-                      text="Print Invoice"
+                      text="Cập nhật trạng thái"
                     />
                   </div>
                   {/* Status */}
                   <div className="d-flex flex-column gap-2 mt-3">
                     <div className="order-status d-flex justify-content-sm-end gap-3 text-capitalize">
-                      <span className="title-color">Status: </span>
+                      <span className="title-color">Trạng thái: </span>
 
                       <span
                         className={
@@ -180,19 +180,24 @@ const OrderDetail = () => {
                             : "badge badge-danger fz-12"
                         }
                       >
-                        {booking.bookingStatus}
+                        {" "}
+                              {booking.bookingStatus === "Pending"
+                                ? "Sắp tới"
+                                : booking.bookingStatus === "CheckIn"
+                                ? "Đang làm"
+                                : booking.bookingStatus === "Completed"
+                                ? "Hoàn thành"
+                                : booking.bookingStatus === "CheckOut"
+                                ? "Đã xong"
+                                :booking.bookingStatus === "Processing"
+                                ? "Đang tiến hành"
+                                : "Hủy Bỏ"
+                              }{" "}
                       </span>
                     </div>
-
-                    {/* Payment method */}
-                    <div className="payment-method d-flex justify-content-sm-end gap-3 capitalize">
-                      <span className="title-color">Payment Method: </span>
-                      <strong>{booking.paymentMethod}</strong>
-                    </div>
-
                     {/* Payment status */}
                     <div className="payment-status d-flex justify-content-sm-end gap-3">
-                      <span className="title-color">Payment Status: </span>
+                      <span className="title-color">Trạng thái thanh toán: </span>
                       <span
                         className={
                           booking.paymentStatus === "Paid"
@@ -200,7 +205,10 @@ const OrderDetail = () => {
                             : "text-danger font-weight-bold"
                         }
                       >
-                        {booking.paymentStatus}
+                        {" "}
+                              {booking.paymentStatus === "Unpaid"
+                                ? "Chưa thanh toán"
+                                : "Đã thanh toán"}{" "}
                       </span>
                     </div>
                   </div>
@@ -233,7 +241,7 @@ const OrderDetail = () => {
                   </ul>
                 </div>
               </div>
-              {type === "detail" && (
+              {type === "Chi tiết" && (
                 <TableOrderDetail
                   detail={recordsAfterPagingAndSorting()}
                   booking={booking}
@@ -251,7 +259,7 @@ const OrderDetail = () => {
                   detailService={detailService}
                 />
               )}
-              {type === "allotment of repairman" && (
+              {type === "Thợ phụ trách" && (
                 <MechanicsOrder bookingId={id} status={booking.bookingStatus} />
               )}
             </div>
@@ -260,7 +268,7 @@ const OrderDetail = () => {
         {/* Info customer mechanic and garage */}
         <div className="col-lg-4 col-xl-3 d-flex flex-column gap-3">
           <CustomerInfo
-            title={"Customer"}
+            title={"Khách hàng"}
             srcIcon={
               "https://6valley.6amtech.com/public/assets/back-end/img/seller-information.png"
             }
@@ -270,7 +278,7 @@ const OrderDetail = () => {
             email={customer.userEmail}
           />
           <CustomerInfo
-            title={"Garage Information"}
+            title={"Thông tin garage"}
             srcIcon={
               "https://6valley.6amtech.com/public/assets/back-end/img/shop-information.png"
             }

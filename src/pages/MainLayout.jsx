@@ -22,13 +22,13 @@ const MainLayout = () => {
       role === "Admin" ? 
       setNotify({
         isOpen: true,
-        message: "Welcome to Admin",
+        message: "xin chào quản trị viên",
         type: "success",
         
       })
       :  setNotify({
         isOpen: true,
-        message: "Welcome to Manager",
+        message: "Xin chào quản lý garage",
         type: "success",
         
       });

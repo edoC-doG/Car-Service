@@ -11,15 +11,15 @@ const CarInfo = ({ title, brand, model, plate }) => {
 
         <div className="d-flex flex-column gap-2">
           <div>
-            <span>Brand: </span>
+            <span>Hãng xe: </span>
             <strong>{brand}</strong>
           </div>
           <div>
-            <span>Fuel Type: </span>
+            <span>Nguyên liệu tiêu thụ: </span>
             <strong>{model}</strong>
           </div>
           <div>
-            <span> Licence plate: </span>
+            <span>Biển số: </span>
             <strong>{plate}</strong>
           </div>
         </div>

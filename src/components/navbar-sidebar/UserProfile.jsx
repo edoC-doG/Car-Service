@@ -15,7 +15,7 @@ const UserProfile = () => {
   return (
     <div className="nav-item absolute right-1 w-96 frame-user">
       <div className="flex justify-between items-center">
-        <p className="font-semibold text-lg">User Profile</p>
+        <p className="font-semibold text-lg">Thông tin cá nhân</p>
         <ButtonClose
           icon={<MdOutlineCancel />}
           color="rgb(153, 171, 180)"
@@ -34,7 +34,7 @@ const UserProfile = () => {
           <p className="font-semibold text-xl"> {user?.userFullName} </p>
           <p className="text-gray-500 text-sm">
             {" "}
-            {user.roleName === "Admin" ? "Administrator" : "Manager"}{" "}
+            {user.roleName === "Admin" ? "Quản trị viên" : "Quản lý"}{" "}
           </p>
           <p className="text-gray-500 text-sm font-semibold">
             {" "}
@@ -64,7 +64,7 @@ const UserProfile = () => {
         <LogOut
           color="white"
           bgColor={currentColor}
-          text="Logout"
+          text="Đăng xuất"
           borderRadius="10px"
           width="full"
         />

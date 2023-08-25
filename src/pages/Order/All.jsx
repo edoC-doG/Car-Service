@@ -23,16 +23,16 @@ import {
 import authService from "../../features/auth/authService";
 
 const headCells = [
-  { id: "bookingCode", label: "Code" },
-  { id: "bookingTime", label: "Order Date" },
-  { id: "userBookingDto", label: "Customer Info" },
+  { id: "bookingCode", label: "Mã ĐH" },
+  { id: "bookingTime", label: "Thời gian bắt đầu" },
+  { id: "userBookingDto", label: "Thông tin KH" },
 
-  { id: "garageName", label: "Garage" },
-  { id: "total", label: "Total Amount", align: "right" },
-  { id: "bookingStatus", label: "Order Status", align: "center" },
+  { id: "garageName", label: "Địa chỉ" },
+  { id: "total", label: "Giá trị ĐH", align: "right" },
+  { id: "bookingStatus", label: "Trạng thái ĐH", align: "center" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -93,7 +93,7 @@ const All = () => {
         icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
         size={20}
         alt="all"
-        title="All Orders"
+        title="Tất cả đơn hàng"
         number={count}
       />
       <div className="card">
@@ -103,16 +103,16 @@ const All = () => {
             <form>
               <div className="row gy-3 gx-2">
                 <div className="col-12 pb-0">
-                  <h4 className="font-semibold">Select Date Range</h4>
+                  <h4 className="font-semibold">Chọn ngày</h4>
                 </div>
                 <div className="col-sm-6 col-md-3">
                   <Select title={"All"} value={age} onChange={handleChange} />
                 </div>
                 <div className="col-sm-6 col-md-3">
-                  <DateTime label={"Start Date"} />
+                  <DateTime label={"Ngày bắt đầu"} />
                 </div>
                 <div className="col-sm-6 col-md-3 mt-2 mt-sm-0">
-                  <DateTime label={"End Date"} />
+                  <DateTime label={"Ngày kết thúc"} />
                 </div>
                 <div className="col-sm-6 col-md-3 mt-2 mt-sm-0">
                   <Button
@@ -121,7 +121,7 @@ const All = () => {
                     size="large"
                     onClick={() => {}}
                     fullWidth
-                    text="Show Data"
+                    text="Lọc dữ liệu"
                   />
                 </div>
               </div>
@@ -137,7 +137,7 @@ const All = () => {
               src={
                 "https://6valley.6amtech.com/public/assets/back-end/img/pending.png"
               }
-              content={"Pending"}
+              content={"Sắp tới"}
               quantity={statusDetail.pending}
             />
 
@@ -146,7 +146,7 @@ const All = () => {
               src={
                 "https://6valley.6amtech.com/public/assets/back-end/img/confirmed.png"
               }
-              content={"Confirmed"}
+              content={"Hoàn thành"}
               quantity={statusDetail.completed}
             />
             <BoxOrder
@@ -154,7 +154,7 @@ const All = () => {
               src={
                 "https://6valley.6amtech.com/public/assets/back-end/img/canceled.png"
               }
-              content={"Canceled"}
+              content={"Hủy bỏ"}
               quantity={statusDetail.canceled}
             />
           </div>
@@ -163,7 +163,7 @@ const All = () => {
             <div className="row g-2 flex-grow-1">
               <div className="col-sm-8 col-md-6 col-lg-4">
                 <Search
-                  label="Search by Order ID"
+                  label="Tìm kiếm bằng ID đơn hàng"
                   onChange={() => {}}
                   size="small"
                   InputProps={{
@@ -231,7 +231,10 @@ const All = () => {
                             : "badge text-success fz-12 px-0"
                         }
                       >
-                        {item.paymentStatus}
+                        {" "}
+                              {item.paymentStatus === "Unpaid"
+                                ? "Chưa thanh toán"
+                                : "Đã thanh toán"}{" "}
                       </span>
                     </TableCell>
 
@@ -257,12 +260,24 @@ const All = () => {
                             : "badge badge-danger fz-12"
                         }
                       >
-                        {item.bookingStatus}
+                        {" "}
+                              {item.bookingStatus === "Pending"
+                                ? "Sắp tới"
+                                : item.bookingStatus === "CheckIn"
+                                ? "Đang làm"
+                                : item.bookingStatus === "Completed"
+                                ? "Hoàn thành"
+                                : item.bookingStatus === "CheckOut"
+                                ? "Đã xong"
+                                :item.bookingStatus === "Processing"
+                                ? "Đang tiến hành"
+                                : "Hủy Bỏ"
+                              }{" "}
                       </span>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
-                        <Tooltip title="view" arrow>
+                        <Tooltip title="Chi tiết" arrow>
                           {role === "Admin" ? (
                             <Link
                               to={`/admin/orders/details/${item.bookingId}`}

@@ -20,7 +20,7 @@ const AccountInfo = ({ title, items, name }) => {
                       {item.content}
                     </label>
                   </h4>
-                ) : item.name === "Hours" ? (
+                ) : item.name === "Hoạt động" ? (
                   <h4>
                     {item.content === "Closed" ? (
                       <div>

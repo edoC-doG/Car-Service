@@ -15,11 +15,11 @@ import { getCategories } from "../../features/category/categorySlide";
 
 const headCells = [
   { id: "categoryId", label: "ID" },
-  { id: "categoryName", label: "Name" },
-  { id: "categoryStatus", label: "Status" },
+  { id: "categoryName", label: "Tên danh mục" },
+  { id: "categoryStatus", label: "Trạng thái" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
@@ -69,7 +69,7 @@ const Categories = () => {
         <Header
           icon="https://6valley.6amtech.com/public/assets/back-end/img/brand-setup.png"
           alt="category"
-          title="Category Setup"
+          title="Danh mục sản phẩm"
         />
         <div className="row mt-4">
           <div className="col-md-12">
@@ -78,7 +78,7 @@ const Categories = () => {
                 <div className="row align-items-center">
                   <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
                     <h5 className="text-capitalize d-flex gap-1 font-semibold">
-                      Category List
+                      Danh sách danh mục
                       <span className="badge badge-soft-dark radius-50 fz-12">
                         {count}
                       </span>
@@ -86,7 +86,7 @@ const Categories = () => {
                   </div>
                   <div className="col-sm-8 col-md-6 col-lg-4">
                     <Search
-                      label="Search orders"
+                      label="Tìm kiếm "
                       onChange={() => {}}
                       size="small"
                       InputProps={{
@@ -139,8 +139,8 @@ const Categories = () => {
                                   setConfirmDialog({
                                     isOpen: true,
                                     title:
-                                      "Are you sure to delete this record?",
-                                    subTitle: "You can't undo this operation",
+                                      "Bạn có chắc chắn muốn thay đổi trạng thái ?",
+                                    subTitle: "Bạn không thể hoàn tác thao tác này",
                                     onConfirm: () => {},
                                   });
                                 }}

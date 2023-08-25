@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { viVN } from '@mui/material/locale';
 import {
   Table,
   TableCell,
@@ -10,7 +12,9 @@ import {
 // import './useTable.scss'
 
 const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setPage, setRowsPerPage, count) => {
- 
+  const theme = createTheme(
+    viVN,
+  );
   const [order, setOrder] = useState();
   const [orderBy, setOrderBy] = useState();
 
@@ -113,7 +117,8 @@ const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setP
   };
 
   const TblPagination = () => (
-    <TablePagination
+    <ThemeProvider theme={theme}>
+        <TablePagination
       component="div"
       page={page}
       rowsPerPageOptions={pages}
@@ -122,6 +127,7 @@ const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setP
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
     />
+    </ThemeProvider>
   );
 
   return {

@@ -156,7 +156,7 @@ const TableOrderDetail = (
                     </TableCell>
                   </TableRow>
                 ) : (
-                  ""
+                  <></>
                 )}
               </>
             ))}

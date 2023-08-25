@@ -98,7 +98,7 @@ const All = () => {
       />
       <div className="card">
         {/* Filter */}
-        <div className="card">
+        {/* <div className="card">
           <div className="card-body">
             <form>
               <div className="row gy-3 gx-2">
@@ -127,7 +127,7 @@ const All = () => {
               </div>
             </form>
           </div>
-        </div>
+        </div> */}
 
         <div className="card-body">
           {/* The number of Order statuses */}

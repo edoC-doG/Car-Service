@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import { instance } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/baseUrl";
 

@@ -67,6 +67,16 @@ const getServiceByGarage = async (page) => {
   return response.data;
 };
 
+const updateServiceStatus = async (id) => {
+  const response = await instance.put(
+    `${base_url}service/update-status/${id}`,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+}
+
+
 const serviceService = {
   getServices,
   addServices,
@@ -74,7 +84,8 @@ const serviceService = {
   addDetail,
   editServices, 
   getServiceByGarage,
-  editDetail
+  editDetail, 
+  updateServiceStatus
 };
 
 export default serviceService;

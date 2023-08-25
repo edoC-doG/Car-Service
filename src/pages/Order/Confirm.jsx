@@ -8,14 +8,13 @@ import Select from "../../components/filter/Select";
 import DateTime from "../../components/filter/DateTime";
 import Button from "../../components/filter/Button";
 import "../../styles/button.scss";
-
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineSharp";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookingsStatus } from "../../features/book/bookingSlide";
 import useTableV2 from "../../components/table/useTableV2";
+import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "bookingCode", label: "Code" },
@@ -35,53 +34,11 @@ const headCells = [
 ];
 
 const Confirm = () => {
-  const rows = [
-    {
-      id: 1,
-      order: 1020392,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Min Min",
-        phone: "081233423432",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "5.000.000",
-        status: "Unpaid",
-      },
-      status: "Pending",
-    },
-    {
-      id: 2,
-      order: 1020393,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      info: {
-        name: "Long ",
-        phone: "0324234",
-      },
-      garare: "Auto Garage",
-      total: {
-        price: "1.000.000",
-        status: "unpaid",
-      },
-      status: "Pending",
-    },
-  ];
-
+  useEffect(() => {
+    document.title = "Danh sách đơn hàng hoàn thành";
+  }, []);
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -105,7 +62,9 @@ const Confirm = () => {
       pageSize: rowsPerPage,
       bookingStatus: 4,
     };
-    dispatch(getBookingsStatus(data));
+    if (role === "Admin") dispatch(getBookingsStatus(data));
+    else if (role === "Manager")
+      dispatch(getBookingsStatus({ ...data, garageId: user?.garageId }));
   }, [page, rowsPerPage]);
 
   const recordsBooking = useSelector((state) => state.booking.bookings);
@@ -128,8 +87,8 @@ const Confirm = () => {
         icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
         size={20}
         alt="all"
-        title="Pending Orders"
-        number="8"
+        title="Complete Orders"
+        number={count}
       />
 
       <div className="card">
@@ -182,16 +141,6 @@ const Confirm = () => {
                   }}
                 />
               </div>
-              <div className="col-sm-4 col-md-6 col-lg-8 d-flex justify-content-sm-end">
-                <Button
-                  variant="outlined"
-                  className="export-button"
-                  size="large"
-                  onClick={() => {}}
-                  startIcon={<FileDownloadIcon fontSize="small" />}
-                  text="Export"
-                />
-              </div>
             </div>
           </div>
 
@@ -203,30 +152,39 @@ const Confirm = () => {
                 {recordsAfterPagingAndSorting().map((item) => (
                   <TableRow hover key={item.bookingCode}>
                     <TableCell sx={{ border: "none" }}>
-                      <Link
-                        to={`/admin/orders/details/${item.bookingCode}`}
-                        className="title-color hover-c1"
-                      >
-                        {item.bookingCode}
-                      </Link>
+                      {role === "Admin" ? (
+                        <Link
+                          to={`/admin/orders/details/${item.bookingId}`}
+                          className="title-color hover-c1"
+                        >
+                          {item.bookingCode}
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`/manager/orders/details/${item.bookingId}`}
+                          className="title-color hover-c1"
+                        >
+                          {item.bookingCode}
+                        </Link>
+                      )}
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <div>{item.bookingTime}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <Link to={``} className="text-body text-capitalize">
-                        <strong>{item.userBookingDto.fullName}</strong>
+                        <strong>{item.userBookingDto?.fullName}</strong>
                       </Link>
                       <Link
-                        to={`tel:${item.userBookingDto.userPhone}`}
+                        to={`tel:${item.userBookingDto?.userPhone}`}
                         className="d-block title-color"
                       >
-                        {item.userBookingDto.userPhone}
+                        {item.userBookingDto?.userPhone}
                       </Link>
                     </TableCell>
 
                     <TableCell sx={{ border: "none" }}>
-                      <div>{item.garageBookingDto.garageName}</div>
+                      <div>{item.garageBookingDto?.garageName}</div>
                     </TableCell>
 
                     <TableCell sx={{ border: "none", textAlign: "right" }}>
@@ -248,21 +206,24 @@ const Confirm = () => {
                       </span>
                     </TableCell>
 
-
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
                         <Tooltip title="view" arrow>
-                          <Link
-                            to={`/admin/orders/details/${item.bookingId}`}
-                            className="btn btn-outline--primary btn-sm edit square-btn"
-                          >
-                            <VisibilityIcon fontSize="small" />
-                          </Link>
-                        </Tooltip>
-                        <Tooltip title="Invoice" arrow>
-                          <Link className="btn btn-outline-info btn-sm square-btn">
-                            <DownloadForOfflineSharpIcon fontSize="small" />
-                          </Link>
+                          {role === "Admin" ? (
+                            <Link
+                              to={`/admin/orders/details/${item.bookingId}`}
+                              className="btn btn-outline--primary btn-sm edit square-btn"
+                            >
+                              <VisibilityIcon fontSize="small" />
+                            </Link>
+                          ) : (
+                            <Link
+                              to={`/manager/orders/details/${item.bookingId}`}
+                              className="btn btn-outline--primary btn-sm edit square-btn"
+                            >
+                              <VisibilityIcon fontSize="small" />
+                            </Link>
+                          )}
                         </Tooltip>
                       </div>
                     </TableCell>

@@ -9,10 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
-
 import ConfirmDialog from "../../components/ConfirmDialog";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import MoneyIcon from "@mui/icons-material/Money";
 import Notification from "../../components/Notification";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,9 +18,11 @@ import ModalEdit from "./ModalEdit";
 import {
   getMechanics,
   resetState,
-  updateMechanicStatus
+  updateMechanicStatus,
+  getMechanicsByGarage,
 } from "../../features/mechanic/mechanicSlice";
 import useTableV2 from "../../components/table/useTableV2";
+import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "userId", label: "ID" },
@@ -42,6 +41,8 @@ const headCells = [
 ];
 
 const Mechanics = () => {
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -80,7 +81,10 @@ const Mechanics = () => {
   );
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-    dispatch(getMechanics(data));
+
+    if (role === "Admin") dispatch(getMechanics(data));
+    else if (role === "Manager")
+      dispatch(getMechanicsByGarage({ ...data, garageId: user?.garageId }));
 
     if (updateSuccessAction) {
       dispatch(resetState());
@@ -101,8 +105,6 @@ const Mechanics = () => {
   };
   const recordsMechanic = useSelector((state) => state.mechanic.mechanics);
   const count = useSelector((state) => state.mechanic.number);
-
-
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
@@ -146,17 +148,21 @@ const Mechanics = () => {
                       }}
                     />
                   </div>
-                  <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                    <div className="d-flex justify-content-sm-end">
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => setShowModal(true)}
-                        startIcon={<AddIcon fontSize="small" />}
-                        text="Add Mechanic"
-                      />
+                  {role === "Manager" ? (
+                    <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
+                      <div className="d-flex justify-content-sm-end">
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => setShowModal(true)}
+                          startIcon={<AddIcon fontSize="small" />}
+                          text="Add Mechanic"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
 
@@ -173,18 +179,22 @@ const Mechanics = () => {
 
                         <TableCell sx={{ border: "none" }}>
                           <div className="media align-items-center gap-2">
-                            {/* <img
-                              className="rounded-circle avatar avatar-lg"
-                              src={item.info.image}
-                              alt=""
-                            /> */}
                             <div>
-                              <Link
-                                to={`/admin/mechanic/detail/${item.userId}`}
-                                className="title-color"
-                              >
-                                {item.userMechanicDto.fullName}
-                              </Link>
+                              {role === "admin" ? (
+                                <Link
+                                  to={`/admin/mechanic/detail/${item.userId}`}
+                                  className="title-color"
+                                >
+                                  {item.userMechanicDto?.fullName}
+                                </Link>
+                              ) : (
+                                <Link
+                                  to={`/manager/mechanic/detail/${item.userId}`}
+                                  className="title-color"
+                                >
+                                  {item.userMechanicDto?.fullName}
+                                </Link>
+                              )}
                             </div>
                           </div>
                         </TableCell>
@@ -192,18 +202,18 @@ const Mechanics = () => {
                           <div className="mb-1">
                             <strong>
                               <Link
-                                to={`mailto:${item.userMechanicDto.userEmail}`}
+                                to={`mailto:${item.userMechanicDto?.userEmail}`}
                                 className="title-color hover-c1 lowercase"
                               >
-                                {item.userMechanicDto.userEmail}
+                                {item.userMechanicDto?.userEmail}
                               </Link>
                             </strong>
                           </div>
                           <Link
-                            to={`tel:${item.userMechanicDto.userPhone}`}
+                            to={`tel:${item.userMechanicDto?.userPhone}`}
                             className="title-color hover-c1 lowercase "
                           >
-                            {item.userMechanicDto.userPhone}
+                            {item.userMechanicDto?.userPhone}
                           </Link>
                         </TableCell>
                         {/* Total Ordered */}
@@ -224,7 +234,7 @@ const Mechanics = () => {
                         <TableCell sx={{ border: "none" }}>
                           <Switches
                             checked={
-                              item.userMechanicDto.userStatus === 1
+                              item.userMechanicDto?.userStatus === 1
                                 ? true
                                 : false
                             }
@@ -248,21 +258,22 @@ const Mechanics = () => {
                         {/* Action */}
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">
-                            {/* <Tooltip title="edit" arrow>
-                              <Link
-                                onClick={() => handleEdit(item)}
-                                className="btn btn-outline--primary btn-sm edit"
-                              >
-                                <EditIcon fontSize="small" />
-                              </Link>
-                            </Tooltip> */}
-                            <Tooltip title="Earning statement" arrow>
-                              <Link
-                                to={`/admin/mechanic/detail/${item.userId}`}
-                                className="btn btn-outline-info btn-sm square-btn"
-                              >
-                                <MoneyIcon fontSize="small" />
-                              </Link>
+                            <Tooltip title="Detail" arrow>
+                              {role === "Admin" ? (
+                                <Link
+                                  to={`/admin/mechanic/detail/${item.userId}`}
+                                  className="btn btn-outline-info btn-sm square-btn"
+                                >
+                                  <MoneyIcon fontSize="small" />
+                                </Link>
+                              ) : (
+                                <Link
+                                  to={`/manager/mechanic/detail/${item.userId}`}
+                                  className="btn btn-outline-info btn-sm square-btn"
+                                >
+                                  <MoneyIcon fontSize="small" />
+                                </Link>
+                              )}
                             </Tooltip>
                             {/* <Tooltip title="delelte" arrow>
                               <Link

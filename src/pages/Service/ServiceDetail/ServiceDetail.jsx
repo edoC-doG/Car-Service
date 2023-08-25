@@ -15,13 +15,13 @@ import Notification from "./../../../components/Notification";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ModalAddDetail from "./ModalAdd";
 import ModalEdit from "./ModalEdit";
+import authService from "../../../features/auth/authService";
 const headCells = [
   { id: "serviceDetailId", label: "ID" },
   { id: "servicePrice", label: "Price" },
   {
     id: "minNumberOfCarLot",
     label: "Min Car slot",
-
   },
   { id: "maxNumberOfCarLot", label: "Max Car slot" },
   {
@@ -32,7 +32,23 @@ const headCells = [
   },
 ];
 
+const headCellsManager = [
+  { id: "serviceDetailId", label: "ID" },
+  { id: "servicePrice", label: "Price" },
+  {
+    id: "minNumberOfCarLot",
+    label: "Min Car slot",
+  },
+  { id: "maxNumberOfCarLot", label: "Max Car slot" },
+  
+];
+
 const ServiceDetail = () => {
+  useEffect(() => {
+    document.title = "Chi tiết dịch vụ";
+  }, []);
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -54,20 +70,20 @@ const ServiceDetail = () => {
   const [showModal, setShowModal] = useState(false);
   const [serAdd, setSerAdd] = useState({});
   const handleAdd = (ser) => {
-    setShowModal(true)
-    setSerAdd(ser)
-  }
+    setShowModal(true);
+    setSerAdd(ser);
+  };
   const handleClose = () => {
     setShowModal(false);
-    setShowEdit(false)
+    setShowEdit(false);
   };
   //EDIT
   const [showEdit, setShowEdit] = useState(false);
   const [serEdit, setSerEdit] = useState({});
   const handleEdit = (ser) => {
-    setSerEdit(ser)
-    setShowEdit(true)
-  }
+    setSerEdit(ser);
+    setShowEdit(true);
+  };
 
   // const getData = () => {
   //   // const data = { pageIndex: page + 1, pageSize: rowsPerPage };
@@ -107,7 +123,7 @@ const ServiceDetail = () => {
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordDetail,
-      headCells,
+      role === "Admin" ? headCells : headCellsManager,
       filterFn,
       pages,
       page,
@@ -124,7 +140,7 @@ const ServiceDetail = () => {
           size={25}
           alt="services"
           title="List detail services"
-          number="20"
+          number={count}
         />
         <div className="row mt-4">
           <div className="col-md-12">
@@ -182,13 +198,17 @@ const ServiceDetail = () => {
                           text="Back"
                         />
                       </div>
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => handleAdd(id)}
-                        startIcon={<AddIcon fontSize="small" />}
-                        text="Add new Service"
-                      />
+                      {role === "Admin" ? (
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => handleAdd(id)}
+                          startIcon={<AddIcon fontSize="small" />}
+                          text="Add new Service"
+                        />
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -212,45 +232,46 @@ const ServiceDetail = () => {
                             {item.servicePrice}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            <div >
-                            {item.minNumberOfCarLot}
-                            </div>
-                        
-                          </TableCell>
-                          <TableCell
-                            sx={{ border: "none" }}
-                          >
-                            {item.maxNumberOfCarLot}
+                            <div>{item.minNumberOfCarLot}</div>
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            <div className="d-flex justify-content-center gap-2">
-                              <Tooltip title="edit" arrow>
-                                <Link
-                                  onClick={()=>handleEdit(item)}
-                                  className="btn btn-outline--primary btn-sm square-btn"
-                                >
-                                  <EditIcon fontSize="small" />
-                                </Link>
-                              </Tooltip>
-
-                              <Tooltip title="delelte" arrow>
-                                <Link
-                                  className="btn btn-outline-danger btn-sm delete square-btn"
-                                  onClick={() => {
-                                    setConfirmDialog({
-                                      isOpen: true,
-                                      title:
-                                        "Are you sure to delete this record?",
-                                      subTitle: "You can't undo this operation",
-                                      onConfirm: () => {},
-                                    });
-                                  }}
-                                >
-                                  <DeleteIcon fontSize="small" />
-                                </Link>
-                              </Tooltip>
-                            </div>
+                            {item.maxNumberOfCarLot}
                           </TableCell>
+
+                          {role === "Admin" ? (
+                            <TableCell sx={{ border: "none" }}>
+                              <div className="d-flex justify-content-center gap-2">
+                                <Tooltip title="edit" arrow>
+                                  <Link
+                                    onClick={() => handleEdit(item)}
+                                    className="btn btn-outline--primary btn-sm square-btn"
+                                  >
+                                    <EditIcon fontSize="small" />
+                                  </Link>
+                                </Tooltip>
+
+                                <Tooltip title="delelte" arrow>
+                                  <Link
+                                    className="btn btn-outline-danger btn-sm delete square-btn"
+                                    onClick={() => {
+                                      setConfirmDialog({
+                                        isOpen: true,
+                                        title:
+                                          "Are you sure to delete this record?",
+                                        subTitle:
+                                          "You can't undo this operation",
+                                        onConfirm: () => {},
+                                      });
+                                    }}
+                                  >
+                                    <DeleteIcon fontSize="small" />
+                                  </Link>
+                                </Tooltip>
+                              </div>
+                            </TableCell>
+                          ) : (
+                            <></>
+                          )}
                         </TableRow>
                       ))
                     ) : (
@@ -289,8 +310,12 @@ const ServiceDetail = () => {
         setConfirmDialog={setConfirmDialog}
       />
       <Notification notify={notify} setNotify={setNotify} />
-      <ModalAddDetail show={showModal} handleClose={handleClose} serAdd={serAdd}/>
-      <ModalEdit show={showEdit} handleClose={handleClose} serEdit={serEdit}/>
+      <ModalAddDetail
+        show={showModal}
+        handleClose={handleClose}
+        serAdd={serAdd}
+      />
+      <ModalEdit show={showEdit} handleClose={handleClose} serEdit={serEdit} />
     </>
   );
 };

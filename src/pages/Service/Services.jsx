@@ -3,7 +3,6 @@ import Header from "../../components/Header";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "../../components/filter/Button";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import "../../styles/button.scss";
 import Search from "../../components/filter/Search";
 import AddIcon from "@mui/icons-material/Add";
@@ -12,7 +11,6 @@ import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import Switches from "../../components/table/Switches";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,7 +76,7 @@ const Services = () => {
     setShowEdit(true);
   };
   const serState = useSelector((state) => state.service);
-  const { service, isError, isSuccessAdd, isLoading, message, isSuccess } =
+  const {  isSuccessAdd, message, } =
     serState;
   console.log(message);
   const [notify, setNotify] = useState({
@@ -106,6 +104,12 @@ const Services = () => {
       handleClose();
     } else {
       if (message?.status === 400) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      }else if (message.status === 404){
         setNotify({
           isOpen: true,
           message: message.title,

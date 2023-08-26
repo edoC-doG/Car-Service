@@ -105,7 +105,7 @@ const CustomerDetail = () => {
               </h3>
               <span className="ml-2 ml-sm-3 ">
                 <EventNoteIcon fontSize="inherit" />
-                Bắt đầu đơn hàng : {detail.createdAt}
+                Thời gian tạo tài khoản : {detail.createdAt}
               </span>
             </div>
           </div>

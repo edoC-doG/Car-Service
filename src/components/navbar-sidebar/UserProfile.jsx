@@ -2,7 +2,7 @@ import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
 
 import ButtonClose from "../ButtonClose";
-import { userProfileData } from "../../data/data";
+// import { userProfileData } from "../../data/data";
 import { useStateContext } from "../../contexts/ContextProvider";
 import "../../styles/userProfile.scss";
 
@@ -42,7 +42,7 @@ const UserProfile = () => {
           </p>
         </div>
       </div>
-      <div>
+      {/* <div>
         {userProfileData.map((item, index) => (
           <div key={index} className="flex gap-5 cursor-pointer list-info ">
             <button
@@ -59,7 +59,7 @@ const UserProfile = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       <div style={{ marginTop: "1.25rem" }}>
         <LogOut
           color="white"

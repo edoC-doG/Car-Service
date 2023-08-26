@@ -111,6 +111,12 @@ const ServiceDetail = () => {
           isOpen: true,
           message: message.title,
           type: "error",
+        })
+      }else if (message.status === 404){
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
         });
       }
     }

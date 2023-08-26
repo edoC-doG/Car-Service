@@ -171,10 +171,10 @@ const TableOrderDetail = (
           <dl className="row gy-1 text-sm-right">
             <dt className="col-5">Giá đơn hàng tạm tính</dt>
             <dd className="col-6 title-color">
-              <strong>{booking.totalPrice}</strong>
+              <strong>{booking.originalPrice}</strong>
             </dd>
             <dt className="col-5">Giá trị khuyến mãi</dt>
-            <dd className="col-6 title-color">- 0.0</dd>
+            <dd className="col-6 title-color">-{booking.discountPrice}</dd>
             <dt className="col-5 ">
               <strong>Giá đơn hàng cuối cùng</strong>
             </dt>

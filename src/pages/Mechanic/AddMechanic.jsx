@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { addMechanics } from './../../features/mechanic/mechanicSlice';
 const phoneRegExp =/^[0-9\- ]{8,14}$/
 const schema = yup
   .object({
@@ -27,9 +28,9 @@ const schema = yup
       .required("Không được để trống email !!!"),
     userPhone: yup
       .string()
-      .matches(phoneRegExp, "Phone number is not valid")
+      .matches(phoneRegExp, "Số điện thoại không hợp lệ !!!")
       .required("Không để trống số điện thoại !!!")
-      .max(12, "Số điện thoại không hợp lệ !"),
+      .max(10, "Số điện thoại quá dài!"),
     userPassword: yup
       .string()
       .required("Không để trống mật khẩu !!!")
@@ -51,16 +52,24 @@ function ModalAdd(props) {
   const onHandleSubmit = (data) => {
     const user = {
       roleId,
+      userFirstName: data.userFirstName,
+      userLastName: data.userLastName,
+      userPhone: data.userPhone,
+      userEmail: data.userEmail,
+      userPassword: data.userPassword,
+      passwordConfirm: data.passwordConfirm,
     };
-    // dispatch(addProducts(ser))
+    dispatch(addMechanics(user))
+    console.log(user)
   };
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors},
   } = useForm({
     defaultValues: {
+      roleId:3,
       userFirstName: "",
       userLastName: "",
       userPhone: "",
@@ -70,11 +79,14 @@ function ModalAdd(props) {
     },
     resolver: yupResolver(schema),
   });
+  const isSuccessAdd = useSelector(
+    (state) => state.mechanic.isSuccessAdd
+  );
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (isSuccessAdd) {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSuccessAdd, reset]);
   return (
     <div
       className="modal show"

@@ -10,7 +10,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
   addEmployees,
-  getEmployees,
 } from "./../../features/employee/employeeSlice";
 const phoneRegExp = /^[0-9\- ]{8,14}$/;
 const schema = yup
@@ -69,7 +68,7 @@ function ModalAdd(props) {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       userFirstName: "",
@@ -81,6 +80,8 @@ function ModalAdd(props) {
     },
     resolver: yupResolver(schema),
   });
+  const empState = useSelector((state) => state.employee);
+  const { isSuccessAdd} = empState;
   const user = JSON.parse(localStorage.getItem("user"));
   const roleUser = user?.roleName;
   useEffect(() => {
@@ -89,10 +90,10 @@ function ModalAdd(props) {
     } else {
       setRole(5);
     }
-    if (isSubmitSuccessful) {
+    if (isSuccessAdd) {
       reset();
     }
-  }, [isSubmitSuccessful, reset, roleUser]);
+  }, [isSuccessAdd, reset, roleUser]);
   return (
     <div
       className="modal show"

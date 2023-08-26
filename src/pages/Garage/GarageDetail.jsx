@@ -14,7 +14,7 @@ const OwnerDetail = () => {
   const navigate = useNavigate();  
   const garageDetail = useSelector((state) => state.garage.garage);
   return (
-    <div className="min-[620px]:pt-24 min-[620px]:px-8">
+    <div className="min-[620px]:pt-24 min-[620px]:px-8 mb-5">
       <Header
         icon={
           "https://6valley.6amtech.com/public/assets/back-end/img/add-new-seller.png"

@@ -7,8 +7,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Button from "../../components/filter/Button";
 import AddIcon from "@mui/icons-material/Add";
 import useTableV2 from "../../components/table/useTableV2";
-import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { TableBody, TableCell, TableRow} from "@mui/material";
 import Switches from "../../components/table/Switches";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,26 +34,6 @@ const headCells = [
 ];
 
 const Employees = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const roleUser = user?.roleName;
-  const rows = [
-    {
-      id: 1,
-      name: "admin",
-      email: "admin@gmail.com",
-      phone: "02921323131",
-      role: "Admin",
-      status: true,
-    },
-    {
-      id: 2,
-      name: "Hello world",
-      email: "test@gmail.com",
-      phone: "02921323131",
-      role: "customer service",
-      status: true,
-    },
-  ];
   //Add
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => {
@@ -109,10 +88,16 @@ const Employees = () => {
           isOpen: true,
           message: message.title,
           type: "error",
+        })
+      }else if (message.status === 404){
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
         });
       }
     }
-  }, [page, rowsPerPage, isSuccessAdd, message]);
+  }, [page, rowsPerPage, isSuccessAdd, message, getData]);
   const recordsEmployee = useSelector((state) => state.employee.employees);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(

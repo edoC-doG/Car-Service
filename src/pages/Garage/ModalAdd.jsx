@@ -1,63 +1,103 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "./../../firebase";
-import {
-  addServices,
-  getServices,
-  resetState,
-} from "./../../features/service/serviceSlide";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+const phoneRegExp = /^[0-9\- ]{8,14}$/;
+const schema = yup
+  .object({
+    userFirstName: yup
+      .string()
+      .required("Không để trống tên của nhân viên !!!")
+      .min(1, "Tên của nhân viên quá ngắn !")
+      .max(25, "Tên của nhân viên quá dài!"),
+    userLastName: yup
+      .string()
+      .required("Không để trống họ và tên đệm của nhân viên !!!")
+      .min(1, "Họ và tên đệm quá ngắn !")
+      .max(25, "Họ và tên đệm quá dài !"),
+    userEmail: yup
+      .string()
+      .email("Email không hợp lệ !")
+      .required("Không được để trống email !!!"),
+    userPhone: yup
+      .string()
+      .matches(phoneRegExp, "Số điện thoại không hợp lệ !!!")
+      .required("Không để trống số điện thoại !!!")
+      .max(10, "Số điện thoại quá dài !"),
+    userPassword: yup
+      .string()
+      .required("Không để trống mật khẩu !!!")
+      .min(1, "Mật khẩu quá ngắn !")
+      .max(25, "Mật khẩu quá dài !"),
+    passwordConfirm: yup
+      .string()
+      .required("Không để trống xác nhận mật khẩu !!!")
+      .oneOf(
+        [yup.ref("userPassword")],
+        "Mật khẩu xác nhận không khớp với mặt khẩu đã nhập ! "
+      ),
+  })
+  .required();
 function ModalAdd(props) {
   const dispatch = useDispatch();
   const { show, handleClose } = props;
-  const [serviceGroup, setGroup] = useState("");
-  const [serviceUnit, setUnit] = useState("");
+  const [roleId, setRole] = useState("");
   const onHandleSubmit = (data) => {
-    const imgSet = data.serviceImage;
-    const img = imgSet[0];
-    const file = img;
-    if (!file) return null;
-    const storageRef = ref(storage, `files/${file.name}`);
-    console.log(storageRef);
-    uploadBytes(storageRef, file).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        const ser = {
-          serviceName: data.serviceName,
-          serviceImage: downloadURL,
-          serviceGroup,
-          serviceUnit,
-          serviceDetailDescription: data.serviceDetailDescription,
-          serviceDuration: data.serviceDuration,
-        };
-        dispatch(addServices(ser));
-      });
-    });
+    const garage = {
+      garageName: data.garageName,
+      garageContactInformation: data.garageContactInformation,
+      garageAbout: data.garageAbout,
+      garageAddress: data.garageAddress,
+      garageWard: data.garageWard,
+      garageDistrict: data.garageDistrict,
+      garageCity: data.garageCity,
+      openAt: data.openAt,
+      closeAt: data.closeAt,
+      userId: 0,
+    };
+    console.log(user);
+    // dispatch(addEmployees(garage))
   };
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm({
     defaultValues: {
-      serviceName: "",
-      serviceGroup: "",
-      serviceUnit: "",
-      serviceDetailDescription: "",
-      serviceDuration: "",
+      garageName: "",
+      garageContactInformation: "",
+      garageAbout: "",
+      garageAddress: "",
+      garageWard: "",
+      garageDistrict: "",
+      garageCity: "",
+      openAt: "",
+      closeAt: "",
+      userId: 0,
     },
+    resolver: yupResolver(schema),
   });
+  const empState = useSelector((state) => state.employee);
+  const { isSuccessAdd } = empState;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const roleUser = user?.roleName;
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (roleUser === "Admin") {
+      setRole(2);
+    } else {
+      setRole(5);
+    }
+    if (isSuccessAdd) {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSuccessAdd, reset, roleUser]);
   return (
     <div
       className="modal show"
@@ -74,113 +114,161 @@ function ModalAdd(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Thêm mới dịch vụ sửa chữa </Modal.Title>
+          <Modal.Title>Thêm mới nhân viên</Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
-            <Form.Group className="mb-3">
-              <Form.Label>Tên của dịch vụ</Form.Label>
+            <Form.Group className="mb-3" hidden={true}>
+              <Form.Label>ID</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                name="serviceName"
-                {...register("serviceName", {
-                  required: true,
-                  maxLength: 30,
-                  minLength: 6,
-                })}
+                name="roleId"
+                value={roleId}
+                onChange={(e) => setRole(e.target.value)}
               />
-              {errors.serviceName?.type === "required" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Không để trống tên dịch vụ !!!
-                </p>
-              )}
-              {errors.serviceName?.type === "maxLength" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Tên dịch vụ tối đa 30 ký tự !!!
-                </p>
-              )}
-              {errors.serviceName?.type === "minLength" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Tên dịch vụ tối thiểu 6 ký tự !!!
-                </p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Loại dịch vụ</Form.Label>
-              <Form.Select
-                className="form-control"
-                aria-label="Default select example"
-                onChange={(e) => setGroup(e.target.value)}
-              >
-                <option>Chọn gói dịch vụ</option>
-                <option value={1}>Gói dịch vụ vệ sinh + Bảo dưỡng</option>
-                <option value={2}>Gói dịch vụ ngoại thất</option>
-                <option value={3}>Gói dịch vụ nội thất</option>
-              </Form.Select>
             </Form.Group>
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
-                <Form.Label>Số lần</Form.Label>
-                <Form.Select
-                  className="form-control"
-                  aria-label="Default select example"
-                  onChange={(e) => setUnit(e.target.value)}
-                >
-                  <option>Chọn số lần</option>
-                  <option value={0}>Gói</option>
-                  <option value={1}>Lần</option>
-                </Form.Select>
+                <Form.Label>
+                  garageName <span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  autoFocus
+                  name=" garageName"
+                  {...register(" garageName")}
+                />
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  {errors.userFirstName?.message}
+                </p>
               </Form.Group>
               <Form.Group as={Col} md="6">
-                <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
+                <Form.Label>
+                  Tên của nhân viên <span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
-                  type="number"
+                  type="text"
                   autoFocus
-                  // value={serviceDuration}
-                  // onChange={(e) => setDuration(e.target.value)}
-                  {...register("serviceDuration", {
-                    required: true,
-                  })}
+                  name="userLastName"
+                  {...register("userLastName")}
                 />
-                {errors.serviceDuration?.type === "required" && (
-                  <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                    Không được để trống !!!
-                  </p>
-                )}
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  {errors.userLastName?.message}
+                </p>
               </Form.Group>
             </Row>
             <Form.Group className="mb-3">
-              <Form.Label>Mô tả dịch vụ</Form.Label>
+              <Form.Label>
+                garageAbout <span style={{ color: "red" }}>*</span>
+              </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                // value={serviceDetailDescription}
-                // onChange={(e) => setDes(e.target.value)}
-                {...register("serviceDetailDescription", {
-                  required: true,
-                })}
+                name="garageAbout"
+                {...register("garageAbout")}
               />
-              {errors.serviceDetailDescription?.type === "required" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Không được để trống mô tả !!!
-                </p>
-              )}
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageAbout?.message}
+              </p>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Hình ảnh dịch vụ</Form.Label>
+              <Form.Label>
+                garageContactInformation <span style={{ color: "red" }}>*</span>
+              </Form.Label>
               <Form.Control
-                type="file"
+                type="text"
                 autoFocus
-                {...register("serviceImage", {
-                  required: true,
-                })}
+                name="garageContactInformation"
+                {...register("garageContactInformation")}
               />
-              {errors.serviceImage?.type === "required" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Không được để trống hình ảnh !!!
-                </p>
-              )}
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageContactInformation?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                garageAddress <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="garageAddress"
+                {...register("garageAddress")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageAddress?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                garageWard <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="garageWard"
+                {...register("garageWard")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageWard?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+              garageDistrict <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="garageDistrict"
+                {...register("garageDistrict")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageDistrict?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                garageCity <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="garageCity"
+                {...register("garageCity")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageCity?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+              openAt <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="openAt"
+                {...register("openAt")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.openAt?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+              closeAt <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="closeAt"
+                {...register("closeAt")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.closeAt?.message}
+              </p>
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

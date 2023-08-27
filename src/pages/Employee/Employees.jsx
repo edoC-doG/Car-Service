@@ -187,7 +187,7 @@ const Employees = () => {
                         <div>{item.userPhone}</div>
                       </TableCell>
                       <TableCell sx={{ border: "none" }}>
-                        <div>{item.roleDto.roleName}</div>
+                        <div>{item.roleDto?.roleName}</div>
                       </TableCell>
                       <TableCell sx={{ border: "none" }}>
                         <Switches

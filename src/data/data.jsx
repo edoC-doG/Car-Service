@@ -37,7 +37,53 @@ export const sidebarManager = [
     label: "Dashboard",
     
   },
-
+  {
+    key: "om",
+    icon: null,
+    label: "QUẢN LÝ ĐƠN HÀNG",
+    type: "group",
+  
+    children: [
+      {
+        key: "order",
+        icon: <GiMechanicGarage />,
+        label: "Đơn hàng",
+      
+        children: [
+          {
+            key: "all-orders",
+            icon: <RxDotFilled />,
+            label: "Tất cả đơn hàng",
+            
+          },
+          {
+            key: "pending-order",
+            icon: <RxDotFilled color="orange" />,
+            label: "Sắp tới",
+            
+          },
+          {
+            key: "checkin-order",
+            icon: <RxDotFilled  color="yellow"/>,
+            label: "Đang làm",
+            
+          },
+          {
+            key: "confirm-order",
+            icon: <RxDotFilled  color="green"/>,
+            label: "Hoàn thành",
+            
+          },
+          {
+            key: "cancel-order",
+            icon: <RxDotFilled  color="red"/>,
+            label: "Hủy bỏ",
+            
+          },
+        ],
+      },
+    ],
+  },
   {
     key: "um",
     icon: null,
@@ -130,53 +176,7 @@ export const sidebarManager = [
       },
     ],
   },
-  {
-    key: "om",
-    icon: null,
-    label: "QUẢN LÝ ĐƠN HÀNG",
-    type: "group",
   
-    children: [
-      {
-        key: "order",
-        icon: <GiMechanicGarage />,
-        label: "Đơn hàng",
-      
-        children: [
-          {
-            key: "all-orders",
-            icon: <RxDotFilled />,
-            label: "Tất cả đơn hàng",
-            
-          },
-          {
-            key: "pending-order",
-            icon: <RxDotFilled color="orange" />,
-            label: "Sắp tới",
-            
-          },
-          {
-            key: "checkin-order",
-            icon: <RxDotFilled  color="yellow"/>,
-            label: "Đang làm",
-            
-          },
-          {
-            key: "confirm-order",
-            icon: <RxDotFilled  color="green[500]"/>,
-            label: "Hoàn thành",
-            
-          },
-          {
-            key: "cancel-order",
-            icon: <RxDotFilled  color="red"/>,
-            label: "Hủy bỏ",
-            
-          },
-        ],
-      },
-    ],
-  },
 
 ]
 

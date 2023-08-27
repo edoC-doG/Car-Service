@@ -36,9 +36,20 @@ export const getGarageDetail = createAsyncThunk(
   }
 );
 
-
+export const getSlot = createAsyncThunk(
+  "garage/slot-garage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await garageService.getSlot(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const resetState = createAction("Reset_all");
+
 const initialState = {
   garages: [],
   garage: {},
@@ -105,7 +116,22 @@ export const garageSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-     
+      .addCase(getSlot.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getSlot.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.garages = action.payload;
+        state.message = "success";
+      }) 
+      .addCase(getSlot.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
 
       .addCase(resetState, () => initialState);
   },

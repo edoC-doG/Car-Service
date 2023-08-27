@@ -15,6 +15,7 @@ import { getGarages, resetState,updateGarageStatus } from "../../features/garage
 import Switches from "../../components/table/Switches";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import Notification from "../../components/Notification";
+import ModalAdd from './ModalAdd';
 
 const headCells = [
   { id: "garageId", label: "ID" },
@@ -45,7 +46,11 @@ const Onwers = () => {
       return items;
     },
   });
-
+   //Add
+   const [showModal, setShowModal] = useState(false);
+   const handleClose = () => {
+     setShowModal(false);
+   };
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
@@ -167,7 +172,7 @@ const Onwers = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => {}}
+                        onClick={() => setShowModal(true)}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Thêm mới garage"
                       />
@@ -304,6 +309,7 @@ const Onwers = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
+      <ModalAdd show={showModal} handleClose={handleClose} />
       <Notification notify={notify} setNotify={setNotify} />
     </>
   );

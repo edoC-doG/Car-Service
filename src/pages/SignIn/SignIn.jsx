@@ -108,7 +108,7 @@ const SignIn = () => {
                         className="input-label text-base"
                         htmlFor="signinSrEmail"
                       >
-                        Your email
+                        Email:
                       </label>
                       <input
                         type="email"
@@ -134,7 +134,7 @@ const SignIn = () => {
                         tabIndex={"0"}
                       >
                         <span className="d-flex justify-content-between align-items-center text-base">
-                          Password
+                          Mật khẩu:
                         </span>
                       </label>
                       <div className="input-group input-group-merge">
@@ -178,7 +178,7 @@ const SignIn = () => {
                       className="btn btn-lg btn-block btn--primary"
                       onClick={formik.handleSubmit}
                     >
-                      <h1 className="text-2xl text-white">Sign in</h1>
+                      <h1 className="text-2xl text-white">Đặng nhập</h1>
                     </button>
                   </form>
                 </div>

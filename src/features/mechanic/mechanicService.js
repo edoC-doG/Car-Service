@@ -112,7 +112,17 @@ const AddMechanicsByBooking = async (data) => {
   return response.data;
 };
 
+//ADD
+const addMechanics = async (data) => {
+  const response = await instance.post(
+    `${base_url}/user/create-mechanic`,
+    data,
+    instance
+  );
+  // console.log("mechanic response: ", response.data);
 
+  return response.data;
+};
 
 const mechanicService = {
     getMechanics, 
@@ -123,7 +133,8 @@ const mechanicService = {
     getBookingByMechanic, 
     getMechanicsByGarage, 
     getMechanicsAvaliable,
-    AddMechanicsByBooking
+    AddMechanicsByBooking,
+    addMechanics
 }
 
 export default mechanicService;

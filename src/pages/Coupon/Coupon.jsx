@@ -18,15 +18,17 @@ import {
   updateCouponStatus,
 } from "../../features/coupon/couponSlice";
 import Notification from "../../components/Notification";
-import Button from './../../components/filter/Button';
+import Button from "./../../components/filter/Button";
 import ModalAdd from "./ModalAdd";
 import ModalEdit from "./ModalEdit";
 
 const headCells = [
   { id: "couponId", label: "ID" },
-  { id: "couponCode", label: "Mã khuyến mãi" },
+  { id: "couponCode", label: "Mã Khuyễn Mãi" },
   { id: "couponStartDate", label: "Ngày bắt đầu" },
   { id: "couponEndDate", label: "Ngày kết thúc" },
+  { id: "numberOfTimesToUse", label: "Số lượng" },
+  { id: "garageNamee", label: "Garage" },
   { id: "couponStatus", label: "Trạng thái" },
 
   {
@@ -49,19 +51,19 @@ const Coupon = () => {
     title: "",
     subTitle: "",
   });
-   //Add
-   const [showModal, setShowModal] = useState(false);
-   const handleClose = () => {
-     setShowModal(false);
-     setShowEdit(false);
-   };
-   //Edit
-   const [showEdit, setShowEdit] = useState(false);
-   const [coupEdit, setCoupEdit] = useState({});
-   const handleEdit = (coup) => {
+  //Add
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setShowEdit(false);
+  };
+  //Edit
+  const [showEdit, setShowEdit] = useState(false);
+  const [coupEdit, setCoupEdit] = useState({});
+  const handleEdit = (coup) => {
     setCoupEdit(coup);
-     setShowEdit(true);
-   };
+    setShowEdit(true);
+  };
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -76,24 +78,48 @@ const Coupon = () => {
   const updateSuccessAction = useSelector(
     (state) => state.coupon.isSuccessAction
   );
-
-  useEffect(() => {
+const couponState = useSelector(  (state) => state.coupon);
+  const { isSuccessAdd, message } = couponState;
+  const getData = () => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getCoupons(data));
-
+  };
+  useEffect(() => {
+    getData();
+    if (isSuccessAdd) {
+      setNotify({
+        isOpen: true,
+        message: "Thành Công",
+        type: "success",
+      });
+      handleClose();
+    } else {
+      if (message.status === 400  ) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      } else if (message.status === 404){
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      }
+    }
     if (updateSuccessAction) {
-      dispatch(resetState());
       setConfirmDialog({
         ...confirmDialog,
         isOpen: false,
       });
       setNotify({
         isOpen: true,
-        message: "Update Successfully",
+        message: "Thành Công",
         type: "success",
       });
     }
-  }, [page, updateSuccessAction, rowsPerPage]);
+  }, [updateSuccessAction, isSuccessAdd, message]);
 
   const handleSwitchToggle = (couponId, couponStatus) => {
     // Dispatch the updateCustomerStatus action
@@ -127,7 +153,7 @@ const Coupon = () => {
         <div className="row mt-4">
           <div className="col-md-12">
             <div className="card">
-            <div className="px-3 py-4">
+              <div className="px-3 py-4">
                 <div className="row justify-content-between align-items-center gy-2">
                   <div className="col-sm-8 col-md-6 col-lg-4">
                     <Search
@@ -148,7 +174,7 @@ const Coupon = () => {
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => setShowModal(true)}  
+                        onClick={() => setShowModal(true)}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Thêm mới khuyến mãi"
                       />
@@ -181,6 +207,16 @@ const Coupon = () => {
                         <TableCell sx={{ border: "none" }}>
                           <div className="mb-1">
                             <strong>{item.couponEndDate}</strong>
+                          </div>
+                        </TableCell>
+                        <TableCell sx={{ border: "none" }}>
+                          <div className="mb-1">
+                            <div>{item.numberOfTimesToUse}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell sx={{ border: "none" }}>
+                          <div className="mb-1">
+                            <div>{item.garageName}</div>
                           </div>
                         </TableCell>
                         {/* Block and unblock */}
@@ -219,14 +255,14 @@ const Coupon = () => {
 
                             <Tooltip title="delelte" arrow>
                               <Link
-                                
                                 className="btn btn-outline-danger btn-sm delete square-btn"
                                 onClick={() => {
                                   setConfirmDialog({
                                     isOpen: true,
                                     title:
                                       "Bạn có chắc chắn muốn thay đổi trạng thái ?",
-                                    subTitle: "Bạn không thể hoàn tác thao tác này",
+                                    subTitle:
+                                      "Bạn không thể hoàn tác thao tác này",
                                     onConfirm: () => {},
                                   });
                                 }}

@@ -8,9 +8,6 @@ import Row from "react-bootstrap/Row";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  addEmployees,
-} from "./../../features/employee/employeeSlice";
 const phoneRegExp = /^[0-9\- ]{8,14}$/;
 const schema = yup
   .object({
@@ -52,17 +49,20 @@ function ModalAdd(props) {
   const { show, handleClose } = props;
   const [roleId, setRole] = useState("");
   const onHandleSubmit = (data) => {
-    const user = {
-      roleId,
-      userFirstName: data.userFirstName,
-      userLastName: data.userLastName,
-      userPhone: data.userPhone,
-      userEmail: data.userEmail,
-      userPassword: data.userPassword,
-      passwordConfirm: data.passwordConfirm,
+    const garage = {
+      garageName: data.garageName,
+      garageContactInformation: data.garageContactInformation,
+      garageAbout: data.garageAbout,
+      garageAddress: data.garageAddress,
+      garageWard: data.garageWard,
+      garageDistrict: data.garageDistrict,
+      garageCity: data.garageCity,
+      openAt: data.openAt,
+      closeAt: data.closeAt,
+      userId: 0,
     };
     console.log(user);
-    dispatch(addEmployees(user))
+    // dispatch(addEmployees(garage))
   };
   const {
     register,
@@ -71,17 +71,21 @@ function ModalAdd(props) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      userFirstName: "",
-      userLastName: "",
-      userPhone: "",
-      userEmail: "",
-      userPassword: "",
-      passwordConfirm: "",
+      garageName: "",
+      garageContactInformation: "",
+      garageAbout: "",
+      garageAddress: "",
+      garageWard: "",
+      garageDistrict: "",
+      garageCity: "",
+      openAt: "",
+      closeAt: "",
+      userId: 0,
     },
     resolver: yupResolver(schema),
   });
   const empState = useSelector((state) => state.employee);
-  const { isSuccessAdd} = empState;
+  const { isSuccessAdd } = empState;
   const user = JSON.parse(localStorage.getItem("user"));
   const roleUser = user?.roleName;
   useEffect(() => {
@@ -127,13 +131,13 @@ function ModalAdd(props) {
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
                 <Form.Label>
-                  Tên đệm của nhân viên <span style={{ color: "red" }}>*</span>
+                  garageName <span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
                   autoFocus
-                  name="userFirstName"
-                  {...register("userFirstName")}
+                  name=" garageName"
+                  {...register(" garageName")}
                 />
                 <p role="alert" style={{ color: "red", marginTop: "5px" }}>
                   {errors.userFirstName?.message}
@@ -156,58 +160,114 @@ function ModalAdd(props) {
             </Row>
             <Form.Group className="mb-3">
               <Form.Label>
-                Email của nhân viên <span style={{ color: "red" }}>*</span>
+                garageAbout <span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                name="userEmail"
-                {...register("userEmail")}
+                name="garageAbout"
+                {...register("garageAbout")}
               />
               <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                {errors.userEmail?.message}
+                {errors.garageAbout?.message}
               </p>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>
-                SĐT của nhân viên <span style={{ color: "red" }}>*</span>
+                garageContactInformation <span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                name="userPhone"
-                {...register("userPhone")}
+                name="garageContactInformation"
+                {...register("garageContactInformation")}
               />
               <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                {errors.userPhone?.message}
+                {errors.garageContactInformation?.message}
               </p>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>
-                Mật khẩu của nhân viên <span style={{ color: "red" }}>*</span>
+                garageAddress <span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                name="userPassword"
-                {...register("userPassword")}
+                name="garageAddress"
+                {...register("garageAddress")}
               />
               <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                {errors.userPassword?.message}
+                {errors.garageAddress?.message}
               </p>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>
-                Xác nhân mật khẩu <span style={{ color: "red" }}>*</span>
+                garageWard <span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                name="passwordConfirm"
-                {...register("passwordConfirm")}
+                name="garageWard"
+                {...register("garageWard")}
               />
               <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                {errors.passwordConfirm?.message}
+                {errors.garageWard?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+              garageDistrict <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="garageDistrict"
+                {...register("garageDistrict")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageDistrict?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                garageCity <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="garageCity"
+                {...register("garageCity")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.garageCity?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+              openAt <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="openAt"
+                {...register("openAt")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.openAt?.message}
+              </p>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+              closeAt <span style={{ color: "red" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                autoFocus
+                name="closeAt"
+                {...register("closeAt")}
+              />
+              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                {errors.closeAt?.message}
               </p>
             </Form.Group>
           </Modal.Body>

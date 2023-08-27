@@ -12,6 +12,7 @@ import {
   getBookingByMechanic,
 } from "../../features/mechanic/mechanicSlice";
 import useTableV2 from "../../components/table/useTableV2";
+import OrderInfo from "./../../components/card-info/OrderInfo";
 const headCells = [
   { id: "bookingTime", label: "Giờ bắt đầu" },
   { id: "userBookingDto", label: "Thông tin KH" },
@@ -46,7 +47,8 @@ const MechanicDetail = () => {
   const detail = useSelector((state) => state.mechanic.mechanic);
   const recordsBooking = useSelector((state) => state.mechanic.mechanics);
   const count = useSelector((state) => state.mechanic.number);
-
+  const check = detail.bookingMechanicCurrentWorkingOn?.bookingCode;
+  console.log("check", check);
   const infoMechanic = [
     {
       name: "Tên ",
@@ -55,6 +57,24 @@ const MechanicDetail = () => {
     {
       name: "SĐT",
       content: `${detail.userDetailMechanicDto?.userPhone}`,
+    },
+  ];
+  const infoOrder = [
+    {
+      name: "Mã ĐH",
+      content: `${detail.bookingMechanicCurrentWorkingOn?.bookingCode}`,
+    },
+    {
+      name: "Bắt đầu",
+      content: `${detail.bookingMechanicCurrentWorkingOn?.bookingTime}`,
+    },
+    // {
+    //   name: "Biển số",
+    //   content: `${detail.bookingMechanicCurrentWorkingOn?.bookingCode}`,
+    // },
+    {
+      name: "",
+      content: `${detail.bookingMechanicCurrentWorkingOn?.garageName}`,
     },
   ];
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -221,18 +241,17 @@ const MechanicDetail = () => {
                                     }
                                   >
                                     {" "}
-                              {item.bookingStatus === "Pending"
-                                ? "Sắp tới"
-                                : item.bookingStatus === "CheckIn"
-                                ? "Đang làm"
-                                : item.bookingStatus === "Completed"
-                                ? "Hoàn thành"
-                                : item.bookingStatus === "CheckOut"
-                                ? "Đã xong"
-                                :item.bookingStatus === "Processing"
-                                ? "Đang tiến hành"
-                                : "Hủy Bỏ"
-                              }{" "}
+                                    {item.bookingStatus === "Pending"
+                                      ? "Sắp tới"
+                                      : item.bookingStatus === "CheckIn"
+                                      ? "Đang làm"
+                                      : item.bookingStatus === "Completed"
+                                      ? "Hoàn thành"
+                                      : item.bookingStatus === "CheckOut"
+                                      ? "Đã xong"
+                                      : item.bookingStatus === "Processing"
+                                      ? "Đang tiến hành"
+                                      : "Hủy Bỏ"}{" "}
                                   </span>
                                 </TableCell>
                               </TableRow>
@@ -254,6 +273,17 @@ const MechanicDetail = () => {
               title={"Thông tin thợ sửa chữa"}
               items={infoMechanic}
             />
+            {detail.bookingMechanicCurrentWorkingOn === null ? (
+              <></>
+            ) : (
+              <div style={{ paddingTop: "10px" }}>
+                <OrderInfo
+                  name={"mechanic"}
+                  title={"Đơn hàng thợ đang sửa chữa"}
+                  items={infoOrder}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

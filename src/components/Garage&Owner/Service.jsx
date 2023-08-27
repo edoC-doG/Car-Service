@@ -1,35 +1,107 @@
-import React, { useState } from "react";
-import useTable from "../../components/table/useTable";
+import React, { useEffect, useState } from "react";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Switches from "../table/Switches";
-
+import Button from "../../components/filter/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-
+import useTableV2 from "../table/useTableV2";
+import { useDispatch, useSelector } from "react-redux";
+import { getServicesByGarage } from "../../features/service/serviceSlide";
+import AddIcon from "@mui/icons-material/Add";
+import ModalAdd from "./ModalAdd";
+import Notification from "../Notification";
 const headCells = [
-  { id: "id", label: "ID" },
-  { id: "name", label: "Service Name" },
-  { id: "date", label: "Created" },
+  { id: "serviceId", label: "ID Dịch vụ" },
+  { id: "serviceImage", label: "Hình ảnh" },
+  { id: "serviceName", label: "Tên dịch vụ" },
 
-  { id: "price", label: "Price" },
-  { id: "status", label: "Active Status" },
-
+  { id: "createdAt", label: "Ngày thêm vào" },
+  { id: "serviceStatus", label: "Trạng thái" },
   {
     id: "action",
-    label: "Action",
+    label: "Thao tác",
     disableSorting: true,
 
     align: "center",
   },
 ];
 const Service = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const id = location.pathname.split("/")[4];
+  const pages = [5, 10, 25]; // page size
+  const [page, setPage] = useState(0); // page index
+  const [rowsPerPage, setRowsPerPage] = useState(pages[page]); //page size
+  const [filterFn, setFilterFn] = useState({
+    fn: (items) => {
+      return items;
+    },
+  });
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
     subTitle: "",
   });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+   //Add
+   const [showModal, setShowModal] = useState(false);
+   const handleClose = () => {
+     setShowModal(false);
+   };
+  const getData = () => {
+    const data = { pageIndex: page + 1, pageSize: rowsPerPage, garageId: id };
+    dispatch(getServicesByGarage(data));
+  };
+  useEffect(
+    () => {
+      getData();
+      // if (isSuccessAdd) {
+      //   setNotify({
+      //     isOpen: true,
+      //     message: "Thành Công",
+      //     type: "success",
+      //   });
+      //   handleClose();
+      // } else {
+      //   if (message.status === 400  ) {
+      //     setNotify({
+      //       isOpen: true,
+      //       message: message.title,
+      //       type: "error",
+      //     });
+      //   } else if (message.status === 404){
+      //     setNotify({
+      //       isOpen: true,
+      //       message: message.title,
+      //       type: "error",
+      //     });
+      //   }
+      // }
+      // if (updateSuccessAction) {
+      //   setConfirmDialog({
+      //     ...confirmDialog,
+      //     isOpen: false,
+      //   });
+      //   setNotify({
+      //     isOpen: true,
+      //     message: "Thành Công",
+      //     type: "success",
+      //   });
+      // }
+    },
+    [
+      // updateSuccessAction, isSuccessAdd, message
+      id, page, rowsPerPage
+    ]
+  );
+  const records = useSelector((state) => state.service.services);
+  const count = useSelector((state) => state.service.number);
   const rows = [
     {
       id: 1,
@@ -55,7 +127,17 @@ const Service = () => {
     },
   ];
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells);
+    useTableV2(
+      records,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count
+    );
   return (
     <>
       <div className="tab-content">
@@ -64,36 +146,52 @@ const Service = () => {
             <div className="col-md-12">
               <div className="card h-100">
                 {/* Title */}
-                <div className="px-3 py-4">
-                  <h5 className="mb-0 d-flex align-items-center gap-2 font-semibold">
-                    Services
+                <div className="px-3 py-4 row  align-items-center">
+                  <h5 className="col-lg-4 mb-0 d-flex align-items-center gap-2 font-semibold">
+                    Danh sách dịch vụ
                     <span className="badge badge-soft-dark radius-50 fz-12">
-                      11
+                      {count}
                     </span>
                   </h5>
+                  <div className="col-lg-8 mt-3 mt-lg-0 d-flex flex-wrap gap-3 justify-content-lg-end">
+                      <div>
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => setShowModal(true)}
+                          startIcon={<AddIcon fontSize="small" />}
+                          text="Thêm mới dịch vụ"
+                        />
+                      </div>
+                    </div>
                 </div>
                 {/* Table */}
                 <div className="table-responsive">
                   <TblContainer>
                     <TblHead />
                     <TableBody>
-                      {rows.map((item) => (
-                        <TableRow hover key={item.id}>
+                      {recordsAfterPagingAndSorting().map((item) => (
+                        <TableRow hover key={item.serviceId}>
                           <TableCell sx={{ border: "none" }}>
-                            {item.id}
+                            {item.serviceId}
                           </TableCell>
 
+                          <TableCell sx={{ border: "none", textAlign: "center" }}>
+                          <img
+                            className="rounded"
+                            src={item.serviceImage}
+                            width={70}
+                            alt={"hello"}
+                          />
+                        </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            {item.name}
+                            {item.serviceName}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            {item.date}
+                            {item.createdAt}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            {item.price}
-                          </TableCell>
-                          <TableCell sx={{ border: "none" }}>
-                            <Switches checked={item.status} />
+                            <Switches checked={item.serviceStatus} />
                           </TableCell>
                           {/* Action */}
                           <TableCell sx={{ border: "none" }}>
@@ -116,7 +214,8 @@ const Service = () => {
                                       isOpen: true,
                                       title:
                                         "Bạn có chắc chắn muốn thay đổi trạng thái ?",
-                                      subTitle: "Bạn không thể hoàn tác thao tác này",
+                                      subTitle:
+                                        "Bạn không thể hoàn tác thao tác này",
                                       onConfirm: () => {},
                                     });
                                   }}
@@ -144,6 +243,8 @@ const Service = () => {
           </div>
         </div>
       </div>
+      <ModalAdd show={showModal} handleClose={handleClose} />
+                <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };

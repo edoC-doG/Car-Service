@@ -7,14 +7,15 @@ import Order from "../../components/Garage&Owner/Order";
 import ReviewGarage from "../../components/Garage&Owner/ReviewGarage";
 import { useSelector } from "react-redux";
 import EmployeeByGarage from "../../components/Garage&Owner/EmployeeGarage";
+import Service from "../../components/Garage&Owner/Service";
 
-const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên"];
+const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên","dịch vụ"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
   const garageDetail = useSelector((state) => state.garage.garage);
   return (
-    <div className="min-[620px]:pt-24 min-[620px]:px-8">
+    <div className="min-[620px]:pt-24 min-[620px]:px-8 mb-5">
       <Header
         icon={
           "https://6valley.6amtech.com/public/assets/back-end/img/add-new-seller.png"
@@ -41,7 +42,7 @@ const OwnerDetail = () => {
         {/* name of garage */}
         <div className="flex-between row mx-1">
           <h1 className="page-header-title text-xl font-semibold">
-           {garageDetail.garageName}
+            {garageDetail.garageName}
           </h1>
         </div>
         <div className="js-nav-scroller hs-nav-scroller-horizontal">
@@ -70,11 +71,13 @@ const OwnerDetail = () => {
       {type === "garage" && <Garage />}
       {/* Order */}
       {type === "đơn hàng" && <Order />}
-      
+
       {/* Review */}
       {type === "đánh giá" && <ReviewGarage />}
       {/* Employee */}
       {type === "nhân viên" && <EmployeeByGarage />}
+      {/* Service */}
+      {type === "dịch vụ" && <Service />}
     </div>
   );
 };

@@ -8,56 +8,53 @@ import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { addCoupon, getCoupons } from "./../../features/coupon/couponSlice";
 const schema = yup
   .object({
     couponValue: yup.number().typeError("Vui lòng nhập số !!!"),
-    couponMinSpend: yup.number().typeError("Vui lòng nhập số !!!"),
-    couponMaxSpend: yup.number().typeError("Vui lòng nhập số !!!"),
     numberOfTimesToTUse: yup.number().typeError("Vui lòng nhập số !!!"),
   })
   .required();
 function ModalAdd(props) {
   const dispatch = useDispatch();
   const { show, handleClose } = props;
-  const [couponValue, setValue] = useState("");
-  // const [couponStartDate, setStart] = useState("");
   const [date, setDay] = useState("");
   const [dateEnd, setDayEnd] = useState("");
-  // const [couponEndDate, setEnd] = useState("");
-  const [couponMinSpend, setMin] = useState("");
-  const [couponMaxSpend, setMax] = useState("");
-  const [couponType, setCouponType] = useState("");
   const [garageId, setGarageId] = useState("");
-  const [numberOfTimesToTUse, setTime] = useState("");
   const onHandleSubmit = (data) => {
     const dateStart = dayjs(date.$d).format("MM/DD/YYYY");
     const dayEnd = dayjs(dateEnd.$d).format("MM/DD/YYYY");
+    const type = 1
     const coupon = {
-      couponValue,
+      couponValue: data.couponValue,
       couponStartDate: dateStart,
       couponEndDate: dayEnd,
-      couponMinSpend,
-      couponMaxSpend,
-      couponType,
+      couponType: type,
       garageId,
-      numberOfTimesToTUse,
+      numberOfTimesToUse: data.numberOfTimesToUse,
     };
-    // dispatch(addServices(ser));
+    dispatch(addCoupon(coupon));
     console.log(coupon);
   };
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm({
     defaultValues: {
-      couponValue,
-      couponMinSpend,
-      couponMaxSpend,
-      numberOfTimesToTUse,
+      couponValue: "",
+      numberOfTimesToUse: "",
     },
     resolver: yupResolver(schema),
+  });
+  const isSuccessAdd = useSelector(
+    (state) => state.coupon.isSuccessAdd
+  );
+  useEffect(() => {
+    if (isSuccessAdd) {
+      reset();
+    }
   });
   const garage = useSelector((state) => state.garage.garages);
   return (
@@ -80,34 +77,21 @@ function ModalAdd(props) {
         </Modal.Header>
         <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
-            <Row className="mb-3">
-              <Form.Group as={Col} md="6">
-                <Form.Label>Loại giảm giá</Form.Label>
-                <Form.Select
-                  className=" form-control form-control-lg"
-                  aria-label="Default select example"
-                  onChange={(e) => setCouponType(e.target.value)}
-                >
-                  <option value={0}>Giảm theo phần trăm </option>
-                  <option value={1}>Giảm trực tiếp giá tiền</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group as={Col} md="6">
+              <Form.Group className="mb-3">
                 <div className="mb-1">
                   <label>Số lượng</label>
                   <input
                     type="text"
                     className="form-control form-control-lg"
-                    id="numberOfTimesToTUse"
-                    name="numberOfTimesToTUse"
-                    {...register("numberOfTimesToTUse")}
+                    id="numberOfTimesToUse"
+                    name="numberOfTimesToUse"
+                    {...register("numberOfTimesToUse")}
                   />
                   <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                    {errors.numberOfTimesToTUse?.message}
+                    {errors.numberOfTimesToUse?.message}
                   </p>
                 </div>
               </Form.Group>
-            </Row>
             <Form.Group className="mb-3">
               <div className="mb-3">
                 <label>Giá trị giảm giá đơn hàng</label>
@@ -145,37 +129,6 @@ function ModalAdd(props) {
                 />
               </Form.Group>
             </Row>
-            <Form.Group className="mb-3">
-              <div className="mb-1">
-                <label>Áp dụng giá trị đơn hàng tối thiểu</label>
-                <input
-                  type="text"
-                  className="form-control form-control-lg"
-                  id="couponMinSpend"
-                  name="couponMinSpend"
-                  value={couponMinSpend}
-                  {...register("couponMinSpend")}
-                />
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  {errors.couponMinSpend?.message}
-                </p>
-              </div>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <div className="mb-1">
-                <label>Áp dụng giá trị đơn hàng caothiểu</label>
-                <input
-                  type="text"
-                  className="form-control form-control-lg"
-                  id="couponMaxSpend"
-                  name="couponMaxSpend"
-                  {...register("couponMaxSpend")}
-                />
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  {errors.couponMaxSpend?.message}
-                </p>
-              </div>
-            </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Garage áp dụng khuyến mãi</Form.Label>
               <Form.Select

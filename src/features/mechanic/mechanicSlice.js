@@ -102,6 +102,17 @@ export const AddMechanicsByBooking = createAsyncThunk(
   }
 );
 
+export const addMechanics = createAsyncThunk(
+  "mechanic/add-mechanic",
+  async (data, thunkAPI) => {
+    try {
+      return await mechanicService.addMechanics(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -112,6 +123,7 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   isSuccessAction: false,
+  isSuccessAdd: false,
   message: "",
   number: 0,
 };
@@ -129,6 +141,7 @@ export const mechanicSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.mechanics = action.payload.list;
         state.number = action.payload.count;
         state.message = "success";
@@ -194,6 +207,7 @@ export const mechanicSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.mechanic = action.payload;
         state.message = "success";
       })
@@ -210,6 +224,7 @@ export const mechanicSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.mechanics = action.payload.list;
         state.number = action.payload.count;
         state.message = "success";
@@ -227,6 +242,7 @@ export const mechanicSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.mechanics = action.payload.list;
         state.number = action.payload.count;
         state.message = "success";
@@ -269,6 +285,24 @@ export const mechanicSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
+
+      .addCase(addMechanics.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addMechanics.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAdd = true;
+        state.mechanic = action.payload;
+        state.message = "success";
+      })
+      .addCase(addMechanics.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+
       .addCase(resetState, () => initialState);
   },
 });

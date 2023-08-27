@@ -9,7 +9,7 @@ const AccountInfo = ({ title, items, name }) => {
         </div>
         <div className="card-body" style={{ textAlign: "left" }}>
           {items.map((item) => (
-            <div className="flex-start" key={item.name}> 
+            <div className="flex-start" key={item.name}>
               <div>
                 <h4 className="font-semibold">{item.name} :</h4>
               </div>
@@ -28,14 +28,23 @@ const AccountInfo = ({ title, items, name }) => {
                           htmlFor=""
                           className="badge badge-soft-danger fz-12"
                         >
-                          {item.content}
+                          {item.content === "Closed" ? "Đóng cửa" : "Đang mở" }
                         </label>
-                        <span className="font-semibold"> &sdot; {item.more}</span>
+                        <span className="font-semibold">
+                          {" "}
+                          &sdot; {item.more}
+                        </span>
                       </div>
                     ) : (
-                      <label htmlFor="" className="badge badge-success">
-                        {item.content}
-                      </label>
+                      <div>
+                        <label htmlFor="" className="badge badge-success">
+                          {item.content === "Closed" ? "Đóng cửa" : "Đang mở"}
+                        </label>
+                        <span className="font-semibold">
+                          {" "}
+                          &sdot; {item.more}
+                        </span>
+                      </div>
                     )}
                   </h4>
                 ) : (

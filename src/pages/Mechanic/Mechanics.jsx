@@ -79,26 +79,48 @@ const Mechanics = () => {
   const updateSuccessAction = useSelector(
     (state) => state.mechanic.isSuccessAction
   );
+  const mechanicState = useSelector((state) => state.mechanic);
+  const { isSuccessAdd, message } = mechanicState;
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
 
     if (role === "Admin") dispatch(getMechanics(data));
     else if (role === "Manager")
       dispatch(getMechanicsByGarage({ ...data, garageId: user?.garageId }));
-
+    if (isSuccessAdd) {
+      setNotify({
+        isOpen: true,
+        message: "Thành Công",
+        type: "success",
+      });
+      handleClose();
+    } else {
+      if (message.status === 404) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        })
+      }else if (message.status === 404){
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      }
+    }
     if (updateSuccessAction) {
-      dispatch(resetState());
       setConfirmDialog({
         ...confirmDialog,
         isOpen: false,
       });
       setNotify({
         isOpen: true,
-        message: "Update Successfully",
+        message: "Thành công",
         type: "success",
       });
     }
-  }, [page, updateSuccessAction, rowsPerPage]);
+  }, [page, updateSuccessAction, rowsPerPage, isSuccessAdd, message]);
 
   const handleSwitchToggle = (userId, userStatus) => {
     dispatch(updateMechanicStatus({ userId, userStatus }));

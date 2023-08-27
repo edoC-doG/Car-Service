@@ -23,7 +23,16 @@ export const updateCouponStatus = createAsyncThunk(
     }
   }
 );
-
+export const addCoupon = createAsyncThunk(
+  "coupon/addCoupon",
+  async (data, thunkAPI) => {
+    try {
+      return await couponService.addCoupon(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -32,6 +41,7 @@ const initialState = {
   isError: false,
   isLoading: false,
   isSuccess: false,
+  isSuccessAdd: false,
   isSuccessAction: false,
   message: "",
   number: 0,
@@ -50,6 +60,7 @@ export const couponSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.coupons = action.payload.list;
         state.number = action.payload.count;
         state.message = "success";
@@ -67,6 +78,7 @@ export const couponSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccessAction = true;
+        state.isSuccessAdd = false;
         state.customer = action.payload;
         state.message = "success";
       })
@@ -75,6 +87,23 @@ export const couponSlice = createSlice({
         state.isSuccessAction = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
+      })
+      .addCase(addCoupon.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addCoupon.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAdd = true;
+        state.customer = action.payload;
+        state.message = "success";
+      })
+      .addCase(addCoupon.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAction = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+        state.isSuccessAdd = false;
       })
 
       .addCase(resetState, () => initialState);

@@ -9,7 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import useTableV2 from "../../components/table/useTableV2";
 import { TableBody, TableCell, TableRow } from "@mui/material";
 import Switches from "../../components/table/Switches";
-import EditIcon from "@mui/icons-material/Edit";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   getEmployees,

@@ -36,11 +36,6 @@ import authService from "./features/auth/authService";
 function App() {
   const currentUser = authService.getCurrentUser();
   const role = currentUser?.roleName
-  // const isAdmin = user && user.roleName === "Admin";
-  // const isManager = user && user.roleName === "Manager";
-
-  // console.log("isAdmin", user);
-
   const authState = useSelector((state) => state.auth);
 
   const { user, isSuccess } = authState;

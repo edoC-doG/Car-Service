@@ -113,7 +113,11 @@ const MechanicsOrder = ({ bookingId, status }) => {
   // console.log(status);
   return (
     <>
-      {role === "Manager" && (status !== "Completed" || status !== "Canceled") ? (
+      {status === "Completed" ||
+      status === "Canceled" ||
+      status === "Pending" ? (
+        <></>
+      ) : role === "Manager" ? (
         <div className="row justify-content-end align-items-end mb-4">
           <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
             <div className="d-flex justify-content-sm-end">
@@ -129,82 +133,108 @@ const MechanicsOrder = ({ bookingId, status }) => {
             </div>
           </div>
         </div>
-      ) :
+      ) : (
         <></>
-      }
+      )}
 
       {/* Table */}
       <div className="table-responsive">
         <TblContainer>
           <TblHead />
-          <TableBody>
-            {recordsAfterPagingAndSorting().map((item) => (
-              <TableRow hover key={item.userId}>
-                <TableCell sx={{ border: "none" }}>
-                  <div className="media align-items-center gap-2">
-                    <div>
-                      <Link
-                        to={`/admin/mechanic/detail/${item.userId}`}
-                        className="title-color"
-                      >
-                        {item.userMechanicDto?.fullName}
-                      </Link>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell sx={{ border: "none" }}>
-                  <Link
-                    to={`tel:${item.userMechanicDto?.userPhone}`}
-                    className="title-color hover-c1 lowercase "
-                  >
-                    {item.userMechanicDto?.userPhone}
-                  </Link>
-                </TableCell>
-                {/* status */}
-
-                <TableCell sx={{ border: "none" }}>
-                  <span
-                    className={
-                      item.userMechanicDto?.userStatus === 1
-                        ? "badge badge-soft-success fz-12"
-                        : "badge badge-soft-danger fz-12"
-                    }
-                  >
-                    {item.userMechanicDto?.userStatus === 1
-                      ? "Activate"
-                      : "Disable"}
-                  </span>
-                </TableCell>
-
-                {/* Action */}
-                {status === "Completed" || status === "Canceled" ? (
-                  <></>
-                ) : (
+          {status === "Completed" ||
+          status === "Canceled" ||
+          status === "Pending" ? (
+            <TableBody>
+              <TableCell></TableCell>
+              <TableCell>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
+                    alt=""
+                    className="mb-3 w-160"
+                  />
+                  {status === "Completed" ? (
+                    <p>Không có dữ liệu vì đơn hàng đã hoàn thành </p>
+                  ) : status === "Canceled" ? (
+                    <p>Không có dữ liệu vì đơn hàng đã hủy </p>
+                  ) : (
+                    <p>Không có dữ liệu vì đơn hàng chưa check-in </p>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell></TableCell>
+            </TableBody>
+          ) : (
+            <TableBody>
+              {recordsAfterPagingAndSorting().map((item) => (
+                <TableRow hover key={item.userId}>
                   <TableCell sx={{ border: "none" }}>
-                    <div className="d-flex justify-content-center gap-2">
-                      <Tooltip title="delelte" arrow>
-                        <div
-                          className="btn btn-outline-danger btn-sm delete square-btn"
-                          onClick={() => {
-                            setConfirmDialog({
-                              isOpen: true,
-                              title: "Bạn có chắc chắn muốn thay đổi trạng thái ?",
-                              subTitle: "Bạn không thể hoàn tác thao tác này",
-                              onConfirm: () => {
-                                handleDeleteMechanic(item.userId);
-                              },
-                            });
-                          }}
+                    <div className="media align-items-center gap-2">
+                      <div>
+                        <Link
+                          to={`/admin/mechanic/detail/${item.userId}`}
+                          className="title-color"
                         >
-                          <DeleteIcon fontSize="small" />
-                        </div>
-                      </Tooltip>
+                          {item.userMechanicDto?.fullName}
+                        </Link>
+                      </div>
                     </div>
                   </TableCell>
-                )}
-              </TableRow>
-            ))}
-          </TableBody>
+                  <TableCell sx={{ border: "none" }}>
+                    <Link
+                      to={`tel:${item.userMechanicDto?.userPhone}`}
+                      className="title-color hover-c1 lowercase "
+                    >
+                      {item.userMechanicDto?.userPhone}
+                    </Link>
+                  </TableCell>
+                  {/* status */}
+
+                  <TableCell sx={{ border: "none" }}>
+                    <span
+                      className={
+                        item.userMechanicDto?.userStatus === 1
+                          ? "badge badge-soft-success fz-12"
+                          : "badge badge-soft-danger fz-12"
+                      }
+                    >
+                      {item.userMechanicDto?.userStatus === 1
+                        ? "Activate"
+                        : "Disable"}
+                    </span>
+                  </TableCell>
+
+                  {/* Action */}
+                  {status === "Completed" || status === "Canceled" ? (
+                    <></>
+                  ) : (
+                    <TableCell sx={{ border: "none" }}>
+                      <div className="d-flex justify-content-center gap-2">
+                        <Tooltip title="delelte" arrow>
+                          <div
+                            className="btn btn-outline-danger btn-sm delete square-btn"
+                            onClick={() => {
+                              setConfirmDialog({
+                                isOpen: true,
+                                title:
+                                  "Bạn có chắc chắn muốn thay đổi trạng thái ?",
+                                subTitle: "Bạn không thể hoàn tác thao tác này",
+                                onConfirm: () => {
+                                  handleDeleteMechanic(item.userId);
+                                },
+                              });
+                            }}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </div>
+                        </Tooltip>
+                      </div>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </TblContainer>
       </div>
       <Popup title="Add new" openPopup={openPopup} setOpenPopup={setOpenPopup}>

@@ -12,7 +12,6 @@ const Time = ({ value, onChange }) => {
       <Box sx={{ width: 1 }}>
         <TimePicker
           className="w-full"
-          defaultValue={eightAM}
           maxTime={fivePM}
           minTime={eightAM}
           value={value}

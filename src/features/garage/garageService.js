@@ -80,7 +80,7 @@ const garageService = {
   addGarageService,
   getSlot,
   getManager,
-  addGarage
+  addGarage,
   getEmployeesByGarage
 };
 

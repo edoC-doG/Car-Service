@@ -47,8 +47,8 @@ export const employeeSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.employees = action.payload;
-        //   state.number = action.payload.count;
+        state.employees = action.payload.list;
+        state.number = action.payload.count;
         state.isSuccessAdd = false;
         state.message = "success";
       })

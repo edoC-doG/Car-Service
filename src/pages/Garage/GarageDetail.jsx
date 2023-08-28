@@ -69,18 +69,18 @@ const OwnerDetail = () => {
       </div>
 
       {/* Garage */}
-      {type === "garage" && <Garage key={1}/>}
+      {type === "garage" && <Garage key="garage" />}
       {/* Order */}
-      {type === "đơn hàng" && <Order  key={2} />}
+      {type === "đơn hàng" && <Order  key="order" />}
 
       {/* Review */}
-      {type === "đánh giá" && <ReviewGarage   key={3}/>}
+      {type === "đánh giá" && <ReviewGarage   key="review" />}
       {/* Employee */}
-      {type === "nhân viên" && <EmployeeByGarage   key={4}/>}
+      {type === "nhân viên" && <EmployeeByGarage  key="employee" />}
       {/* Service */}
-      {type === "dịch vụ" && <Service  key={5}/>}
+      {type === "dịch vụ" && <Service key="service" />}
       {/* Car parking */}
-      {type === "bãi đậu xe" && <CarParking  key={5}/>}
+      {type === "bãi đậu xe" && <CarParking  key="carParking"/>}
 
     </div>
   );

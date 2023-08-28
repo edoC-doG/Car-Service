@@ -5,6 +5,7 @@ import useTableV2 from "../table/useTableV2";
 import { InputAdornment, TableBody, TableCell, TableRow } from "@mui/material";
 import Search from "../filter/Search";
 import SearchIcon from "@mui/icons-material/Search";
+import { useLocation } from "react-router-dom";
 
 
 const headCells = [
@@ -20,6 +21,8 @@ const EmployeeByGarage = () => {
   useEffect(() => {
     document.title = "Danh sách nhân viên garage";
   }, []);
+  const location = useLocation();
+  const id = location.pathname.split("/")[4];
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -29,17 +32,14 @@ const EmployeeByGarage = () => {
       return items;
     },
   });
-  const [confirmDialog, setConfirmDialog] = useState({
-    isOpen: false,
-    title: "",
-    subTitle: "",
-  });
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-    dispatch(getEmployeesByGarage(data));
-  }, [page, rowsPerPage]);
+
+    dispatch(getEmployeesByGarage({...data, id}));
+  }, [page, rowsPerPage, id]);
   const recordsEmployee = useSelector((state) => state.garage.garages);
+  const count = useSelector((state) => state.garage.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsEmployee,
@@ -50,7 +50,7 @@ const EmployeeByGarage = () => {
       rowsPerPage,
       setPage,
       setRowsPerPage,
-       20
+       count
     );
 
   return (
@@ -65,7 +65,7 @@ const EmployeeByGarage = () => {
                   <h5 className="text-capitalize d-flex gap-1 font-semibold">
                     Danh sách nhân viên
                     <span className="badge badge-soft-dark radius-50 fz-12">
-                      {20}
+                      {count}
                     </span>
                   </h5>
                 </div>

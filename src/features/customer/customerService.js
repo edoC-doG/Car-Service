@@ -5,7 +5,7 @@ import { base_url } from "../../utils/baseUrl";
 
 const getCustomers = async (page) => {
   const response = await instance.post(
-    `${base_url}user/filter-by-role/1`,
+    `${base_url}user/filter-by-role/1&0`,
     page,
     instance
   );

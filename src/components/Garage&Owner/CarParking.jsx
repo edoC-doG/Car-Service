@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import PendingIcon from "@mui/icons-material/Pending";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+
 import CheckCircleSharpIcon from "@mui/icons-material/CheckCircleSharp";
 import WidthFullIcon from "@mui/icons-material/WidthFull";
-import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { TableBody, TableCell, TableRow } from "@mui/material";
+import {  useLocation } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getSlot } from "../../features/garage/garageSlice";
 import useTableV2 from "../table/useTableV2";

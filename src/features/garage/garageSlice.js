@@ -62,7 +62,7 @@ export const getEmployeesByGarage = createAsyncThunk(
   "employee/employees-by-garage",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await garageService.getEmployeesByGarage(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -185,8 +185,8 @@ export const garageSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.garages = action.payload;
-      //   state.number = action.payload.count;
+        state.garages = action.payload.list;
+        state.number = action.payload.count;
         state.message = "success";
       })
       .addCase(getEmployeesByGarage.rejected, (state, action) => {

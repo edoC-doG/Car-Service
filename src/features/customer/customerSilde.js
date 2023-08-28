@@ -74,7 +74,8 @@ export const customerSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.customers = action.payload;
+        state.customers = action.payload.list;
+        state.number = action.payload.count;
         state.message = "success";
       })
       .addCase(getCustomers.rejected, (state, action) => {

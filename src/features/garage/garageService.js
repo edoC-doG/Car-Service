@@ -52,8 +52,8 @@ const getSlot = async (id) => {
 
 const getEmployeesByGarage = async (page) => {
   const response = await instance.post(
-    `${base_url}user/filter-by-role/35`,
-    page,
+    `${base_url}user/filter-by-role/35&${page?.id}`,
+    { pageIndex: page?.pageIndex, pageSize: page?.pageSize },
     instance
   );
   // console.log("employee: ", response.data);

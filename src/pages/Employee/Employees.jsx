@@ -104,6 +104,7 @@ const Employees = () => {
   }, [page, rowsPerPage, isSuccessAdd, message]);
 
   const recordsEmployee = useSelector((state) => state.employee.employees);
+  const count =  useSelector((state) => state.employee.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsEmployee,
@@ -114,13 +115,13 @@ const Employees = () => {
       rowsPerPage,
       setPage,
       setRowsPerPage,
-      20
+      count
     );
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
         icon="https://6valley.6amtech.com/public/assets/back-end/img/employee.png"
-        size={20}
+        size={count}
         alt="employee"
         title="Danh sách nhân viên"
       />
@@ -186,22 +187,7 @@ const Employees = () => {
                           }
                         />
                       </TableCell>
-                      {/* {roleUser === "Admin" ? (
-                        <TableCell sx={{ border: "none" }}>
-                          <div className="d-flex justify-content-center ">
-                            <Tooltip title="Cập nhật" arrow>
-                              <Link
-                                onClick={() => handleEdit(item)}
-                                className="btn btn-outline--primary btn-sm edit"
-                              >
-                                <EditIcon fontSize="small" />
-                              </Link>
-                            </Tooltip>
-                          </div>
-                        </TableCell>
-                      ) : (
-                        <></>
-                      )} */}
+                     
                     </TableRow>
                   ))}
                 </TableBody>

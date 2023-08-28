@@ -79,7 +79,6 @@ const Customers = () => {
   }, [page, updateSuccessAction, rowsPerPage]);
 
   const recordsCustomer = useSelector((state) => state.customer.customers);
-
   const count = useSelector((state) => state.customer.number);
 
   const [filterFn, setFilterFn] = useState({
@@ -242,7 +241,7 @@ const Customers = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
-      <Notification notify={notify} setNotify={setNotify} />
+      <Notification notify={notify} setNotify={setNotify} severity="success"/>
     </>
   );
 };

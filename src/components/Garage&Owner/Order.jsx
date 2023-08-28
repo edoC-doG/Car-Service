@@ -18,7 +18,6 @@ const headCells = [
   { id: "bookingTime", label: "Giờ bắt đầu" },
   { id: "userBookingDto", label: "Thông tin khách hàng" },
 
-  { id: "garageName", label: "Garage" },
   { id: "total", label: "Giá trị đơn hàng" },
   { id: "bookingStatus", label: "Trạng thái" },
   {
@@ -133,10 +132,10 @@ const Order = () => {
                   <TblHead />
                   <TableBody>
                     {recordsAfterPagingAndSorting().map((item) => (
-                      <TableRow hover key={item.bookingCode}>
+                      <TableRow hover key={item.bookingId}>
                         <TableCell sx={{ border: "none" }}>
                           <Link
-                            to={`/admin/orders/details/${item.bookingCode}`}
+                            to={`/admin/orders/details/${item.bookingId}`}
                             className="title-color hover-c1"
                           >
                             {item.bookingCode}
@@ -155,10 +154,6 @@ const Order = () => {
                           >
                             {item.userBookingDto.userPhone}
                           </Link>
-                        </TableCell>
-
-                        <TableCell sx={{ border: "none" }}>
-                          <div>{item.garageBookingDto.garageName}</div>
                         </TableCell>
 
                         <TableCell sx={{ border: "none" }}>

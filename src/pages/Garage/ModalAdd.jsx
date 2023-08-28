@@ -28,12 +28,12 @@ const schema = yup
       .required("Không để trống tên của garage !!!")
       .min(1, "Địa chỉ của garage quá ngắn !")
       .max(50, "Địa chỉ của garage quá dài!"),
-    garageAddress: yup
+    garageWard: yup
       .string()
       .required("Không để trống tên của garage !!!")
       .min(1, "Địa chỉ của garage quá ngắn !")
       .max(50, "Địa chỉ của garage quá dài!"),
-    garageAddress: yup
+      garageCity: yup
       .string()
       .required("Không để trống tên của garage !!!")
       .min(1, "Địa chỉ của garage quá ngắn !")

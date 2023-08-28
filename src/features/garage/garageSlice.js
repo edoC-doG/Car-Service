@@ -41,7 +41,11 @@ export const addGarageService = createAsyncThunk(
     try {
       // console.log(data);
       return await garageService.addGarageService(data);
-
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const getSlot = createAsyncThunk(
   "garage/slot-garage",
   async (data, thunkAPI) => {

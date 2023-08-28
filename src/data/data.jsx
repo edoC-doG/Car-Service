@@ -223,7 +223,7 @@ export const sidebarDataAdmin = [
           },
           {
             key: "confirm-order",
-            icon: <RxDotFilled  color="green[500]"/>,
+            icon: <RxDotFilled  color="green"/>,
             label: "Hoàn thành",
             
           },

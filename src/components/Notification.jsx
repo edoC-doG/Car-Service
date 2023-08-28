@@ -17,6 +17,7 @@ const Notification = ({ notify, setNotify }) => {
       autoHideDuration={2000}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       onClose={handleClose}
+      
     >
       <Alert severity={notify.type} onClose={handleClose}>
         {notify.message}

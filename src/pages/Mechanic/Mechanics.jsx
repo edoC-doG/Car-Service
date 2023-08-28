@@ -87,6 +87,7 @@ const Mechanics = () => {
     if (role === "Admin") dispatch(getMechanics(data));
     else if (role === "Manager")
       dispatch(getMechanicsByGarage({ ...data, garageId: user?.garageId }));
+
     if (isSuccessAdd) {
       setNotify({
         isOpen: true,
@@ -110,6 +111,7 @@ const Mechanics = () => {
       }
     }
     if (updateSuccessAction) {
+      dispatch(resetState());
       setConfirmDialog({
         ...confirmDialog,
         isOpen: false,

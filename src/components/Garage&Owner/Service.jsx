@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import Switches from "../table/Switches";
+
 import Button from "../../components/filter/Button";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -168,7 +168,15 @@ const Service = () => {
                             {item.createdAt}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            <Switches checked={item.serviceStatus} />
+                          <span
+                              className={
+                                item.serviceStatus === "Activate"
+                                  ? "badge badge-soft-success fz-12"
+                                  : "badge badge-soft-danger fz-12"
+                              }
+                            >
+                              {item.serviceStatus}
+                            </span>
                           </TableCell>
                           {/* Action */}
                           <TableCell sx={{ border: "none" }}>

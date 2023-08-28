@@ -26,6 +26,10 @@ const headCells = [
   },
 ];
 const Categories = () => {
+  useEffect(() => {
+    document.title = "Danh sách danh mục sản phẩm";
+  }, []);
+  
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index

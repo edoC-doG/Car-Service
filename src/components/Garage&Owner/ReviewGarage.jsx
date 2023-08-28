@@ -23,6 +23,10 @@ const headCells = [
   { id: "reviewStatus", label: "Trạng thái" },
 ];
 const ReviewGarage = () => {
+  useEffect(() => {
+    document.title = "Đánh giá của khách hàng";
+  }, []);
+
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -47,9 +51,6 @@ const ReviewGarage = () => {
       return items;
     },
   });
-  useEffect(() => {
-    document.title = "List of cutomers's review of garage";
-  }, []);
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage, garageId: id };

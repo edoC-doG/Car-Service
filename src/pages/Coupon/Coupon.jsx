@@ -41,6 +41,9 @@ const headCells = [
 ];
 
 const Coupon = () => {
+  useEffect(() => {
+    document.title = "Danh sách phiếu giảm giá";
+  }, []);
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index

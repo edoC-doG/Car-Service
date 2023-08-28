@@ -37,6 +37,10 @@ const headCells = [
 ];
 
 const Onwers = () => {
+  useEffect(() => {
+    document.title = "Danh sách Garage";
+  }, []);
+
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index

@@ -37,6 +37,10 @@ const headCells = [
 ];
 
 const Employees = () => {
+  useEffect(() => {
+    document.title = "Danh sách nhân viên (quản lý & quản trị viên)";
+  }, []);
+
   //Add
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => {

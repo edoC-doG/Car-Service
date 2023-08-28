@@ -31,13 +31,18 @@ const schema = yup
     garageWard: yup
       .string()
       .required("Không để trống tên của garage !!!")
-      .min(1, "Địa chỉ của garage quá ngắn !")
-      .max(50, "Địa chỉ của garage quá dài!"),
+      .min(1, "Phường của garage quá ngắn !")
+      .max(30, "Phường của garage quá dài!"),
+      garageDistrict: yup
+      .string()
+      .required("Không để trống tên của garage !!!")
+      .min(1, "Quận của garage quá ngắn !")
+      .max(30, "Quận chỉ của garage quá dài!"),
       garageCity: yup
       .string()
       .required("Không để trống tên của garage !!!")
-      .min(1, "Địa chỉ của garage quá ngắn !")
-      .max(50, "Địa chỉ của garage quá dài!"),
+      .min(1, "Thành phố của garage quá ngắn !")
+      .max(30, "Thành phố của garage quá dài!"),
     // userPassword: yup
     //   .string()
     //   .required("Không để trống mật khẩu !!!")

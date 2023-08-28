@@ -113,7 +113,11 @@ const MechanicsOrder = ({ bookingId, status }) => {
   // console.log(status);
   return (
     <>
-      {role === "Manager" && (status !== "Completed" || status !== "Canceled") ? (
+      {status === "Completed" ||
+      status === "Canceled" ||
+      status === "Pending" ? (
+        <></>
+      ) : role === "Manager" ? (
         <div className="row justify-content-end align-items-end mb-4">
           <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
             <div className="d-flex justify-content-sm-end">
@@ -129,9 +133,9 @@ const MechanicsOrder = ({ bookingId, status }) => {
             </div>
           </div>
         </div>
-      ) :
+      ) : (
         <></>
-      }
+      )}
 
       {/* Table */}
       <div className="table-responsive">

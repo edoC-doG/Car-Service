@@ -14,7 +14,6 @@ import {
   AddMechanicsByBooking,
   resetState,
 } from "../../features/mechanic/mechanicSlice";
-import ActionButton from "../ActionButton";
 import Popup from "../Popup";
 import authService from "../../features/auth/authService";
 import AddNewMechanicForBooking from "./AddNewMechanicForBooking";
@@ -67,7 +66,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
   );
 
   const addMechanicBooking = (mechanicId, resetForm) => {
-    console.log(mechanicId, bookingId);
+    // console.log(mechanicId, bookingId);
     dispatch(AddMechanicsByBooking({ bookingId, mechanicId }));
     resetForm();
     setOpenPopup(false);
@@ -141,64 +140,6 @@ const MechanicsOrder = ({ bookingId, status }) => {
       <div className="table-responsive">
         <TblContainer>
           <TblHead />
-          <TableBody>
-            {recordsAfterPagingAndSorting().map((item) => (
-              <TableRow hover key={item.userId}>
-                <TableCell sx={{ border: "none" }}>
-                  <div className="media align-items-center gap-2">
-                    <div>
-                      <Link
-                        to={`/admin/mechanic/detail/${item.userId}`}
-                        className="title-color"
-                      >
-                        {item.userMechanicDto?.fullName}
-                      </Link>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell sx={{ border: "none" }}>
-                  <Link
-                    to={`tel:${item.userMechanicDto?.userPhone}`}
-                    className="title-color hover-c1 lowercase "
-                  >
-                    {item.userMechanicDto?.userPhone}
-                  </Link>
-                </TableCell>
-                {/* status */}
-
-                <TableCell sx={{ border: "none" }}>
-                  <span
-                    className={
-                      item.userMechanicDto?.userStatus === 1
-                        ? "badge badge-soft-success fz-12"
-                        : "badge badge-soft-danger fz-12"
-                    }
-                  >
-                    {item.userMechanicDto?.userStatus === 1
-                      ? "Khả Dụng"
-                      : "Không Khả Dụng"}
-                  </span>
-                </TableCell>
-
-                {/* Action */}
-                {status === "Completed" || status === "Canceled" ? (
-                  <></>
-                ) : (
-                  <TableCell sx={{ border: "none" }}>
-                    <div className="d-flex justify-content-center gap-2">
-                      <Tooltip title="Xóa" arrow>
-                        <div
-                          className="btn btn-outline-danger btn-sm delete square-btn"
-                          onClick={() => {
-                            setConfirmDialog({
-                              isOpen: true,
-                              title: "Bạn có chắc chắn muốn thay đổi trạng thái ?",
-                              subTitle: "Bạn không thể hoàn tác thao tác này",
-                              onConfirm: () => {
-                                handleDeleteMechanic(item.userId);
-                              },
-                            });
-                          }}
           {status === "Completed" ||
           status === "Canceled" ||
           status === "Pending" ? (
@@ -257,8 +198,8 @@ const MechanicsOrder = ({ bookingId, status }) => {
                       }
                     >
                       {item.userMechanicDto?.userStatus === 1
-                        ? "Activate"
-                        : "Disable"}
+                        ? "Khả Dụng"
+                        : "Không Khả Dụng"}
                     </span>
                   </TableCell>
 
@@ -268,7 +209,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
                   ) : (
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
-                        <Tooltip title="delelte" arrow>
+                        <Tooltip title="Xóa thợ" arrow>
                           <div
                             className="btn btn-outline-danger btn-sm delete square-btn"
                             onClick={() => {

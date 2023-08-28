@@ -1,63 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "./../../firebase";
-import {
-  addServices,
-  getServices,
-  resetState,
-} from "./../../features/service/serviceSlide";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
+import { getServicesToAdd } from "./../../features/service/serviceSlide";
+import { addGarageService } from "./../../features/garage/garageSlice";
 function ModalAdd(props) {
+  const location = useLocation();
   const dispatch = useDispatch();
+  const id = location.pathname.split("/")[4];
   const { show, handleClose } = props;
-  const [serviceGroup, setGroup] = useState("");
-  const [serviceUnit, setUnit] = useState("");
-  const onHandleSubmit = (data) => {
-    const imgSet = data.serviceImage;
-    const img = imgSet[0];
-    const file = img;
-    if (!file) return null;
-    const storageRef = ref(storage, `files/${file.name}`);
-    console.log(storageRef);
-    uploadBytes(storageRef, file).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        const ser = {
-          serviceName: data.serviceName,
-          serviceImage: downloadURL,
-          serviceGroup,
-          serviceUnit,
-          serviceDetailDescription: data.serviceDetailDescription,
-          serviceDuration: data.serviceDuration,
-        };
-        // dispatch(addServices(ser));
-      });
-    });
+  const [serviceId, setServiceId] = useState("");
+  const [garageId, setGarageId] = useState("");
+  const onHandleSubmit = () => {
+    const ser = {
+      serviceId,
+      garageId,
+    };
+    dispatch(addGarageService(ser));
+    console.log(ser);
   };
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors, isSubmitSuccessful },
-  } = useForm({
-    defaultValues: {
-      serviceName: "",
-      serviceGroup: "",
-      serviceUnit: "",
-      serviceDetailDescription: "",
-      serviceDuration: "",
-    },
-  });
+  const { handleSubmit } = useForm();
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
+    setGarageId(id)
+    dispatch(getServicesToAdd(id));
+  }, []);
+  const detail = useSelector((state) => state.service.servicesToAdd);
   return (
     <div
       className="modal show"
@@ -74,113 +44,36 @@ function ModalAdd(props) {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Thêm mới dịch vụ sửa chữa </Modal.Title>
+          <Modal.Title>Thêm mới dịch vụ sửa chữa cho garage </Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
-            <Form.Group className="mb-3">
-              <Form.Label>Tên của dịch vụ</Form.Label>
+          <Form.Group className="mb-3" hidden={true}>
+              <Form.Label>Mã dịch vụ</Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
-                name="serviceName"
-                {...register("serviceName", {
-                  required: true,
-                  maxLength: 30,
-                  minLength: 6,
-                })}
+                value={garageId}
+                onChange={(e) => setGarageId(e.target.value)}
               />
-              {errors.serviceName?.type === "required" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Không để trống tên dịch vụ !!!
-                </p>
-              )}
-              {errors.serviceName?.type === "maxLength" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Tên dịch vụ tối đa 30 ký tự !!!
-                </p>
-              )}
-              {errors.serviceName?.type === "minLength" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Tên dịch vụ tối thiểu 6 ký tự !!!
-                </p>
-              )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Loại dịch vụ</Form.Label>
+              <Form.Label>Tên của dịch vụ</Form.Label>
               <Form.Select
                 className="form-control"
                 aria-label="Default select example"
-                onChange={(e) => setGroup(e.target.value)}
+                onChange={(e) => setServiceId(e.target.value)}
               >
-                <option>Chọn gói dịch vụ</option>
-                <option value={1}>Gói dịch vụ vệ sinh + Bảo dưỡng</option>
-                <option value={2}>Gói dịch vụ ngoại thất</option>
-                <option value={3}>Gói dịch vụ nội thất</option>
+                {detail
+                  ? detail.map((ser) => {
+                      return (
+                        <option key={ser.id} value={ser.id}>
+                          {ser.name}
+                        </option>
+                      );
+                    })
+                  : null}
               </Form.Select>
-            </Form.Group>
-            <Row className="mb-3">
-              <Form.Group as={Col} md="6">
-                <Form.Label>Số lần</Form.Label>
-                <Form.Select
-                  className="form-control"
-                  aria-label="Default select example"
-                  onChange={(e) => setUnit(e.target.value)}
-                >
-                  <option>Chọn số lần</option>
-                  <option value={0}>Gói</option>
-                  <option value={1}>Lần</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group as={Col} md="6">
-                <Form.Label>Thời gian tối đa để hoàn thành</Form.Label>
-                <Form.Control
-                  type="number"
-                  autoFocus
-                  // value={serviceDuration}
-                  // onChange={(e) => setDuration(e.target.value)}
-                  {...register("serviceDuration", {
-                    required: true,
-                  })}
-                />
-                {errors.serviceDuration?.type === "required" && (
-                  <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                    Không được để trống !!!
-                  </p>
-                )}
-              </Form.Group>
-            </Row>
-            <Form.Group className="mb-3">
-              <Form.Label>Mô tả dịch vụ</Form.Label>
-              <Form.Control
-                type="text"
-                autoFocus
-                // value={serviceDetailDescription}
-                // onChange={(e) => setDes(e.target.value)}
-                {...register("serviceDetailDescription", {
-                  required: true,
-                })}
-              />
-              {errors.serviceDetailDescription?.type === "required" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Không được để trống mô tả !!!
-                </p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Hình ảnh dịch vụ</Form.Label>
-              <Form.Control
-                type="file"
-                autoFocus
-                {...register("serviceImage", {
-                  required: true,
-                })}
-              />
-              {errors.serviceImage?.type === "required" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Không được để trống hình ảnh !!!
-                </p>
-              )}
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

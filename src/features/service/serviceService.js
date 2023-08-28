@@ -83,7 +83,14 @@ const getServicesToAdd = async (id) => {
   // console.log(`update status`, response.data);
   return response.data;
 }
-
+const getServicesAdd = async () => {
+  const response = await instance.get(
+    `${base_url}service/get-all-id-and-name-garage`,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+}
 const serviceService = {
   getServices,
   addServices,
@@ -93,7 +100,8 @@ const serviceService = {
   getServiceByGarage,
   editDetail, 
   updateServiceStatus,
-  getServicesToAdd
+  getServicesToAdd,
+  getServicesAdd
 };
 
 export default serviceService;

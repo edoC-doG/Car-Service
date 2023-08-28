@@ -197,9 +197,11 @@ const MechanicsOrder = ({ bookingId, status }) => {
                           : "badge badge-soft-danger fz-12"
                       }
                     >
+                      {""}
                       {item.userMechanicDto?.userStatus === 1
-                        ? "Activate"
-                        : "Disable"}
+                        ? "Khả Dụng"
+                        : "Không Khả Dụng"}
+                      {""}
                     </span>
                   </TableCell>
 

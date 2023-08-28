@@ -138,7 +138,11 @@ const ReviewGarage = () => {
                               : "badge badge-soft-success fz-12"
                           }
                         >
-                          {item.reviewStatus}
+                          {" "}
+                              {item.reviewStatus === "Activate"
+                                ? "Khả dụng"
+                                : "Không khả dụng"
+                              }{" "}
                         </span>
                       </TableCell>
                     </TableRow>

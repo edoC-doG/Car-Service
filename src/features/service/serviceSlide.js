@@ -92,10 +92,21 @@ export const updateServiceStatus = createAsyncThunk(
     }
   }
 );
+export const getServicesToAdd = createAsyncThunk(
+  "service/serviceToGarageAdd",
+  async (data, thunkAPI) => {
+    try {
+      return await serviceService.getServicesToAdd(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 const initialState = {
   servicesDetail: [],
   services: [],
+  servicesToAdd: [],
   serviceInfo: [],
   isError: false,
   isLoading: false,
@@ -257,7 +268,24 @@ export const serviceSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-      
+      .addCase(getServicesToAdd.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getServicesToAdd.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAction = false;
+        state.isSuccessAdd = false;
+        state.servicesToAdd = action.payload;
+        state.message = "success";
+      })  
+      .addCase(getServicesToAdd.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAction = false;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
 
       .addCase(resetState, () => initialState)
   },

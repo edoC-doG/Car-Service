@@ -17,6 +17,7 @@ import ModalMoney from "./ModalMoney";
 import Notification from "../../components/Notification";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import ModalStatus from "./ModalStatus";
+import ModalDetail from "./ModalDetail";
 const headCells = [
   { id: "bookingDetailId", label: "Id" },
 
@@ -253,7 +254,7 @@ const OrderDetail = () => {
                   setOpen={setOpen}
                   open={open}
                   key={booking}
-                  showDetail={showDetail}
+                  show={showDetail}
                   handleDetail={handleDetail}
                   handleClose={handleClose}
                   setDetail={setDetail}
@@ -297,6 +298,7 @@ const OrderDetail = () => {
           orderSta={orderSta}
         />
         <Notification notify={notify} setNotify={setNotify} />
+        <ModalDetail show={showDetail} handleClose={handleClose} detailService={detailService}  setDetail={setDetail}/>
       </div>
     </div>
   );

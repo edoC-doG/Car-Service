@@ -49,83 +49,58 @@ const Service = () => {
     message: "",
     type: "",
   });
-   //Add
-   const [showModal, setShowModal] = useState(false);
-   const handleClose = () => {
-     setShowModal(false);
-   };
+  //Add
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+  };
   const getData = () => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage, garageId: id };
     dispatch(getServicesByGarage(data));
   };
-  useEffect(
-    () => {
-      getData();
-      // if (isSuccessAdd) {
-      //   setNotify({
-      //     isOpen: true,
-      //     message: "Thành Công",
-      //     type: "success",
-      //   });
-      //   handleClose();
-      // } else {
-      //   if (message.status === 400  ) {
-      //     setNotify({
-      //       isOpen: true,
-      //       message: message.title,
-      //       type: "error",
-      //     });
-      //   } else if (message.status === 404){
-      //     setNotify({
-      //       isOpen: true,
-      //       message: message.title,
-      //       type: "error",
-      //     });
-      //   }
-      // }
-      // if (updateSuccessAction) {
-      //   setConfirmDialog({
-      //     ...confirmDialog,
-      //     isOpen: false,
-      //   });
-      //   setNotify({
-      //     isOpen: true,
-      //     message: "Thành Công",
-      //     type: "success",
-      //   });
-      // }
-    },
-    [
-      // updateSuccessAction, isSuccessAdd, message
-      id, page, rowsPerPage
-    ]
+  const updateSuccessAction = useSelector(
+    (state) => state.garage.isSuccessAction
   );
+  const serState = useSelector((state) => state.garage);
+  const { isSuccessAdd, message } = serState;
+  useEffect(() => {
+    getData();
+    if (isSuccessAdd) {
+      setNotify({
+        isOpen: true,
+        message: "Thành Công",
+        type: "success",
+      });
+      handleClose();
+    } else {
+      if (message.status === 400) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      } else if (message.status === 404) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      }
+    }
+    if (updateSuccessAction) {
+      setConfirmDialog({
+        ...confirmDialog,
+        isOpen: false,
+      });
+      setNotify({
+        isOpen: true,
+        message: "Thành Công",
+        type: "success",
+      });
+    }
+  }, [updateSuccessAction, isSuccessAdd, message, id, page, rowsPerPage]);
   const records = useSelector((state) => state.service.services);
   const count = useSelector((state) => state.service.number);
-  const rows = [
-    {
-      id: 1,
-      name: "Rua Xe",
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-      }),
-      price: 100.0,
-      status: true,
-    },
-    {
-      id: 2,
-      name: "Son bong",
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-      }),
-      price: "10.000.000",
-      status: true,
-    },
-  ];
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       records,
@@ -154,16 +129,16 @@ const Service = () => {
                     </span>
                   </h5>
                   <div className="col-lg-8 mt-3 mt-lg-0 d-flex flex-wrap gap-3 justify-content-lg-end">
-                      <div>
-                        <Button
-                          className="add-button"
-                          size="large"
-                          onClick={() => setShowModal(true)}
-                          startIcon={<AddIcon fontSize="small" />}
-                          text="Thêm mới dịch vụ"
-                        />
-                      </div>
+                    <div>
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => setShowModal(true)}
+                        startIcon={<AddIcon fontSize="small" />}
+                        text="Thêm mới dịch vụ"
+                      />
                     </div>
+                  </div>
                 </div>
                 {/* Table */}
                 <div className="table-responsive">
@@ -176,14 +151,16 @@ const Service = () => {
                             {item.serviceId}
                           </TableCell>
 
-                          <TableCell sx={{ border: "none", textAlign: "center" }}>
-                          <img
-                            className="rounded"
-                            src={item.serviceImage}
-                            width={70}
-                            alt={"hello"}
-                          />
-                        </TableCell>
+                          <TableCell
+                            sx={{ border: "none", textAlign: "center" }}
+                          >
+                            <img
+                              className="rounded"
+                              src={item.serviceImage}
+                              width={70}
+                              alt={"hello"}
+                            />
+                          </TableCell>
                           <TableCell sx={{ border: "none" }}>
                             {item.serviceName}
                           </TableCell>
@@ -196,15 +173,13 @@ const Service = () => {
                           {/* Action */}
                           <TableCell sx={{ border: "none" }}>
                             <div className="d-flex justify-content-center gap-2">
-                              <Tooltip title="Chi tiết" arrow>
-                                <Tooltip title="Cập nhật" arrow>
-                                  <Link
-                                    to={`/admin/service/edit/${item.id}`}
-                                    className="btn btn-outline--primary btn-sm edit"
-                                  >
-                                    <EditIcon fontSize="small" />
-                                  </Link>
-                                </Tooltip>
+                              <Tooltip title="Cập nhật" arrow>
+                                <Link
+                                  to={`/admin/service/edit/${item.id}`}
+                                  className="btn btn-outline--primary btn-sm edit"
+                                >
+                                  <EditIcon fontSize="small" />
+                                </Link>
                               </Tooltip>
                               <Tooltip title="delelte" arrow>
                                 <Link
@@ -244,7 +219,7 @@ const Service = () => {
         </div>
       </div>
       <ModalAdd show={showModal} handleClose={handleClose} />
-                <Notification notify={notify} setNotify={setNotify} />
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };

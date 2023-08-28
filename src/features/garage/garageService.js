@@ -33,11 +33,20 @@ const updateGarageStatus = async (data) => {
   // console.log(`update status`, response.data);
   return response.data;
 };
-
+const addGarageService = async (data) => {
+  const response = await instance.post(
+    `${base_url}garage-detail/create-garage-detail`,
+    data,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+};
 const garageService = {
   getGarages,
   updateGarageStatus,
   getGarageDetail,
+  addGarageService,
 };
 
 export default garageService;

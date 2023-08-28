@@ -30,9 +30,9 @@ const TableOrderDetail = (
   key,
   setDetail,
   detailService,
-  showDetail,
   handleClose,
-  handleDetail
+  handleDetail,
+  show
 }) => {
   return (
     <>
@@ -183,8 +183,7 @@ const TableOrderDetail = (
             </dd>
           </dl>
         </div>
-      </div>
-      <ModalDetail show={showDetail} handleClose={handleClose} detailService={detailService} />
+      </div>  
     </>
   );
 };

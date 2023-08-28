@@ -8,17 +8,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import useTableV2 from "../table/useTableV2";
 import { useDispatch, useSelector } from "react-redux";
-import { getServicesByGarage } from "../../features/service/serviceSlide";
 import AddIcon from "@mui/icons-material/Add";
-import ModalAdd from "./ModalAdd";
-import Notification from "../Notification";
+// import ModalAdd from "./ModalAdd";
+// import Notification from "../Notification";
+import { getCouponByGarage } from "../../features/garage/garageSlice";
 const headCells = [
-  { id: "serviceId", label: "ID Dịch vụ" },
-  { id: "serviceImage", label: "Hình ảnh" },
-  { id: "serviceName", label: "Tên dịch vụ" },
-
-  { id: "createdAt", label: "Ngày thêm vào" },
-  { id: "serviceStatus", label: "Trạng thái" },
+  { id: "couponId", label: "ID Khuyễn Mãi" },
+  { id: "couponCode", label: "Mã KM" },
+  { id: "couponValue", label: "Giá trị KM" },
+  { id: "couponStartDate", label: "Ngày bắt đầu" },
+  { id: "couponEndDate", label: "Ngày kết thúc" },
+  { id: "numberOfTimesToUse", label: "SL" },
+  { id: "couponStatus", label: "Trạng thái" },
   {
     id: "action",
     label: "Thao tác",
@@ -27,11 +28,7 @@ const headCells = [
     align: "center",
   },
 ];
-const Service = () => {
-  useEffect(() => {
-    document.title = "Danh sách dịch vụ";
-  }, []);
-
+const CouponGarage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const id = location.pathname.split("/")[4];
@@ -48,63 +45,61 @@ const Service = () => {
     title: "",
     subTitle: "",
   });
-  const [notify, setNotify] = useState({
-    isOpen: false,
-    message: "",
-    type: "",
-  });
+  //   const [notify, setNotify] = useState({
+  //     isOpen: false,
+  //     message: "",
+  //     type: "",
+  //   });
   //Add
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => {
-    setShowModal(false);
-  };
-  const getData = () => {
-    const data = { pageIndex: page + 1, pageSize: rowsPerPage, garageId: id };
-    dispatch(getServicesByGarage(data));
-  };
-  const updateSuccessAction = useSelector(
-    (state) => state.garage.isSuccessAction
-  );
-  const serState = useSelector((state) => state.garage);
-  const { isSuccessAdd, message } = serState;
+  //   const [showModal, setShowModal] = useState(false);
+  //   const handleClose = () => {
+  //     setShowModal(false);
+  //   };
+  //   const updateSuccessAction = useSelector(
+  //     (state) => state.garage.isSuccessAction
+  //   );
+  //   const serState = useSelector((state) => state.garage);
+  //   const { isSuccessAdd, message } = serState;
   useEffect(() => {
-    getData();
-    if (isSuccessAdd) {
-      setNotify({
-        isOpen: true,
-        message: "Thành Công",
-        type: "success",
-      });
-      handleClose();
-    } else {
-      if (message.status === 400) {
-        setNotify({
-          isOpen: true,
-          message: message.title,
-          type: "error",
-        });
-      } else if (message.status === 404) {
-        setNotify({
-          isOpen: true,
-          message: message.title,
-          type: "error",
-        });
-      }
-    }
-    if (updateSuccessAction) {
-      setConfirmDialog({
-        ...confirmDialog,
-        isOpen: false,
-      });
-      setNotify({
-        isOpen: true,
-        message: "Thành Công",
-        type: "success",
-      });
-    }
-  }, [updateSuccessAction, isSuccessAdd, message, id, page, rowsPerPage]);
-  const records = useSelector((state) => state.service.services);
-  const count = useSelector((state) => state.service.number);
+    document.title = "Danh sách Khuyến Mãi";
+    dispatch(getCouponByGarage(id));
+    // if (isSuccessAdd) {
+    //   setNotify({
+    //     isOpen: true,
+    //     message: "Thành Công",
+    //     type: "success",
+    //   });
+    //   handleClose();
+    // } else {
+    //   if (message.status === 400) {
+    //     setNotify({
+    //       isOpen: true,
+    //       message: message.title,
+    //       type: "error",
+    //     });
+    //   } else if (message.status === 404) {
+    //     setNotify({
+    //       isOpen: true,
+    //       message: message.title,
+    //       type: "error",
+    //     });
+    //   }
+    // }
+    // if (updateSuccessAction) {
+    //   setConfirmDialog({
+    //     ...confirmDialog,
+    //     isOpen: false,
+    //   });
+    //   setNotify({
+    //     isOpen: true,
+    //     message: "Thành Công",
+    //     type: "success",
+    //   });
+    // }
+  }, [dispatch, id]);
+  const records = useSelector((state) => state.garage.coupon);
+  console.log(records)
+  const count = useSelector((state) => state.garage.count);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       records,
@@ -127,21 +122,21 @@ const Service = () => {
                 {/* Title */}
                 <div className="px-3 py-4 row  align-items-center">
                   <h5 className="col-lg-4 mb-0 d-flex align-items-center gap-2 font-semibold">
-                    Danh sách dịch vụ
+                    Danh sách khuyến mãi của garage
                     <span className="badge badge-soft-dark radius-50 fz-12">
-                      {count}
+                      {/* {count} */}
                     </span>
                   </h5>
                   <div className="col-lg-8 mt-3 mt-lg-0 d-flex flex-wrap gap-3 justify-content-lg-end">
-                    <div>
+                    {/* <div>
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => setShowModal(true)}
+                        // onClick={() => setShowModal(true)}
                         startIcon={<AddIcon fontSize="small" />}
                         text="Thêm mới dịch vụ"
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 {/* Table */}
@@ -150,40 +145,37 @@ const Service = () => {
                     <TblHead />
                     <TableBody>
                       {recordsAfterPagingAndSorting().map((item) => (
-                        <TableRow hover key={item.serviceId}>
+                        <TableRow hover key={item.couponId}>
                           <TableCell sx={{ border: "none" }}>
-                            {item.serviceId}
-                          </TableCell>
-
-                          <TableCell
-                            sx={{ border: "none", textAlign: "center" }}
-                          >
-                            <img
-                              className="rounded"
-                              src={item.serviceImage}
-                              width={70}
-                              alt={"hello"}
-                            />
+                            {item.couponId}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            {item.serviceName}
+                            {item.couponCode}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                            {item.createdAt}
+                            {item.couponValue}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                          <span
+                            {item.couponStartDate}
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
+                            {item.couponEndDate}
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
+                            {item.numberOfTimesToUse}
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
+                            <span
                               className={
-                                item.serviceStatus === "Activate"
+                                item.couponStatus === "Activate"
                                   ? "badge badge-soft-success fz-12"
                                   : "badge badge-soft-danger fz-12"
                               }
                             >
-                               {" "}
-                              {item.serviceStatus === "Activate"
+                              {" "}
+                              {item.couponStatus === "Activate"
                                 ? "Hoạt động"
-                                : "Không hoạt động"
-                              }{" "}
+                                : "Không hoạt động"}{" "}
                             </span>
                           </TableCell>
                           {/* Action */}
@@ -191,27 +183,9 @@ const Service = () => {
                             <div className="d-flex justify-content-center gap-2">
                               <Tooltip title="Cập nhật" arrow>
                                 <Link
-                                
                                   className="btn btn-outline--primary btn-sm edit"
                                 >
                                   <EditIcon fontSize="small" />
-                                </Link>
-                              </Tooltip>
-                              <Tooltip title="Xóa" arrow>
-                                <Link
-                                  className="btn btn-outline-danger btn-sm delete square-btn"
-                                  onClick={() => {
-                                    setConfirmDialog({
-                                      isOpen: true,
-                                      title:
-                                        "Bạn có chắc chắn muốn thay đổi trạng thái ?",
-                                      subTitle:
-                                        "Bạn không thể hoàn tác thao tác này",
-                                      onConfirm: () => {},
-                                    });
-                                  }}
-                                >
-                                  <DeleteIcon fontSize="small" />
                                 </Link>
                               </Tooltip>
                             </div>
@@ -234,10 +208,10 @@ const Service = () => {
           </div>
         </div>
       </div>
-      <ModalAdd show={showModal} handleClose={handleClose} />
-      <Notification notify={notify} setNotify={setNotify} />
+      {/* <ModalAdd show={showModal} handleClose={handleClose} />
+      <Notification notify={notify} setNotify={setNotify} /> */}
     </>
   );
 };
 
-export default Service;
+export default CouponGarage;

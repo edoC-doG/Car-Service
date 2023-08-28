@@ -14,7 +14,6 @@ import {
   AddMechanicsByBooking,
   resetState,
 } from "../../features/mechanic/mechanicSlice";
-import ActionButton from "../ActionButton";
 import Popup from "../Popup";
 import authService from "../../features/auth/authService";
 import AddNewMechanicForBooking from "./AddNewMechanicForBooking";
@@ -67,7 +66,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
   );
 
   const addMechanicBooking = (mechanicId, resetForm) => {
-    console.log(mechanicId, bookingId);
+    // console.log(mechanicId, bookingId);
     dispatch(AddMechanicsByBooking({ bookingId, mechanicId }));
     resetForm();
     setOpenPopup(false);
@@ -198,9 +197,11 @@ const MechanicsOrder = ({ bookingId, status }) => {
                           : "badge badge-soft-danger fz-12"
                       }
                     >
+                      {""}
                       {item.userMechanicDto?.userStatus === 1
-                        ? "Activate"
-                        : "Disable"}
+                        ? "Khả Dụng"
+                        : "Không Khả Dụng"}
+                      {""}
                     </span>
                   </TableCell>
 
@@ -210,7 +211,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
                   ) : (
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
-                        <Tooltip title="delelte" arrow>
+                        <Tooltip title="Xóa thợ" arrow>
                           <div
                             className="btn btn-outline-danger btn-sm delete square-btn"
                             onClick={() => {

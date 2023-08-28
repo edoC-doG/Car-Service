@@ -256,7 +256,7 @@ const ServiceDetail = () => {
                                   </Link>
                                 </Tooltip>
 
-                                <Tooltip title="delelte" arrow>
+                                <Tooltip title="Xóa" arrow>
                                   <Link
                                     className="btn btn-outline-danger btn-sm delete square-btn"
                                     onClick={() => {

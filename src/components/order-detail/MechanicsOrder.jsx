@@ -171,8 +171,8 @@ const MechanicsOrder = ({ bookingId, status }) => {
                     }
                   >
                     {item.userMechanicDto?.userStatus === 1
-                      ? "Activate"
-                      : "Disable"}
+                      ? "Khả Dụng"
+                      : "Không Khả Dụng"}
                   </span>
                 </TableCell>
 
@@ -182,7 +182,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
                 ) : (
                   <TableCell sx={{ border: "none" }}>
                     <div className="d-flex justify-content-center gap-2">
-                      <Tooltip title="delelte" arrow>
+                      <Tooltip title="Xóa" arrow>
                         <div
                           className="btn btn-outline-danger btn-sm delete square-btn"
                           onClick={() => {

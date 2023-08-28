@@ -186,7 +186,6 @@ export const garageSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-      .addCase(resetState, () => initialState)
       .addCase(getManager.pending, (state) => {
         state.isLoading = true;
       })
@@ -225,7 +224,8 @@ export const garageSlice = createSlice({
         state.isSuccessAction= false;
         state.message = action.payload.response.data;
         state.isLoading = false;
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

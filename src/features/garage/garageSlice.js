@@ -74,7 +74,7 @@ export const addGarage = createAsyncThunk(
     try {
       // console.log(data);
       return await garageService.addGarage(data);
-       } catch (error) {
+    } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -90,8 +90,17 @@ export const getEmployeesByGarage = createAsyncThunk(
     }
   }
 );
-
-
+export const getCouponByGarage = createAsyncThunk(
+  "garage/getCouponByGarage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await garageService.getCouponByGarage(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const resetState = createAction("Reset_all");
 
@@ -99,15 +108,17 @@ const initialState = {
   garages: [],
   garage: {},
   manager: {},
-  managerAdd:[],
+  managerAdd: [],
+  coupon:[],
   isError: false,
   isLoading: false,
   isSuccess: false,
   isSuccessAction: false,
-  isSuccessAdd:false,
+  isSuccessAdd: false,
   message: "",
+  count:0,
   number: 0,
-  carCount : 0
+  carCount: 0,
 };
 
 export const garageSlice = createSlice({
@@ -157,9 +168,9 @@ export const garageSlice = createSlice({
         state.isSuccessAdd = false;
         state.isSuccess = true;
         state.garage = action.payload;
-        state.manager = action.payload.managerGarageDto
+        state.manager = action.payload.managerGarageDto;
         state.message = "success";
-      }) 
+      })
       .addCase(getGarageDetail.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
@@ -176,7 +187,7 @@ export const garageSlice = createSlice({
         state.isSuccess = true;
         state.isSuccessAdd = true;
         state.message = "success";
-      }) 
+      })
       .addCase(addGarageService.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
@@ -193,10 +204,10 @@ export const garageSlice = createSlice({
         state.isSuccess = true;
         state.isSuccessAdd = false;
         state.garages = action.payload.lotLists;
-        state.number = action.payload.freeCount
-        state.carCount = action.payload.beingUsedCount
+        state.number = action.payload.freeCount;
+        state.carCount = action.payload.beingUsedCount;
         state.message = "success";
-      }) 
+      })
       .addCase(getSlot.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
@@ -211,15 +222,15 @@ export const garageSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isSuccessAdd = false;
-        state.isSuccessAction= false;
+        state.isSuccessAction = false;
         state.managerAdd = action.payload;
         state.message = "success";
-      }) 
+      })
       .addCase(getManager.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isSuccessAdd = false;
-        state.isSuccessAction= false;
+        state.isSuccessAction = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
@@ -231,14 +242,14 @@ export const garageSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isSuccessAdd = true;
-        state.isSuccessAction= false;
+        state.isSuccessAction = false;
         state.message = "success";
-      }) 
+      })
       .addCase(addGarage.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.isSuccessAdd = false;
-        state.isSuccessAction= false;
+        state.isSuccessAction = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
@@ -260,7 +271,26 @@ export const garageSlice = createSlice({
         state.isLoading = false;
         state.isSuccessAdd = false;
       })
-      
+      .addCase(getCouponByGarage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCouponByGarage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isSuccessAction = false;
+        state.isSuccessAdd = false;
+        state.coupon = action.payload.list;
+        state.count = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getCouponByGarage.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+        state.isSuccessAdd = false;
+      })
       .addCase(resetState, () => initialState);
   },
 });

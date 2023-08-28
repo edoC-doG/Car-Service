@@ -9,8 +9,9 @@ import { useSelector } from "react-redux";
 import EmployeeByGarage from "../../components/Garage&Owner/EmployeeGarage";
 import Service from "../../components/Garage&Owner/Service";
 import CarParking from "../../components/Garage&Owner/CarParking";
+import CouponGarage from './../../components/Garage&Owner/CouponGarage';
 
-const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên", "dịch vụ" , "bãi đậu xe"];
+const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên", "dịch vụ" , "bãi đậu xe","khuyến mãi"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const OwnerDetail = () => {
       {type === "dịch vụ" && <Service key="service" />}
       {/* Car parking */}
       {type === "bãi đậu xe" && <CarParking  key="carParking"/>}
-
+      {type === "khuyến mãi" && <CouponGarage  key="couponGarage"/>}
     </div>
   );
 };

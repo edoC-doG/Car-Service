@@ -12,8 +12,6 @@ const getGarages = async (page) => {
   return response.data;
 };
 
-
-
 const getGarageDetail = async (id) => {
   const response = await instance.get(
     `${base_url}/garage/detail-garage/${id}`,
@@ -48,14 +46,14 @@ const getSlot = async (id) => {
     instance
   );
   return response.data;
-}
+};
 const getManager = async () => {
   const response = await instance.get(
     `${base_url}user/get-manager-not-assign-by-garage`,
     instance
   );
   return response.data;
-}
+};
 const addGarage = async (data) => {
   const response = await instance.post(
     `${base_url}garage/create-garage`,
@@ -63,7 +61,7 @@ const addGarage = async (data) => {
     instance
   );
   return response.data;
-}
+};
 const getEmployeesByGarage = async (page) => {
   const response = await instance.post(
     `${base_url}user/filter-by-role/35&${page?.id}`,
@@ -73,8 +71,13 @@ const getEmployeesByGarage = async (page) => {
   // console.log("employee: ", response.data);
   return response.data;
 };
-
-
+const getCouponByGarage = async (id) => {
+  const response = await instance.get(
+    `${base_url}coupon/get-garage-coupon-for-admin/${id}`,
+    instance
+  );
+  return response.data;
+};
 const garageService = {
   getGarages,
   updateGarageStatus,
@@ -83,8 +86,8 @@ const garageService = {
   getSlot,
   getManager,
   addGarage,
-  getEmployeesByGarage, 
-  
+  getEmployeesByGarage,
+  getCouponByGarage,
 };
 
 export default garageService;

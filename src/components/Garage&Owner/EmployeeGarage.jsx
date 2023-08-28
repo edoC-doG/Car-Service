@@ -7,7 +7,6 @@ import Search from "../filter/Search";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation } from "react-router-dom";
 
-
 const headCells = [
   { id: "userId", label: "ID" },
   { id: "fullName", label: "Tên nhân viên" },
@@ -36,7 +35,7 @@ const EmployeeByGarage = () => {
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
 
-    dispatch(getEmployeesByGarage({...data, id}));
+    dispatch(getEmployeesByGarage({ ...data, id }));
   }, [page, rowsPerPage, id]);
   const recordsEmployee = useSelector((state) => state.garage.garages);
   const count = useSelector((state) => state.garage.number);
@@ -50,7 +49,7 @@ const EmployeeByGarage = () => {
       rowsPerPage,
       setPage,
       setRowsPerPage,
-       count
+      count
     );
 
   return (
@@ -116,7 +115,10 @@ const EmployeeByGarage = () => {
                                 : "badge badge-soft-danger fz-12"
                             }
                           >
-                            {item.userStatus}
+                            {" "}
+                            {item.userStatus === "Activate"
+                              ? "Hoạt động"
+                              : "Không hoạt động"}{" "}
                           </span>
                         </TableCell>
                       </TableRow>
@@ -125,7 +127,6 @@ const EmployeeByGarage = () => {
                 </TblContainer>
                 <TblPagination className="pagination" />
               </div>
-             
             </div>
             <div className="table-responsive mt-4"></div>
           </div>

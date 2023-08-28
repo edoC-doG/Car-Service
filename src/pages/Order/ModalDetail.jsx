@@ -8,7 +8,7 @@ import {
 } from "./../../features/book/bookingSlide";
 function ModalDetail(props) {
   const dispatch = useDispatch();
-  const { show, handleClose, detailService } = props;
+  const { show, handleClose, detailService,disabled } = props;
   const [stt, setStt] = useState("")
   const confirmDelete =  () => {
     const data = {
@@ -22,10 +22,10 @@ function ModalDetail(props) {
       style={{
         display: "block",
         position: "initial",
-        transform: "translate(-50%, -50%)",
+        transform: "translate(-50%, -50%)"
       }}
     >
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal show={show} onHide={handleClose} centered >
         <Modal.Header closeButton>
           <Modal.Title style={{ fontSize: "20px" }}>
             Cập nhật trạng thái chi tiết đơn hàng

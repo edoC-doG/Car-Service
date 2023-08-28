@@ -112,6 +112,7 @@ const couponState = useSelector(  (state) => state.coupon);
       }
     }
     if (updateSuccessAction) {
+      dispatch(resetState())
       setConfirmDialog({
         ...confirmDialog,
         isOpen: false,

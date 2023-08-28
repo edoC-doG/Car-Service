@@ -5,7 +5,7 @@ export const getCoupons = createAsyncThunk(
   "coupon/coupons",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await couponService.getCoupons(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -33,7 +33,7 @@ export const addCoupon = createAsyncThunk(
     }
   }
 );
-export const resetState = createAction("Reset_all");
+export const resetState = createAction("Reset_all-coupon");
 
 const initialState = {
   coupons: [],

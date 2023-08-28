@@ -89,7 +89,7 @@ const ReviewGarage = () => {
                 </div>
                 <div className="col-sm-8 col-md-6 col-lg-4">
                   <Search
-                    label="Tìm kiếm đơn hàng"
+                    label="Tìm kiếm"
                     onChange={() => {}}
                     size="small"
                     InputProps={{

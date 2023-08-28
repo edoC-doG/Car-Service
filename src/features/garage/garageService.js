@@ -41,11 +41,22 @@ const getSlot = async (id) => {
   return response.data;
 }
 
+const getEmployeesByGarage = async (page) => {
+  const response = await instance.post(
+    `${base_url}user/filter-by-role/35`,
+    page,
+    instance
+  );
+  // console.log("employee: ", response.data);
+  return response.data;
+};
+
 const garageService = {
   getGarages,
   updateGarageStatus,
   getGarageDetail,
-  getSlot
+  getSlot, 
+  getEmployeesByGarage
 };
 
 export default garageService;

@@ -88,45 +88,10 @@ const Onwers = () => {
 
   const handleSwitchToggle = (garageId, garageStatus) => {
     // Dispatch the updateCustomerStatus action
-    console.log("id and status", garageId, garageStatus);
+    // console.log("id and status", garageId, garageStatus);
     dispatch(updateGarageStatus({garageId, garageStatus }));
   };
-  const rows = [
-    {
-      id: 1,
-      shopname: {
-        image:
-          "https://6valley.6amtech.com/storage/app/public/shop/2022-04-21-6260f23c79774.png",
-        name: "Auto Garage",
-      },
-      ownername: "Digital Owner",
-      contact: {
-        email: "tester123@gmail.com",
-        phone: "02921323131",
-      },
-      status: "Active",
-      totalService: 20,
-      totalProduct: 40,
-      totalOrders: 15,
-    },
-    {
-      id: 2,
-      shopname: {
-        image:
-          "https://6valley.6amtech.com/storage/app/public/shop/2022-04-21-6260f140b5c50.png",
-        name: "Royal Crown Garage",
-      },
-      ownername: "Hello world",
-      contact: {
-        email: "tester123@gmail.com",
-        phone: "02921323131",
-      },
-      status: "Active",
-      totalService: 50,
-      totalProduct: 100,
-      totalOrders: 210,
-    },
-  ];
+  
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsGarage,
@@ -193,12 +158,6 @@ const Onwers = () => {
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex align-items-center gap-2 w-max-content">
-                            {/* <img
-                            width="50"
-                            className="aspect-1 rounded"
-                            src={item.shopname.image}
-                            alt=""
-                          /> */}
                             <div>
                               <Link
                                 to={`/admin/garage/view/${item.garageId}`}
@@ -255,19 +214,6 @@ const Onwers = () => {
                           </Link>
                         </TableCell>
 
-                        {/* Total Product
-                      <TableCell
-                        sx={{
-                          border: "none",
-                        }}
-                      >
-                        <Link
-                          to={`/admin/owners/product-list/1`}
-                          className="btn text--primary bg-soft--primary font-weight-bold px-3 py-1 mb-0 fz-12"
-                        >
-                          {item.totalProduct}
-                        </Link>
-                      </TableCell> */}
                         {/* Total Order */}
                         <TableCell
                           sx={{

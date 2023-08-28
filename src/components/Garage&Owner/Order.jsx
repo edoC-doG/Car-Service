@@ -3,7 +3,6 @@ import PendingIcon from "@mui/icons-material/Pending";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckCircleSharpIcon from "@mui/icons-material/CheckCircleSharp";
 import WidthFullIcon from "@mui/icons-material/WidthFull";
-import useTable from "../../components/table/useTable";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -53,64 +52,6 @@ const Order = () => {
   const count = useSelector((state) => state.booking.number);
 
   const statusDetail = useSelector((state) => state.booking.booking);
-
-
-  const rows = [
-    {
-      id: 1,
-      order: 1034342,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-      }),
-      customer: "Min mIn",
-      payStatus: "Paid",
-      total: "1.000.000 VND",
-      orderStatus: "Confirmed",
-    },
-    {
-      id: 2,
-      order: 100181,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-      }),
-      customer: "Dung ",
-      payStatus: "Unpaid",
-      total: "1.000.000 VND",
-      orderStatus: "Pending",
-    },
-
-    {
-      id: 3,
-      order: 100181,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-      }),
-      customer: "Long",
-      payStatus: "Unpaid",
-      total: "1.000.000 VND",
-      orderStatus: "Canceled",
-    },
-
-    {
-      id: 4,
-      order: 100182,
-      date: new Date().toLocaleDateString("en-GB", {
-        year: "2-digit",
-        month: "short",
-        day: "numeric",
-      }),
-      customer: "Quynen",
-      payStatus: "Unpaid",
-      total: "1.000.000 VND",
-      orderStatus: "Canceled",
-    },
-  ];
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(

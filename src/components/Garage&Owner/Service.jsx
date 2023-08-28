@@ -244,7 +244,7 @@ const Service = () => {
         </div>
       </div>
       <ModalAdd show={showModal} handleClose={handleClose} />
-                <Notification notify={notify} setNotify={setNotify} />
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
 };

@@ -48,6 +48,18 @@ export const getSlot = createAsyncThunk(
   }
 );
 
+export const getEmployeesByGarage = createAsyncThunk(
+  "employee/employees-by-garage",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      return await garageService.getEmployeesByGarage(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -60,6 +72,7 @@ const initialState = {
   isSuccessAction: false,
   message: "",
   number: 0,
+  carCount : 0
 };
 
 export const garageSlice = createSlice({
@@ -123,7 +136,9 @@ export const garageSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.garages = action.payload;
+        state.garages = action.payload.lotLists;
+        state.number = action.payload.freeCount
+        state.carCount = action.payload.beingUsedCount
         state.message = "success";
       }) 
       .addCase(getSlot.rejected, (state, action) => {
@@ -131,6 +146,24 @@ export const garageSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
+      })
+      .addCase(getEmployeesByGarage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getEmployeesByGarage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.garages = action.payload;
+      //   state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getEmployeesByGarage.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+        state.isSuccessAdd = false;
       })
 
       .addCase(resetState, () => initialState);

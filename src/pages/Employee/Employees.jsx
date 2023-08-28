@@ -7,11 +7,14 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Button from "../../components/filter/Button";
 import AddIcon from "@mui/icons-material/Add";
 import useTableV2 from "../../components/table/useTableV2";
-import { TableBody, TableCell, TableRow} from "@mui/material";
+import { TableBody, TableCell, TableRow } from "@mui/material";
 import Switches from "../../components/table/Switches";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
-import { getEmployees } from "../../features/employee/employeeSlice";
+import {
+  getEmployees,
+  resetState,
+} from "../../features/employee/employeeSlice";
 import ModalAdd from "./AddEmploye";
 import ModalEdit from "./ModalEdit";
 import Notification from "./../../components/Notification";
@@ -76,6 +79,7 @@ const Employees = () => {
   useEffect(() => {
     getData();
     if (isSuccessAdd) {
+      dispatch(resetState());
       setNotify({
         isOpen: true,
         message: "Thành Công",
@@ -88,8 +92,8 @@ const Employees = () => {
           isOpen: true,
           message: message.title,
           type: "error",
-        })
-      }else if (message.status === 404){
+        });
+      } else if (message.status === 404) {
         setNotify({
           isOpen: true,
           message: message.title,
@@ -97,7 +101,8 @@ const Employees = () => {
         });
       }
     }
-  }, [page, rowsPerPage, isSuccessAdd, message, getData]);
+  }, [page, rowsPerPage, isSuccessAdd, message]);
+
   const recordsEmployee = useSelector((state) => state.employee.employees);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(

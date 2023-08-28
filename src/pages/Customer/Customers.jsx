@@ -56,7 +56,7 @@ const Customers = () => {
 
   const updateSuccessAction = useSelector((state) => state.customer.isSuccessAction);
   useEffect(()=>{
-    document.title = "List of customers"
+    document.title = "Danh sách khách hàng"
   })
 
   useEffect(() => {

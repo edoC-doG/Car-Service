@@ -12,6 +12,17 @@ export const getEmployees = createAsyncThunk(
     }
   }
 );
+export const getStaffsByGarage = createAsyncThunk(
+  "employee/staffs-by-garage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await employeeService.getStaffsByGarage(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const addEmployees = createAsyncThunk(
   "employee/addEmp",
   async (data, thunkAPI) => {
@@ -59,6 +70,25 @@ export const employeeSlice = createSlice({
         state.isLoading = false;
         state.isSuccessAdd = false;
       })
+
+      .addCase(getStaffsByGarage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStaffsByGarage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.employees = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getStaffsByGarage.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+        state.isSuccessAdd = false;
+      })
       //Add
       .addCase(addEmployees.pending, (state) => {
         state.isLoading = true;
@@ -74,7 +104,9 @@ export const employeeSlice = createSlice({
         state.isSuccessAdd = false;
         state.message = action.payload.response.data;
         state.isLoading = false;
-      });
+      })
+      
+      .addCase(resetState, () => initialState);
   },
 });
 

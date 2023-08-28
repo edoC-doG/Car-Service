@@ -78,7 +78,7 @@ const Review = () => {
   );
 
   useEffect(() => {
-    document.title = "List of cutomers's review";
+    document.title = "Danh sách đánh giá của khách hàng";
   }, []);
 
   useEffect(() => {

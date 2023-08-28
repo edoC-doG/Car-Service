@@ -28,6 +28,10 @@ const headCells = [
   },
 ];
 const Service = () => {
+  useEffect(() => {
+    document.title = "Danh sách dịch vụ";
+  }, []);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const id = location.pathname.split("/")[4];

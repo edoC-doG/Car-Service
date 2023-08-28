@@ -73,6 +73,8 @@ const getEmployeesByGarage = async (page) => {
   // console.log("employee: ", response.data);
   return response.data;
 };
+
+
 const garageService = {
   getGarages,
   updateGarageStatus,
@@ -81,7 +83,8 @@ const garageService = {
   getSlot,
   getManager,
   addGarage,
-  getEmployeesByGarage
+  getEmployeesByGarage, 
+  
 };
 
 export default garageService;

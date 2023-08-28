@@ -16,6 +16,10 @@ const headCells = [
 ];
 
 const CarParking = () => {
+  useEffect(() => {
+    document.title = "Danh sách trạng thái car parking";
+  }, []);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const id = location.pathname.split("/")[4];

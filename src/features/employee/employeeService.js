@@ -10,6 +10,15 @@ const getEmployees = async (page) => {
   // console.log("employee: ", response.data);
   return response.data;
 };
+const getStaffsByGarage = async (page) => {
+  const response = await instance.post(
+    `${base_url}user/filter-by-role/5&${page?.id}`,
+    { pageIndex: page?.pageIndex, pageSize: page?.pageSize },
+    instance
+  );
+  // console.log("employee: ", response.data);
+  return response.data;
+};
 
 const addEmployees = async (data) => {
   const response = await instance.post(
@@ -22,7 +31,8 @@ const addEmployees = async (data) => {
 
 const employeeService = {
   getEmployees,
-  addEmployees
+  addEmployees, 
+  getStaffsByGarage
 };
 
 export default employeeService;

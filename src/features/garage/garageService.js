@@ -42,11 +42,19 @@ const addGarageService = async (data) => {
   // console.log(`update status`, response.data);
   return response.data;
 };
+const getSlot = async (id) => {
+  const response = await instance.get(
+    `${base_url}/garage/view-lots-by-garage/${id}`,
+    instance
+  );
+  return response.data;
+}
 const garageService = {
   getGarages,
   updateGarageStatus,
   getGarageDetail,
   addGarageService,
+  getSlot
 };
 
 export default garageService;

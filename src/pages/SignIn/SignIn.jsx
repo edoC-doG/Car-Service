@@ -178,7 +178,7 @@ const SignIn = () => {
                       className="btn btn-lg btn-block btn--primary"
                       onClick={formik.handleSubmit}
                     >
-                      <h1 className="text-2xl text-white">Đặng nhập</h1>
+                      <h1 className="text-2xl text-white">Đăng nhập</h1>
                     </button>
                   </form>
                 </div>

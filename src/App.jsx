@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 import StaffDetail from "./pages/Staff/StaffDetail";
 import Staffs from "./pages/Staff/Staffs";
 import authService from "./features/auth/authService";
+import CarParking from "./pages/CarParking/CarParking";
 
 function App() {
   const currentUser = authService.getCurrentUser();
@@ -118,7 +119,9 @@ function App() {
 
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
-              {/* Viết route cho manager  */}
+              {/* CAR PARKING  */}
+              <Route path="car-parking" element={<CarParking />} />
+              
             </Route>
           ) : (
             <Route path="403" element={<Authorization />} />

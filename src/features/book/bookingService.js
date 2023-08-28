@@ -7,7 +7,7 @@ const getBookings = async (page) => {
     page,
     instance
   );
-  console.log("booking response: ", response.data);
+  // console.log("booking response: ", response.data);
 
   return response.data;
 };
@@ -28,7 +28,7 @@ const getBookingDetail = async (id) => {
     `${base_url}booking/detail-booking/${id}`,
     instance
   );
-  console.log(`the booking detail of id ${id}: `, response.data);
+  // console.log(`the booking detail of id ${id}: `, response.data);
 
   return response.data;
 };
@@ -40,7 +40,7 @@ const getBookingsOfCustomer = async (pageAndId) => {
     instance
   );
 
-  console.log(`booking of customer id ${pageAndId.userId}:  `, response.data);
+  // console.log(`booking of customer id ${pageAndId.userId}:  `, response.data);
   return response.data;
 };
 
@@ -99,6 +99,17 @@ const updateDetail = async (data) => {
   // console.log(response.data);
   return response.data;
 }
+
+const updateProductForBookingDetailBookingDetail = async (data) => {
+  const response = await instance.put(
+    `${base_url}booking/update-booking-detail-for-manager/${data.bookingDetailId}&${data.productId}`,
+    data,
+    instance
+  );
+  // console.log(response.data);
+  return response.data;
+}
+
 const bookingService = {
   getBookingDetail,
   getBookings,
@@ -109,7 +120,8 @@ const bookingService = {
   getRevenueOfGagage,
   updatePaid,
   updateStt,
-  updateDetail
+  updateDetail, 
+  updateProductForBookingDetailBookingDetail
 };
 
 export default bookingService;

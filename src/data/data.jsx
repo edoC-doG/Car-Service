@@ -7,7 +7,8 @@ import { GrUserAdmin, GrServices } from "react-icons/gr";
 import { RxDotFilled } from "react-icons/rx";
 import { MdFilterList } from "react-icons/md";
 import SensorOccupiedIcon from '@mui/icons-material/SensorOccupied';
-// import { VscGraphLine } from "react-icons/vsc";
+import NoCrashIcon from '@mui/icons-material/NoCrash';
+
 
 export const userProfileData = [
   {
@@ -175,9 +176,25 @@ export const sidebarManager = [
         ],
       },
     ],
-  },
-  
 
+
+  },
+
+  {
+    key: "cp",
+    icon: null,
+    label: "QUẢN LÝ VỊ TRÍ ĐỖ & SỬA XE",
+    type: "group",
+  
+    children: [
+      {
+        key: "car-parking",
+        icon: <NoCrashIcon />,
+        label: "Danh sách trạng thái vị trí sửa xe",
+      },
+
+    ]
+  }
 ]
 
 

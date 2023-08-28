@@ -29,7 +29,7 @@ const headCells = [
 
   { id: "garageName", label: "Địa chỉ" },
   { id: "total", label: "Giá trị ĐH", align: "right" },
-  { id: "bookingStatus", label: "Trạng thái ĐH", align: "center" },
+  { id: "bookingStatus", label: "Trạng thái ĐH",  align: "center" },
   {
     id: "action",
     label: "Thao tác",
@@ -139,6 +139,14 @@ const All = () => {
               }
               content={"Sắp tới"}
               quantity={statusDetail.pending}
+            />
+             <BoxOrder
+              link={"checkin-order"}
+              src={
+                "https://6valley.6amtech.com/public/assets/back-end/img/out-of-delivery.png"
+              }
+              content={"Đang làm"}
+              quantity={statusDetail.checkIn}
             />
 
             <BoxOrder

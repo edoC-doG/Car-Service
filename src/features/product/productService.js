@@ -41,11 +41,21 @@ const updateProductStatus = async (id) => {
     return response.data;
   }
 
+const getProductAvailable =  async (id) => {
+  const response = await instance.get(
+    `${base_url}product/get-available-products-for-service/${id}`,
+    instance
+  );
+  // console.log(`update status`, response.data);
+  return response.data;
+} 
+
 const productService = {
     getProducts,
     addProducts,
     editProducts, 
-    updateProductStatus
+    updateProductStatus,
+    getProductAvailable
 }
 
 export default productService;

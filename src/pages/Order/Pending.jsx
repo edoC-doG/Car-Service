@@ -142,16 +142,6 @@ const Pending = () => {
                   }}
                 />
               </div>
-              {/* <div className="col-sm-4 col-md-6 col-lg-8 d-flex justify-content-sm-end">
-                <Button
-                  variant="outlined"
-                  className="export-button"
-                  size="large"
-                  onClick={() => {}}
-                  startIcon={<FileDownloadIcon fontSize="small" />}
-                  text="Export"
-                />
-              </div> */}
             </div>
           </div>
 

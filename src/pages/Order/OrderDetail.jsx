@@ -28,6 +28,7 @@ const headCells = [
   },
   { id: "serviceCost", label: "Giá dịch vụ" },
   { id: "productCost", label: "Giá sản phẩm" },
+  { id: "bookingDetailStatus", label: "Trạng thái" },
   {
     id: "action",
     label: "Thao tác",

@@ -107,12 +107,24 @@ export const updateDetail = createAsyncThunk(
   "booking/updateDetail",
   async (data, thunkAPI) => {
     try {
-      return await bookingService.updateDetail (data);
+      return await bookingService.updateDetail(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
+
+export const updateProductForBookingDetailBookingDetail = createAsyncThunk(
+  "booking/update-product-booking",
+  async (data, thunkAPI) => {
+    try {
+      return await bookingService.updateProductForBookingDetailBookingDetail(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -307,6 +319,23 @@ export const bookingSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
+      .addCase(updateProductForBookingDetailBookingDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProductForBookingDetailBookingDetail.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = true;
+        state.message = "success";
+        state.isLoading = false;
+      })
+      .addCase(updateProductForBookingDetailBookingDetail.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+
       .addCase(resetState, () => initialState);
 
   },

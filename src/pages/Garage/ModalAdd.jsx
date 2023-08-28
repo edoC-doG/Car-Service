@@ -18,12 +18,13 @@ const schema = yup
       .string()
       .required("Không để trống tên của garage !!!")
       .min(1, "Tên của garage quá ngắn !")
-      .max(25, "Tên của garage quá dài!"),
+      .max(50, "Tên của garage quá dài!"),
     garageContactInformation: yup
       .string()
       .matches(phoneRegExp, "Số điện thoại không hợp lệ !!!")
       .required("Không để trống số điện thoại !!!")
-      .max(10, "Số điện thoại quá dài !"),
+      .min(9,"Số điện thoại quá ngắn !")
+      .max(12, "Số điện thoại quá dài !"),
     garageAddress: yup
       .string()
       .required("Không để trống tên của garage !!!")
@@ -239,7 +240,7 @@ function ModalAdd(props) {
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
                 <Form.Label>
-                  Thời gian bắt đầu <span style={{ color: "red" }}>*</span>
+                  Thời gian mở cửa <span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Time
                   value={open}
@@ -250,7 +251,7 @@ function ModalAdd(props) {
               </Form.Group>
               <Form.Group as={Col} md="6">
                 <Form.Label>
-                  Thời gian kết thúc <span style={{ color: "red" }}>*</span>
+                  Thời gian đóng cửa <span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Time
                   value={close}

@@ -11,8 +11,12 @@ import * as yup from "yup";
 import { addCoupon, getCoupons } from "./../../features/coupon/couponSlice";
 const schema = yup
   .object({
-    couponValue: yup.number().typeError("Vui lòng nhập số !!!"),
-    numberOfTimesToTUse: yup.number().typeError("Vui lòng nhập số !!!"),
+    couponValue: yup.number().typeError("Vui lòng nhập số !!!").max(99999, 'Giá trị giảm giá quá lớn !!!'),
+    numberOfTimesToUse: yup
+      .number()
+      .typeError("Vui lòng nhập số !!!")
+      .required("Vui lòng nhập số !!!")
+      .max(99999, 'Số lượng mã giảm giá quá nhiều')
   })
   .required();
 function ModalAdd(props) {
@@ -24,7 +28,7 @@ function ModalAdd(props) {
   const onHandleSubmit = (data) => {
     const dateStart = dayjs(date.$d).format("MM/DD/YYYY");
     const dayEnd = dayjs(dateEnd.$d).format("MM/DD/YYYY");
-    const type = 1
+    const type = 1;
     const coupon = {
       couponValue: data.couponValue,
       couponStartDate: dateStart,
@@ -48,9 +52,7 @@ function ModalAdd(props) {
     },
     resolver: yupResolver(schema),
   });
-  const isSuccessAdd = useSelector(
-    (state) => state.coupon.isSuccessAdd
-  );
+  const isSuccessAdd = useSelector((state) => state.coupon.isSuccessAdd);
   useEffect(() => {
     if (isSuccessAdd) {
       reset();
@@ -77,23 +79,23 @@ function ModalAdd(props) {
         </Modal.Header>
         <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
-              <Form.Group className="mb-3">
-                <div className="mb-1">
-                  <label>Số lượng</label>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    id="numberOfTimesToUse"
-                    name="numberOfTimesToUse"
-                    {...register("numberOfTimesToUse")}
-                  />
-                  <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                    {errors.numberOfTimesToUse?.message}
-                  </p>
-                </div>
-              </Form.Group>
             <Form.Group className="mb-3">
-              <div className="mb-3">
+              <div className="mb-1">
+                <label>Số lượng</label>
+                <input
+                  type="text"
+                  className="form-control form-control-lg"
+                  id="numberOfTimesToUse"
+                  name="numberOfTimesToUse"
+                  {...register("numberOfTimesToUse")}
+                />
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  {errors.numberOfTimesToUse?.message}
+                </p>
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <div className="mb-1">
                 <label>Giá trị giảm giá đơn hàng</label>
                 <input
                   type="text"

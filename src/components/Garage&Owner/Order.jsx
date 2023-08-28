@@ -30,6 +30,10 @@ const headCells = [
 ];
 
 const Order = () => {
+  useEffect(() => {
+    document.title = "Danh sách đơn hàng";
+  }, []);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const id = location.pathname.split("/")[4];

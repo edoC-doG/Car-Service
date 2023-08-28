@@ -80,7 +80,7 @@ export const addGarage = createAsyncThunk(
   }
 );
 export const getEmployeesByGarage = createAsyncThunk(
-  "employee/employees-by-garage",
+  "garage/employees-by-garage",
   async (data, thunkAPI) => {
     try {
       // console.log(data);
@@ -90,6 +90,9 @@ export const getEmployeesByGarage = createAsyncThunk(
     }
   }
 );
+
+
+
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -257,6 +260,7 @@ export const garageSlice = createSlice({
         state.isLoading = false;
         state.isSuccessAdd = false;
       })
+      
       .addCase(resetState, () => initialState);
   },
 });

@@ -41,6 +41,10 @@ const headCells = [
 ];
 
 const Mechanics = () => {
+  useEffect(() => {
+    document.title = "Danh sách thợ sửa xe";
+  }, []);
+
   const user = authService.getCurrentUser();
   const role = user?.roleName;
   const dispatch = useDispatch();

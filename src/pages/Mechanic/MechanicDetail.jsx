@@ -22,6 +22,10 @@ const headCells = [
   { id: "bookingStatus", label: "Trạng thái", align: "center" },
 ];
 const MechanicDetail = () => {
+  useEffect(() => {
+    document.title = "Chi tiết thợ sửa xe";
+  }, []);
+
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -48,7 +52,7 @@ const MechanicDetail = () => {
   const recordsBooking = useSelector((state) => state.mechanic.mechanics);
   const count = useSelector((state) => state.mechanic.number);
   const check = detail.bookingMechanicCurrentWorkingOn?.bookingCode;
-  console.log("check", check);
+  // console.log("check", check);
   const infoMechanic = [
     {
       name: "Tên ",

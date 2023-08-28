@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Garage from "../../components/Garage&Owner/Garage";
 import Order from "../../components/Garage&Owner/Order";
 
@@ -15,6 +15,10 @@ const OwnerDetail = () => {
   const [type, setType] = useState("garage");
   const navigate = useNavigate();
   const garageDetail = useSelector((state) => state.garage.garage);
+  useEffect(() => {
+    document.title = `${garageDetail.garageName}`;
+  }, []);
+
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8 mb-5">
       <Header

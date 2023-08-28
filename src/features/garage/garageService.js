@@ -64,6 +64,15 @@ const addGarage = async (data) => {
   );
   return response.data;
 }
+const getEmployeesByGarage = async (page) => {
+  const response = await instance.post(
+    `${base_url}user/filter-by-role/35&${page?.id}`,
+    { pageIndex: page?.pageIndex, pageSize: page?.pageSize },
+    instance
+  );
+  // console.log("employee: ", response.data);
+  return response.data;
+};
 const garageService = {
   getGarages,
   updateGarageStatus,
@@ -72,6 +81,7 @@ const garageService = {
   getSlot,
   getManager,
   addGarage
+  getEmployeesByGarage
 };
 
 export default garageService;

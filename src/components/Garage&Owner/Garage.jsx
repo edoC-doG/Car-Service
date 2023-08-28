@@ -21,40 +21,40 @@ const Garage = () => {
   const infoAcc = [
     {
       name: "Trạng thái",
-      content: `${manager.userStatus}` 
+      content: `${manager?.userStatus}` 
     },
     {
       name: "Tên",
-      content: `${manager.fullName}`,
+      content: `${manager?.fullName}`,
     },
     {
       name: "Email",
-      content: `${manager.userEmail}`,
+      content: `${manager?.userEmail}`,
     },
     {
       name: "Số điện thoại",
-      content: `${manager.userPhone}`,
+      content: `${manager?.userPhone}`,
     },
   ];
 
   const infoGarage = [
     {
       name: "Garage",
-      content:  `${garageDetail.garageName}`,
+      content:  `${garageDetail?.garageName}`,
     },
     {
       name: "Địa chỉ",
-      content: `${garageDetail.garageFullAddress}`,
+      content: `${garageDetail?.garageFullAddress}`,
     },
     {
       name: "Số điện thoại",
-      content: `${garageDetail.garageContactInformation}`
+      content: `${garageDetail?.garageContactInformation}`
       ,
     },
     {
       name: "Hoạt động",
-      content: `${garageDetail.isOpen}`  ,
-      more: `${garageDetail.hoursOfOperation}`
+      content: `${garageDetail?.isOpen}`  ,
+      more: `${garageDetail?.hoursOfOperation}`
       
     },
 

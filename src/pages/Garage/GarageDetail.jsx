@@ -8,8 +8,9 @@ import ReviewGarage from "../../components/Garage&Owner/ReviewGarage";
 import { useSelector } from "react-redux";
 import EmployeeByGarage from "../../components/Garage&Owner/EmployeeGarage";
 import Service from "../../components/Garage&Owner/Service";
+import CarParking from "../../components/Garage&Owner/CarParking";
 
-const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên","dịch vụ"];
+const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên", "dịch vụ" , "bãi đậu xe"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
   const navigate = useNavigate();
@@ -68,16 +69,19 @@ const OwnerDetail = () => {
       </div>
 
       {/* Garage */}
-      {type === "garage" && <Garage />}
+      {type === "garage" && <Garage key="garage" />}
       {/* Order */}
-      {type === "đơn hàng" && <Order />}
+      {type === "đơn hàng" && <Order  key="order" />}
 
       {/* Review */}
-      {type === "đánh giá" && <ReviewGarage />}
+      {type === "đánh giá" && <ReviewGarage   key="review" />}
       {/* Employee */}
-      {type === "nhân viên" && <EmployeeByGarage />}
+      {type === "nhân viên" && <EmployeeByGarage  key="employee" />}
       {/* Service */}
-      {type === "dịch vụ" && <Service />}
+      {type === "dịch vụ" && <Service key="service" />}
+      {/* Car parking */}
+      {type === "bãi đậu xe" && <CarParking  key="carParking"/>}
+
     </div>
   );
 };

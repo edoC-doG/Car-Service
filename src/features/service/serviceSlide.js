@@ -6,7 +6,7 @@ export const getServices = createAsyncThunk(
 
   async (data, thunkAPI) => {
     try {
-      console.log("check",data);
+      // console.log("check",data);
       return await serviceService.getServices(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -17,7 +17,7 @@ export const editServices = createAsyncThunk(
   "service/edit",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await serviceService.editServices(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -28,7 +28,7 @@ export const editDetail = createAsyncThunk(
   "service/editDetail",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await serviceService.editDetail(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -39,7 +39,7 @@ export const addServices = createAsyncThunk(
   "service/addSer",
   async (data, thunkAPI) => {
     try {
-      console.log("check add",data);
+      // console.log("check add",data);
       return await serviceService.addServices(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -50,7 +50,7 @@ export const getDetailServices = createAsyncThunk(
   "service/detailSer",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await serviceService.getDetailServices(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -61,7 +61,7 @@ export const addDetail = createAsyncThunk(
   "service/addDetail",
   async (data, thunkAPI) => {
     try {
-      console.log(data);
+      // console.log(data);
       return await serviceService.addDetail(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -74,7 +74,7 @@ export const getServicesByGarage = createAsyncThunk(
 
   async (data, thunkAPI) => {
     try {
-      console.log("check",data);
+      // console.log("check",data);
       return await serviceService.getServiceByGarage(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

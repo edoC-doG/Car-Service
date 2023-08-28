@@ -45,6 +45,8 @@ const OrderDetail = () => {
   const [type, setType] = useState("Chi tiết");
   const [open, setOpen] = React.useState(false);
   const [bid, setBid] = useState("");
+  const [statusData, setStatusData] = useState("");
+  const [statusPaid, setStatusPaid] = useState("");
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -55,9 +57,15 @@ const OrderDetail = () => {
     message: "",
     type: "",
   });
+  const statusState = useSelector(
+    (state) => state.booking.booking.bookingStatus
+  );
+  const sttPaid = useSelector((state) => state.booking.booking.paymentStatus);
   useEffect(() => {
     dispatch(getDetailBooking(id));
-  }, [id]);
+    setStatusData(statusState);
+    setStatusPaid(sttPaid);
+  }, [id, statusState, sttPaid]);
 
   const booking = useSelector((state) => state.booking.booking);
   const orderId = booking.bookingId;
@@ -71,15 +79,14 @@ const OrderDetail = () => {
   };
   useEffect(() => {
     getData();
-    if (isSuccessAdd === true ) {
+    if (isSuccessAdd === true) {
       setNotify({
         isOpen: true,
-        message:"Thành Công",
+        message: "Thành Công",
         type: "success",
       });
       handleClose();
-    } else if ( message.status === 404
-    ) {
+    } else if (message.status === 404) {
       setNotify({
         isOpen: true,
         message: message.title,
@@ -93,7 +100,7 @@ const OrderDetail = () => {
   const handleClose = () => {
     setShowModal(false);
     setShowStt(false);
-    setShowDetail(false)
+    setShowDetail(false);
   };
   const handleMoney = (orderId) => {
     setShowModal(true);
@@ -107,12 +114,12 @@ const OrderDetail = () => {
     setOrderSta(orderId);
   };
   //Detail
-  const [showDetail, setShowDetail]= useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailService, setDetail] = useState("");
   const handleDetail = (item) => {
-    setShowDetail(true)
-    setDetail(item)
-  }
+    setShowDetail(true);
+    setDetail(item);
+  };
   const { TblContainer, TblHead, recordsAfterPagingAndSorting } = useTableV2(
     detail,
     headCells,
@@ -144,22 +151,51 @@ const OrderDetail = () => {
                 <div className="text-sm-right">
                   <div className="d-flex flex-wrap gap-3">
                     <div>
+                      {statusPaid === "Paid" ? (
+                        <Button
+                          disabled={true}
+                          className="add-button"
+                          size="large"
+                          onClick={() => handleMoney(orderId)}
+                          startIcon={<PaidIcon fontSize="small" />}
+                          text="Thanh toán"
+                        />
+                      ) : (
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => handleMoney(orderId)}
+                          startIcon={<PaidIcon fontSize="small" />}
+                          text="Thanh toán"
+                        />
+                      )}
+                    </div>
+                    {statusData === "Pending" ? (
                       <Button
                         className="add-button"
                         size="large"
-                        onClick={() => handleMoney(orderId)}
-                        startIcon={<PaidIcon fontSize="small" />}
-                        text="Thanh toán"
+                        onClick={() => handleStt(orderId)}
+                        startIcon={<NoteAltIcon fontSize="small" />}
+                        text="Cập nhật trạng thái"
                       />
-                    </div>
-                    <Button
-                      className="add-button"
-                      size="large"
-                      onClick={() => handleStt(orderId)}
-                      startIcon={<NoteAltIcon fontSize="small" />}
-
-                      text="Cập nhật trạng thái"
-                    />
+                    ) : statusData === "CheckIn" ? (
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => handleStt(orderId)}
+                        startIcon={<NoteAltIcon fontSize="small" />}
+                        text="Cập nhật trạng thái"
+                      />
+                    ) : (
+                      <Button
+                        disabled={true}
+                        className="add-button"
+                        size="large"
+                        onClick={() => handleStt(orderId)}
+                        startIcon={<NoteAltIcon fontSize="small" />}
+                        text="Cập nhật trạng thái"
+                      />
+                    )}
                   </div>
                   {/* Status */}
                   <div className="d-flex flex-column gap-2 mt-3">
@@ -168,38 +204,38 @@ const OrderDetail = () => {
 
                       <span
                         className={
-
-                          booking.bookingStatus=== "Pending"
+                          booking.bookingStatus === "Pending"
                             ? "badge badge-soft-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm "
-                            : booking.bookingStatus=== "CheckIn"
+                            : booking.bookingStatus === "CheckIn"
                             ? "badge badge-soft-warning fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : booking.bookingStatus=== "Processing"
+                            : booking.bookingStatus === "Processing"
                             ? "badge badge-soft-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : booking.bookingStatus=== "Completed"
+                            : booking.bookingStatus === "Completed"
                             ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : booking.bookingStatus=== "CheckOut"
+                            : booking.bookingStatus === "CheckOut"
                             ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                             : "badge badge-danger fz-12"
                         }
                       >
                         {" "}
-                              {booking.bookingStatus === "Pending"
-                                ? "Sắp tới"
-                                : booking.bookingStatus === "CheckIn"
-                                ? "Đang làm"
-                                : booking.bookingStatus === "Completed"
-                                ? "Hoàn thành"
-                                : booking.bookingStatus === "CheckOut"
-                                ? "Đã xong"
-                                :booking.bookingStatus === "Processing"
-                                ? "Đang tiến hành"
-                                : "Hủy Bỏ"
-                              }{" "}
+                        {booking.bookingStatus === "Pending"
+                          ? "Sắp tới"
+                          : booking.bookingStatus === "CheckIn"
+                          ? "Đang làm"
+                          : booking.bookingStatus === "Completed"
+                          ? "Hoàn thành"
+                          : booking.bookingStatus === "CheckOut"
+                          ? "Đã xong"
+                          : booking.bookingStatus === "Processing"
+                          ? "Đang tiến hành"
+                          : "Hủy Bỏ"}{" "}
                       </span>
                     </div>
                     {/* Payment status */}
                     <div className="payment-status d-flex justify-content-sm-end gap-3">
-                      <span className="title-color">Trạng thái thanh toán: </span>
+                      <span className="title-color">
+                        Trạng thái thanh toán:{" "}
+                      </span>
                       <span
                         className={
                           booking.paymentStatus === "Paid"
@@ -208,9 +244,9 @@ const OrderDetail = () => {
                         }
                       >
                         {" "}
-                              {booking.paymentStatus === "Unpaid"
-                                ? "Chưa thanh toán"
-                                : "Đã thanh toán"}{" "}
+                        {booking.paymentStatus === "Unpaid"
+                          ? "Chưa thanh toán"
+                          : "Đã thanh toán"}{" "}
                       </span>
                     </div>
                   </div>
@@ -259,6 +295,7 @@ const OrderDetail = () => {
                   handleClose={handleClose}
                   setDetail={setDetail}
                   detailService={detailService}
+                  statusData={statusData}
                 />
               )}
               {type === "Thợ phụ trách" && (
@@ -298,7 +335,21 @@ const OrderDetail = () => {
           orderSta={orderSta}
         />
         <Notification notify={notify} setNotify={setNotify} />
-        <ModalDetail show={showDetail} handleClose={handleClose} detailService={detailService}  setDetail={setDetail}/>
+        {statusData === "Pending" ? ( <ModalDetail
+          show={showDetail}
+          handleClose={handleClose}
+          detailService={detailService}
+          setDetail={setDetail}
+        />) : statusData === "CheckIn" ?( <ModalDetail
+          show={showDetail}
+          handleClose={handleClose}
+          detailService={detailService}
+          setDetail={setDetail}
+        />) : ( <ModalDetail
+          handleClose={handleClose}
+          detailService={detailService}
+          setDetail={setDetail}
+        />) }
       </div>
     </div>
   );

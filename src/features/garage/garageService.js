@@ -49,12 +49,29 @@ const getSlot = async (id) => {
   );
   return response.data;
 }
+const getManager = async () => {
+  const response = await instance.get(
+    `${base_url}user/get-manager-not-assign-by-garage`,
+    instance
+  );
+  return response.data;
+}
+const addGarage = async (data) => {
+  const response = await instance.post(
+    `${base_url}garage/create-garage`,
+    data,
+    instance
+  );
+  return response.data;
+}
 const garageService = {
   getGarages,
   updateGarageStatus,
   getGarageDetail,
   addGarageService,
-  getSlot
+  getSlot,
+  getManager,
+  addGarage
 };
 
 export default garageService;

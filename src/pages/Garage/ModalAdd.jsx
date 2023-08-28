@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Time from "./Time";
 import dayjs from "dayjs";
+import { addGarage, getManager } from "../../features/garage/garageSlice";
 const phoneRegExp = /^[0-9\- ]{8,14}$/;
 const schema = yup
   .object({
@@ -33,28 +34,21 @@ const schema = yup
       .required("Không để trống tên của garage !!!")
       .min(1, "Phường của garage quá ngắn !")
       .max(30, "Phường của garage quá dài!"),
-      garageDistrict: yup
+    garageDistrict: yup
       .string()
       .required("Không để trống tên của garage !!!")
       .min(1, "Quận của garage quá ngắn !")
       .max(30, "Quận chỉ của garage quá dài!"),
-      garageCity: yup
+    garageCity: yup
       .string()
       .required("Không để trống tên của garage !!!")
       .min(1, "Thành phố của garage quá ngắn !")
       .max(30, "Thành phố của garage quá dài!"),
-    // userPassword: yup
-    //   .string()
-    //   .required("Không để trống mật khẩu !!!")
-    //   .min(1, "Mật khẩu quá ngắn !")
-    //   .max(25, "Mật khẩu quá dài !"),
-    // passwordConfirm: yup
-    //   .string()
-    //   .required("Không để trống xác nhận mật khẩu !!!")
-    //   .oneOf(
-    //     [yup.ref("userPassword")],
-    //     "Mật khẩu xác nhận không khớp với mặt khẩu đã nhập ! "
-    // ),
+    garageAbout: yup
+      .string()
+      .required("Không để trống tên của garage !!!")
+      .min(1, "Mô tả của garage quá ngắn !")
+      .max(50, "Mô tả của garage quá dài!"),
   })
   .required();
 function ModalAdd(props) {
@@ -62,8 +56,8 @@ function ModalAdd(props) {
   const { show, handleClose } = props;
   const [open, setOpen] = useState("");
   const [close, setClose] = useState("");
+  const [garageId, setGarageId] = useState("");
   const onHandleSubmit = (data) => {
-    console.log(data);
     const openTime = dayjs(open.$d).format("h:mm A");
     const closeTime = dayjs(close.$d).format("h:mm A");
     const garage = {
@@ -76,10 +70,10 @@ function ModalAdd(props) {
       garageCity: data.garageCity,
       openAt: openTime,
       closeAt: closeTime,
-      userId: 0,
+      userId: garageId,
     };
     console.log(garage);
-    // dispatch(addEmployees(garage))
+    dispatch(addGarage(garage));
   };
   const {
     register,
@@ -101,13 +95,15 @@ function ModalAdd(props) {
     },
     resolver: yupResolver(schema),
   });
-  // const empState = useSelector((state) => state.employee);
-  // const { isSuccessAdd } = empState;
-  // useEffect(() => {
-  //   if (isSuccessAdd) {
-  //     reset();
-  //   }
-  // }, [isSuccessAdd, reset, roleUser]);
+  const gara = useSelector((state) => state.garage.isSuccessAdd);
+  const { isSuccessAdd } = gara;
+  useEffect(() => {
+    dispatch(getManager());
+    if (isSuccessAdd) {
+      reset();
+    }
+  }, [isSuccessAdd, reset]);
+  const detail = useSelector((state) => state.garage.managerAdd);
   return (
     <div
       className="modal show"
@@ -205,21 +201,41 @@ function ModalAdd(props) {
                 </p>
               </Form.Group>
             </Row>
-            <Form.Group className="mb-3">
-              <Form.Label>
-                Thành phố <span style={{ color: "red" }}>*</span>
-              </Form.Label>
-              <Form.Control
-                className="form-control-lg"
-                type="text"
-                autoFocus
-                name="garageCity"
-                {...register("garageCity")}
-              />
-              <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                {errors.garageCity?.message}
-              </p>
-            </Form.Group>
+            <Row className="mb-3">
+              <Form.Group as={Col} md="6">
+                <Form.Label>
+                  Thành phố <span style={{ color: "red" }}>*</span>
+                </Form.Label>
+                <Form.Control
+                  className="form-control-lg"
+                  type="text"
+                  autoFocus
+                  name="garageCity"
+                  {...register("garageCity")}
+                />
+                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
+                  {errors.garageCity?.message}
+                </p>
+              </Form.Group>
+              <Form.Group as={Col} md="6">
+                <Form.Label>Quản lý của Garage</Form.Label>
+                <Form.Select
+                  className="form-control form-control-lg mb-3"
+                  aria-label="Default select example"
+                  onChange={(e) => setGarageId(e.target.value)}
+                >
+                  {detail
+                    ? detail.map((ser) => {
+                        return (
+                          <option key={ser.id} value={ser.id}>
+                            {ser.name}
+                          </option>
+                        );
+                      })
+                    : null}
+                </Form.Select>
+              </Form.Group>
+            </Row>
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
                 <Form.Label>

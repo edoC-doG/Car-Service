@@ -64,12 +64,33 @@ const Onwers = () => {
 
 
   const updateSuccessAction = useSelector((state) => state.garage.isSuccessAction);
-
+  const gara = useSelector((state) => state.garage);
+  const { isSuccessAdd, message } = gara;
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getGarages(data));
-    // dispatch(getNumberCustomer());
-
+    if (isSuccessAdd) {
+      setNotify({
+        isOpen: true,
+        message: "Thành Công",
+        type: "success",
+      });
+      handleClose();
+    } else {
+      if (message.status === 400) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      } else if (message.status === 404) {
+        setNotify({
+          isOpen: true,
+          message: message.title,
+          type: "error",
+        });
+      }
+    }
     if (updateSuccessAction) {
       dispatch(resetState());
       setConfirmDialog({
@@ -82,7 +103,7 @@ const Onwers = () => {
         type: "success",
       });
     }
-  }, [page, rowsPerPage, updateSuccessAction]);
+  }, [isSuccessAdd, message, page, rowsPerPage, updateSuccessAction]);
 
   const recordsGarage = useSelector((state) => state.garage.garages);
 

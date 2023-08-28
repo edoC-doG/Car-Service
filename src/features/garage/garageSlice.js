@@ -57,12 +57,35 @@ export const getSlot = createAsyncThunk(
     }
   }
 );
+export const getManager = createAsyncThunk(
+  "garage/manager-garage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await garageService.getManager(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const addGarage = createAsyncThunk(
+  "garage/addGarage",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await garageService.addGarage(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 
 const initialState = {
   garages: [],
   garage: {},
   manager: {},
+  managerAdd:[],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -153,6 +176,7 @@ export const garageSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
+        state.isSuccessAdd = false;
         state.garages = action.payload;
         state.message = "success";
       }) 
@@ -162,7 +186,46 @@ export const garageSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-      .addCase(resetState, () => initialState);
+      .addCase(resetState, () => initialState)
+      .addCase(getManager.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getManager.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = false;
+        state.isSuccessAction= false;
+        state.managerAdd = action.payload;
+        state.message = "success";
+      }) 
+      .addCase(getManager.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isSuccessAdd = false;
+        state.isSuccessAction= false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(addGarage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addGarage.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = true;
+        state.isSuccessAction= false;
+        state.message = "success";
+      }) 
+      .addCase(addGarage.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isSuccessAdd = false;
+        state.isSuccessAction= false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      });
   },
 });
 

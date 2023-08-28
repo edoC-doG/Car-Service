@@ -11,7 +11,8 @@ import {
   addProducts,
   getProducts,
 } from "./../../features/product/productSlice";
-import { useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
+import { getServicesAdd } from "./../../features/service/serviceSlide";
 function ModalAdd(props) {
   const dispatch = useDispatch();
   const { show, handleClose } = props;
@@ -54,12 +55,13 @@ function ModalAdd(props) {
     });
   };
   useEffect(() => {
+    dispatch(getServicesAdd())
     if (isSubmitSuccessful) {
       reset();
     }
   }, [isSubmitSuccessful, reset]);
   const category = useSelector((state) => state.category.categories);
-  const service = useSelector((state) => state.service.services);
+  const service = useSelector((state) => state.service.servicesAdd);
   return (
     <div
       className="modal show"
@@ -181,8 +183,8 @@ function ModalAdd(props) {
                 {service
                   ? service.map((ser) => {
                       return (
-                        <option key={ser.serviceId} value={ser.serviceId}>
-                          {ser.serviceName}
+                        <option key={ser.id} value={ser.id}>
+                          {ser.name}
                         </option>
                       );
                     })

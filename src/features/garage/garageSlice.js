@@ -101,7 +101,17 @@ export const getCouponByGarage = createAsyncThunk(
     }
   }
 );
-
+export const getGarageAdd  = createAsyncThunk(
+  "garage/getGarageAdd ",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await garageService.getGarageAdd (data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 
 const initialState = {
@@ -109,6 +119,7 @@ const initialState = {
   garage: {},
   manager: {},
   managerAdd: [],
+  garageAdd:[],
   coupon:[],
   isError: false,
   isLoading: false,
@@ -290,6 +301,15 @@ export const garageSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
         state.isSuccessAdd = false;
+      })
+      .addCase(getGarageAdd.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isSuccessAction = false;
+        state.isSuccessAdd = false;
+        state.garageAdd = action.payload
+        state.message = "success";
       })
       .addCase(resetState, () => initialState);
   },

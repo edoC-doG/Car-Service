@@ -102,11 +102,22 @@ export const getServicesToAdd = createAsyncThunk(
     }
   }
 );
+export const getServicesAdd = createAsyncThunk(
+  "service/serviceGarageAdd",
+  async (data, thunkAPI) => {
+    try {
+      return await serviceService.getServicesAdd(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 export const resetState = createAction("Reset_all");
 const initialState = {
   servicesDetail: [],
   services: [],
   servicesToAdd: [],
+  servicesAdd: [],
   serviceInfo: [],
   isError: false,
   isLoading: false,
@@ -286,7 +297,14 @@ export const serviceSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-
+      .addCase(getServicesAdd.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessAction = false;
+        state.isSuccessAdd = false;
+        state.servicesAdd= action.payload;
+        state.message = "success";
+      })  
       .addCase(resetState, () => initialState)
   },
 });

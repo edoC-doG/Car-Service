@@ -78,6 +78,13 @@ const getCouponByGarage = async (id) => {
   );
   return response.data;
 };
+const getGarageAdd = async () => {
+  const response = await instance.get(
+    `${base_url}garage/get-all-id-and-name-garage`,
+    instance
+  );
+  return response.data;
+};
 const garageService = {
   getGarages,
   updateGarageStatus,
@@ -88,6 +95,7 @@ const garageService = {
   addGarage,
   getEmployeesByGarage,
   getCouponByGarage,
+  getGarageAdd,
 };
 
 export default garageService;

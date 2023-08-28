@@ -9,14 +9,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { addCoupon, getCoupons } from "./../../features/coupon/couponSlice";
+import { getGarageAdd } from "./../../features/garage/garageSlice";
 const schema = yup
   .object({
-    couponValue: yup.number().typeError("Vui lòng nhập số !!!").max(99999, 'Giá trị giảm giá quá lớn !!!'),
+    couponValue: yup.number().typeError("Vui lòng nhập số !!!").max(9999, 'Giá trị giảm giá quá lớn !!!'),
     numberOfTimesToUse: yup
       .number()
       .typeError("Vui lòng nhập số !!!")
       .required("Vui lòng nhập số !!!")
-      .max(99999, 'Số lượng mã giảm giá quá nhiều')
+      .max(9999, 'Số lượng mã giảm giá quá nhiều')
   })
   .required();
 function ModalAdd(props) {
@@ -37,7 +38,7 @@ function ModalAdd(props) {
       garageId,
       numberOfTimesToUse: data.numberOfTimesToUse,
     };
-    dispatch(addCoupon(coupon));
+    // dispatch(addCoupon(coupon));
     console.log(coupon);
   };
   const {
@@ -54,11 +55,12 @@ function ModalAdd(props) {
   });
   const isSuccessAdd = useSelector((state) => state.coupon.isSuccessAdd);
   useEffect(() => {
+    dispatch(getGarageAdd())
     if (isSuccessAdd) {
       reset();
     }
-  });
-  const garage = useSelector((state) => state.garage.garages);
+  },[]);
+  const garage = useSelector((state) => state.garage.garageAdd);
   return (
     <div
       className="modal show"
@@ -141,8 +143,8 @@ function ModalAdd(props) {
                 {garage
                   ? garage.map((ga) => {
                       return (
-                        <option key={ga.garageId} value={ga.garageId}>
-                          {ga.garageName}
+                        <option key={ga.id} value={ga.id}>
+                          {ga.name}
                         </option>
                       );
                     })

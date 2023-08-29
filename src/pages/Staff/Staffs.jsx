@@ -140,20 +140,7 @@ const Staffs = () => {
                  danh sách 
                 <span className="badge badge-soft-dark radius-50 fz-12"></span>
               </h5>
-              <div>
-                <Search
-                  label="Tìm kiếm"
-                  onChange={() => {}}
-                  size="small"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
+              
 
               <div className="d-flex justify-content-end">
                 <Button

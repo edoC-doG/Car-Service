@@ -105,8 +105,8 @@ const Mechanics = () => {
           isOpen: true,
           message: message.title,
           type: "error",
-        })
-      }else if (message.status === 404){
+        });
+      } else if (message.status === 404) {
         setNotify({
           isOpen: true,
           message: message.title,
@@ -161,24 +161,21 @@ const Mechanics = () => {
           <div className="col-md-12 mb-3">
             <div className="card">
               <div className="px-3 py-4">
-                <div className="row justify-content-between align-items-center gy-2">
-                  
+               
                   {role === "Manager" ? (
-                    <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                      <div className="d-flex justify-content-sm-end">
-                        <Button
-                          className="add-button"
-                          size="large"
-                          onClick={() => setShowModal(true)}
-                          startIcon={<AddIcon fontSize="small" />}
-                          text="Thêm thợ sửa chữa"
-                        />
-                      </div>
+                    <div className="d-flex justify-content-sm-end">
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => setShowModal(true)}
+                        startIcon={<AddIcon fontSize="small" />}
+                        text="Thêm thợ sửa chữa"
+                      />
                     </div>
                   ) : (
                     <></>
                   )}
-                </div>
+                
               </div>
 
               {/* Table  */}

@@ -152,7 +152,17 @@ const OrderDetail = () => {
                 <div className="text-sm-right">
                   <div className="d-flex flex-wrap gap-3">
                     <div>
-                      {statusPaid === "Paid" ? (
+                      {statusPaid === "Paid"
+                     ? (
+                        <Button
+                          disabled={true}
+                          className="add-button"
+                          size="large"
+                          onClick={() => handleMoney(orderId)}
+                          startIcon={<PaidIcon fontSize="small" />}
+                          text="Thanh toán"
+                        />
+                      ) : statusPaid === "Paid" ? (
                         <Button
                           disabled={true}
                           className="add-button"
@@ -336,21 +346,27 @@ const OrderDetail = () => {
           orderSta={orderSta}
         />
         <Notification notify={notify} setNotify={setNotify} />
-        {statusData === "Pending" ? ( <ModalDetail
-          show={showDetail}
-          handleClose={handleClose}
-          detailService={detailService}
-          setDetail={setDetail}
-        />) : statusData === "CheckIn" ?( <ModalDetail
-          show={showDetail}
-          handleClose={handleClose}
-          detailService={detailService}
-          setDetail={setDetail}
-        />) : ( <ModalDetail
-          handleClose={handleClose}
-          detailService={detailService}
-          setDetail={setDetail}
-        />) }
+        {statusData === "Pending" ? (
+          <ModalDetail
+            show={showDetail}
+            handleClose={handleClose}
+            detailService={detailService}
+            setDetail={setDetail}
+          />
+        ) : statusData === "CheckIn" ? (
+          <ModalDetail
+            show={showDetail}
+            handleClose={handleClose}
+            detailService={detailService}
+            setDetail={setDetail}
+          />
+        ) : (
+          <ModalDetail
+            handleClose={handleClose}
+            detailService={detailService}
+            setDetail={setDetail}
+          />
+        )}
       </div>
     </div>
   );

@@ -109,7 +109,7 @@ const ServiceDetail = () => {
       if (message?.status === 400) {
         setNotify({
           isOpen: true,
-          message: message.title,
+          message: "Thất bại",
           type: "error",
         })
       }else if (message.status === 404){

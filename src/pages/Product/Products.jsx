@@ -44,7 +44,7 @@ const headCellsManager = [
 
   { id: "productName", label: "Name" },
   { id: "productPrice", label: "Price" },
-  { id: "productQuantity", label: "Quantity" },
+  // { id: "productQuantity", label: "Quantity" },
   { id: "productStatus", label: "Status" },
 ];
 
@@ -225,9 +225,9 @@ const Products = () => {
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.productPrice}</div>
                         </TableCell>
-                        <TableCell sx={{ border: "none" }}>
+                        {/* <TableCell sx={{ border: "none" }}>
                           <div>{item.productQuantity}</div>
-                        </TableCell>
+                        </TableCell> */}
                         {role === "Admin" ? (
                           <TableCell sx={{ border: "none" }}>
                             <Switches

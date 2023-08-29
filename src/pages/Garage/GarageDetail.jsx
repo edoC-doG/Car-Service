@@ -11,7 +11,7 @@ import Service from "../../components/Garage&Owner/Service";
 import CarParking from "../../components/Garage&Owner/CarParking";
 import CouponGarage from './../../components/Garage&Owner/CouponGarage';
 
-const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên", "dịch vụ" , "bãi đậu xe","khuyến mãi"];
+const tabs = ["garage", "đơn hàng", "đánh giá", "nhân viên", "dịch vụ" , "khu vực sửa xe","khuyến mãi"];
 const OwnerDetail = () => {
   const [type, setType] = useState("garage");
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const OwnerDetail = () => {
       {/* Service */}
       {type === "dịch vụ" && <Service key="service" />}
       {/* Car parking */}
-      {type === "bãi đậu xe" && <CarParking  key="carParking"/>}
+      {type === "khu vực sửa xe" && <CarParking  key="carParking"/>}
       {type === "khuyến mãi" && <CouponGarage  key="couponGarage"/>}
     </div>
   );

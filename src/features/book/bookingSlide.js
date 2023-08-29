@@ -125,7 +125,7 @@ export const updateProductForBookingDetailBookingDetail = createAsyncThunk(
   }
 );
 
-export const resetState = createAction("Reset_all");
+export const resetState = createAction("Reset_all_booking");
 
 const initialState = {
   bookings: [],

@@ -32,12 +32,7 @@ export const themeColors = [];
 
 export const sidebarManager = [
   // Dashboard
-  {
-    key: "",
-    icon: <AiOutlineHome />,
-    label: "Dashboard",
-    
-  },
+ 
   {
     key: "om",
     icon: null,
@@ -200,12 +195,6 @@ export const sidebarManager = [
 
 export const sidebarDataAdmin = [
   // Dashboard
-  {
-    key: "",
-    icon: <AiOutlineHome />,
-    label: "Dashboard",
-   
-  },
   // Orders
   {
     key: "om",

@@ -58,6 +58,10 @@ const TableOrderDetail = ({
     message: "",
     type: "",
   });
+  const bookingStatus = useSelector(
+    (state) => state.booking.booking?.bookingStatus
+  );
+  console.log(bookingStatus);
   const openInPopup = (id, name, serviceId, bookingDetailId) => {
     // console.log(id, name);
     setRecordForEdit({ productId: id, productName: name });
@@ -71,7 +75,9 @@ const TableOrderDetail = ({
   );
   const editProductBooking = (productId, resetForm) => {
     console.log(productId, bookingDetailId);
-    dispatch(updateProductForBookingDetailBookingDetail({ bookingDetailId, productId }));
+    dispatch(
+      updateProductForBookingDetailBookingDetail({ bookingDetailId, productId })
+    );
     resetForm();
     setOpenPopup(false);
     if (updateSuccessAction) {
@@ -155,7 +161,10 @@ const TableOrderDetail = ({
                         <Link
                           onClick={() => handleDetail(item.bookingDetailId)}
                           className={`btn btn-outline--primary btn-sm edit square-btn ${
-                            item.bookingDetailStatus === "NotStart"
+                            bookingStatus === "Canceled" ||
+                            bookingStatus === "Pending"
+                              ? "pointer-events-none opacity-50"
+                              : item.bookingDetailStatus === "NotStart"
                               ? ""
                               : "pointer-events-none opacity-50"
                           }`}
@@ -208,7 +217,9 @@ const TableOrderDetail = ({
                                 Sản phẩm đính kèm
                               </TableCell>
 
-                              {item.bookingDetailStatus === "NotStart" ? (
+                              {bookingStatus === "Canceled" ? (
+                                <></>
+                              ) : item.bookingDetailStatus === "NotStart" ? (
                                 <TableCell
                                   sx={{
                                     fontSize: "12px",
@@ -232,7 +243,9 @@ const TableOrderDetail = ({
                               </TableCell>
 
                               {item.productBookingDetailDto !== null ? (
-                                item.bookingDetailStatus === "NotStart" ? (
+                                bookingStatus === "Canceled" ? (
+                                  <></>
+                                ) : item.bookingDetailStatus === "NotStart" ? (
                                   <TableCell sx={{ border: "none" }}>
                                     <Tooltip title="Sửa sản phẩm" arrow>
                                       <Link

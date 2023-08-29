@@ -19,6 +19,7 @@ import {
   getBookings,
   getCountBookingStatus,
   getBookingsByGarage,
+  resetState,
 } from "../../features/book/bookingSlide";
 import authService from "../../features/auth/authService";
 
@@ -60,7 +61,7 @@ const All = () => {
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-
+  //  dispatch(resetState())
     if (role === "Admin") {
       dispatch(getBookings(data));
       dispatch(getCountBookingStatus());
@@ -68,7 +69,7 @@ const All = () => {
       dispatch(getBookingsByGarage({ ...data, garageId: user?.garageId }));
       dispatch(getCountBookingStatus(user?.garageId));
     }
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, role]);
 
   const recordsBooking = useSelector((state) => state.booking.bookings);
   // console.log(recordsBooking);

@@ -53,7 +53,7 @@ function App() {
 
           {(role === "Admin" || user?.roleName === "Admin" ) ? (
             <Route path="admin" element={<MainLayout />}>
-              <Route path="" element={<Dashboard />} />
+              
               {/* CUSTOMER */}
               <Route path="list-customer" element={<Customers />} />
               <Route path="customer/view/:id" element={<CustomerDetail />} />
@@ -95,7 +95,7 @@ function App() {
             </Route>
           ) : (role === "Manager" || user?.roleName === "Manager") ? (
             <Route path="manager" element={<MainLayout />}>
-              <Route path="" element={<Dashboard />} />
+              {/* <Route path="" element={<Dashboard />} /> */}
               <Route path="review-list-customer" element={<Review />} />
               {/* MECHANIC */}
               <Route path="list-mechanics" element={<Mechanics />} />

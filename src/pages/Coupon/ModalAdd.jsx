@@ -83,7 +83,7 @@ function ModalAdd(props) {
           <Modal.Body>
             <Form.Group className="mb-3">
               <div className="mb-1">
-                <label>Số lượng</label>
+                <label>Số lượng <span style={{ color: "red" }}>*</span></label>
                 <input
                   type="text"
                   className="form-control form-control-lg"
@@ -98,7 +98,7 @@ function ModalAdd(props) {
             </Form.Group>
             <Form.Group className="mb-3">
               <div className="mb-1">
-                <label>Giá trị giảm giá đơn hàng</label>
+                <label>Giá trị giảm giá đơn hàng (VD: 100 = 100.000 VND) <span style={{ color: "red" }}>*</span></label>
                 <input
                   type="text"
                   className="form-control form-control-lg"
@@ -134,7 +134,7 @@ function ModalAdd(props) {
               </Form.Group>
             </Row>
             <Form.Group className="mb-3">
-              <Form.Label>Garage áp dụng khuyến mãi</Form.Label>
+              <Form.Label>Garage áp dụng khuyến mãi <span style={{ color: "red" }}>*</span></Form.Label>
               <Form.Select
                 className="form-control form-control-lg"
                 aria-label="Default select example"

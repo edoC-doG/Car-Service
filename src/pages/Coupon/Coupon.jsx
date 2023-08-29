@@ -21,7 +21,8 @@ import Notification from "../../components/Notification";
 import Button from "./../../components/filter/Button";
 import ModalAdd from "./ModalAdd";
 import ModalEdit from "./ModalEdit";
-
+import { getCouponByGarage } from "../../features/garage/garageSlice";
+import authService from "../../features/auth/authService";
 const headCells = [
   { id: "couponId", label: "ID" },
   { id: "couponCode", label: "Mã Khuyễn Mãi" },
@@ -40,10 +41,21 @@ const headCells = [
   },
 ];
 
+const headCellsManager = [
+  { id: "couponId", label: "ID" },
+  { id: "couponCode", label: "Mã Khuyễn Mãi" },
+  { id: "couponStartDate", label: "Ngày bắt đầu" },
+  { id: "couponEndDate", label: "Ngày kết thúc" },
+  { id: "numberOfTimesToUse", label: "Số lượng" },
+  { id: "couponStatus", label: "Trạng thái" },
+];
+
 const Coupon = () => {
   useEffect(() => {
     document.title = "Danh sách phiếu giảm giá";
   }, []);
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -81,14 +93,17 @@ const Coupon = () => {
   const updateSuccessAction = useSelector(
     (state) => state.coupon.isSuccessAction
   );
-const couponState = useSelector(  (state) => state.coupon);
+  const couponState = useSelector((state) => state.coupon);
   const { isSuccessAdd, message } = couponState;
   const getData = () => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getCoupons(data));
   };
   useEffect(() => {
-    getData();
+    if (role === "Admin") {
+      getData();
+    } else if (role === "Manager") dispatch(getCouponByGarage(user?.garageId));
+
     if (isSuccessAdd) {
       setNotify({
         isOpen: true,
@@ -97,13 +112,13 @@ const couponState = useSelector(  (state) => state.coupon);
       });
       handleClose();
     } else {
-      if (message.status === 400  ) {
+      if (message.status === 400) {
         setNotify({
           isOpen: true,
           message: message.title,
           type: "error",
         });
-      } else if (message.status === 404){
+      } else if (message.status === 404) {
         setNotify({
           isOpen: true,
           message: message.title,
@@ -112,7 +127,7 @@ const couponState = useSelector(  (state) => state.coupon);
       }
     }
     if (updateSuccessAction) {
-      dispatch(resetState())
+      dispatch(resetState());
       setConfirmDialog({
         ...confirmDialog,
         isOpen: false,
@@ -134,17 +149,20 @@ const couponState = useSelector(  (state) => state.coupon);
 
   const count = useSelector((state) => state.coupon.number);
 
+  const recordsCouponGarage = useSelector((state) => state.garage.coupon);
+  const countCouponGarage = useSelector((state) => state.garage.count);
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
-      recordsCoupon,
-      headCells,
+      role === "Admin" ? recordsCoupon : recordsCouponGarage,
+      role === "Admin" ? headCells : headCellsManager,
       filterFn,
       pages,
       page,
       rowsPerPage,
       setPage,
       setRowsPerPage,
-      count
+      role === "Admin" ? count : countCouponGarage
     );
   return (
     <>
@@ -173,17 +191,21 @@ const couponState = useSelector(  (state) => state.coupon);
                       }}
                     />
                   </div>
-                  <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                    <div className="d-flex justify-content-sm-end">
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => setShowModal(true)}
-                        startIcon={<AddIcon fontSize="small" />}
-                        text="Thêm mới khuyến mãi"
-                      />
+                  {role === "Admin" ? (
+                    <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
+                      <div className="d-flex justify-content-sm-end">
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => setShowModal(true)}
+                          startIcon={<AddIcon fontSize="small" />}
+                          text="Thêm mới khuyến mãi"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
 
@@ -218,33 +240,55 @@ const couponState = useSelector(  (state) => state.coupon);
                             <div>{item.numberOfTimesToUse}</div>
                           </div>
                         </TableCell>
-                        <TableCell sx={{ border: "none" }}>
-                          <div className="mb-1">
-                            <div>{item.garageName}</div>
-                          </div>
-                        </TableCell>
+
+                        {role === "Admin" ? (
+                          <TableCell sx={{ border: "none" }}>
+                            <div className="mb-1">
+                              <div>{item.garageName}</div>
+                            </div>
+                          </TableCell>
+                        ) : (
+                          <></>
+                        )}
+
                         {/* Block and unblock */}
-                        <TableCell sx={{ border: "none" }}>
-                          <Switches
-                            checked={
-                              item.couponStatus === "Active" ? true : false
-                            }
-                            onChange={(event) => {
-                              setConfirmDialog({
-                                isOpen: true,
-                                title:
-                                  "Bạn có chắc chắn muốn thay đổi trạng thái?",
-                                subTitle: "Bạn không thể hoàn tác thao tác này",
-                                onConfirm: () => {
-                                  handleSwitchToggle(
-                                    item.couponId,
-                                    event.target.checked ? 1 : 0
-                                  );
-                                },
-                              });
-                            }}
-                          />
-                        </TableCell>
+                        {role === "Admin" ? (
+                          <TableCell sx={{ border: "none" }}>
+                            <Switches
+                              checked={
+                                item.couponStatus === "Active" ? true : false
+                              }
+                              onChange={(event) => {
+                                setConfirmDialog({
+                                  isOpen: true,
+                                  title:
+                                    "Bạn có chắc chắn muốn thay đổi trạng thái?",
+                                  subTitle:
+                                    "Bạn không thể hoàn tác thao tác này",
+                                  onConfirm: () => {
+                                    handleSwitchToggle(
+                                      item.couponId,
+                                      event.target.checked ? 1 : 0
+                                    );
+                                  },
+                                });
+                              }}
+                            />
+                          </TableCell>
+                        ) : (
+                          <TableCell sx={{ border: "none" }}>
+                            <span
+                              className={
+                                item.couponStatus === "Activate"
+                                  ? "badge badge-soft-success fz-12"
+                                  : "badge badge-soft-danger fz-12"
+                              }
+                            >
+                              {item.couponStatus}
+                            </span>
+                          </TableCell>
+                        )}
+
                         {/* Action */}
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">

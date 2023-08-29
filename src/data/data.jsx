@@ -174,6 +174,29 @@ export const sidebarManager = [
 
 
   },
+  {
+    key: "pm",
+    icon: null,
+    label: "MÃ GIẢM GIÁ",
+    type: "group",
+    
+    children: [
+      {
+        key: "offer",
+        icon: <RiCouponLine />,
+        label: "Mã giảm giá",
+       
+        children: [
+          {
+            key: "coupon",
+            icon: <RxDotFilled />,
+            label: "Danh sách",
+            
+          },
+        ],
+      },
+    ],
+  },
 
   {
     key: "cp",

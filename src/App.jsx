@@ -36,7 +36,7 @@ import CarParking from "./pages/CarParking/CarParking";
 
 function App() {
   const currentUser = authService.getCurrentUser();
-  const role = currentUser?.roleName
+  const role = currentUser?.roleName;
   const authState = useSelector((state) => state.auth);
 
   const { user, isSuccess } = authState;
@@ -51,9 +51,10 @@ function App() {
             <Route path="login" element={<SignIn />} />
           </Route>
 
-          {(role === "Admin" || user?.roleName === "Admin" ) ? (
+          {role === "Admin" || user?.roleName === "Admin" ? (
             <Route path="admin" element={<MainLayout />}>
-              
+              <Route index element={<All />} />
+
               {/* CUSTOMER */}
               <Route path="list-customer" element={<Customers />} />
               <Route path="customer/view/:id" element={<CustomerDetail />} />
@@ -86,6 +87,7 @@ function App() {
               <Route path="coupon" element={<Coupon />} />
               {/* ORDER */}
               <Route path="all-orders" element={<All />} />
+
               <Route path="orders/details/:id" element={<OrderDetail />} />
 
               <Route path="pending-order" element={<Pending />} />
@@ -93,14 +95,15 @@ function App() {
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
             </Route>
-          ) : (role === "Manager" || user?.roleName === "Manager") ? (
+          ) : role === "Manager" || user?.roleName === "Manager" ? (
             <Route path="manager" element={<MainLayout />}>
+              <Route index element={<All />} />
               {/* <Route path="" element={<Dashboard />} /> */}
               <Route path="review-list-customer" element={<Review />} />
               {/* MECHANIC */}
               <Route path="list-mechanics" element={<Mechanics />} />
               <Route path="mechanic/detail/:id" element={<MechanicDetail />} />
-               {/* Staff */}
+              {/* Staff */}
               <Route path="list-staffs" element={<Staffs />} />
               <Route path="staff/detail/:id" element={<StaffDetail />} />
               {/* PRODUCT */}
@@ -109,6 +112,9 @@ function App() {
                 path="list-service/detail/:id"
                 element={<ServiceDetail />}
               />
+              {/* Coupon */}
+              <Route path="coupon" element={<Coupon />} />
+
               <Route path="list-service" element={<Services />} />
               {/* ORDER */}
               <Route path="all-orders" element={<All />} />
@@ -121,7 +127,6 @@ function App() {
               <Route path="cancel-order" element={<Cancel />} />
               {/* CAR PARKING  */}
               <Route path="car-parking" element={<CarParking />} />
-              
             </Route>
           ) : (
             <Route path="403" element={<Authorization />} />

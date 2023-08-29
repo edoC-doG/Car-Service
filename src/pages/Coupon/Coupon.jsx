@@ -32,13 +32,6 @@ const headCells = [
   { id: "garageNamee", label: "Garage" },
   { id: "couponStatus", label: "Trạng thái" },
 
-  {
-    id: "action",
-    label: "Thao tác",
-    disableSorting: true,
-
-    align: "center",
-  },
 ];
 
 const headCellsManager = [
@@ -279,7 +272,7 @@ const Coupon = () => {
                           <TableCell sx={{ border: "none" }}>
                             <span
                               className={
-                                item.couponStatus === "Activate"
+                                item.couponStatus === "Active"
                                   ? "badge badge-soft-success fz-12"
                                   : "badge badge-soft-danger fz-12"
                               }
@@ -290,36 +283,7 @@ const Coupon = () => {
                         )}
 
                         {/* Action */}
-                        <TableCell sx={{ border: "none" }}>
-                          <div className="d-flex justify-content-center gap-2">
-                            {/* <Tooltip title="edit" arrow>
-                              <Link
-                                onClick={()=> handleEdit(item)}
-                                className="btn btn-outline-info btn-sm square-btn"
-                              >
-                                <EditIcon fontSize="small" />
-                              </Link>
-                            </Tooltip> */}
-
-                            <Tooltip title="Xóa" arrow>
-                              <Link
-                                className="btn btn-outline-danger btn-sm delete square-btn"
-                                onClick={() => {
-                                  setConfirmDialog({
-                                    isOpen: true,
-                                    title:
-                                      "Bạn có chắc chắn muốn thay đổi trạng thái ?",
-                                    subTitle:
-                                      "Bạn không thể hoàn tác thao tác này",
-                                    onConfirm: () => {},
-                                  });
-                                }}
-                              >
-                                <DeleteIcon fontSize="small" />
-                              </Link>
-                            </Tooltip>
-                          </div>
-                        </TableCell>
+                      
                       </TableRow>
                     ))}
                   </TableBody>

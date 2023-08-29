@@ -21,6 +21,7 @@ const DateTime = ({
       <Box sx={{ width: 1 }}>
         <DatePicker
           className="w-full"
+          minDate={today}
           defaultValue={today}
           format="DD/MM/YYYY"
           value={value}

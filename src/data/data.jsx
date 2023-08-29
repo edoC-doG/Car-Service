@@ -182,18 +182,11 @@ export const sidebarManager = [
     
     children: [
       {
-        key: "offer",
+        key: "coupon",
         icon: <RiCouponLine />,
         label: "Mã giảm giá",
        
-        children: [
-          {
-            key: "coupon",
-            icon: <RxDotFilled />,
-            label: "Danh sách",
-            
-          },
-        ],
+        
       },
     ],
   },
@@ -404,23 +397,16 @@ export const sidebarDataAdmin = [
   {
     key: "pm",
     icon: null,
-    label: "QUẢN LÝ MÃ GIẢM GIÁ",
+    label: "MÃ GIẢM GIÁ",
     type: "group",
     
     children: [
       {
-        key: "offer",
+        key: "coupon",
         icon: <RiCouponLine />,
         label: "Mã giảm giá",
        
-        children: [
-          {
-            key: "coupon",
-            icon: <RxDotFilled />,
-            label: "Danh sách",
-            
-          },
-        ],
+        
       },
     ],
   },

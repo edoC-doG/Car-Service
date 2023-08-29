@@ -123,7 +123,7 @@ function ModalAdd(props) {
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
                 <Form.Label>
-                  Giá sản phẩm <span style={{ color: "red" }}>*</span>
+                  Giá sản phẩm (VD: 100 = 100.000 VND) <span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"

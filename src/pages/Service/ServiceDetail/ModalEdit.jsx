@@ -67,7 +67,7 @@ function ModalEdit(props) {
         <Form onSubmit={handleSubmit(onHandleSubmit)}>
           <Modal.Body>
             <Form.Group className="mb-3" hidden={true}>
-              <Form.Label>Mã dịch vụ</Form.Label>
+              <Form.Label>Mã dịch vụ <span style={{ color: "red" }}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
@@ -76,7 +76,7 @@ function ModalEdit(props) {
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Gía chi tiết dịch vụ</Form.Label>
+              <Form.Label>Gía chi tiết dịch vụ (VD: 100 = 100.000 VND) <span style={{ color: "red" }}>*</span></Form.Label>
               <Form.Control
                 type="text"
                 autoFocus
@@ -93,7 +93,7 @@ function ModalEdit(props) {
             </Form.Group>
             <Row className="mb-3">
               <Form.Group as={Col} md="6">
-                <Form.Label>Sô ghế nhỏ nhất của xe </Form.Label>
+                <Form.Label>Sô ghế nhỏ nhất của xe <span style={{ color: "red" }}>*</span></Form.Label>
                 {/* <Form.Control
                 type="text"
                 autoFocus
@@ -113,7 +113,7 @@ function ModalEdit(props) {
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} md="6">
-                <Form.Label>Số ghế lớn nhất của xe</Form.Label>
+                <Form.Label>Số ghế lớn nhất của xe <span style={{ color: "red" }}>*</span></Form.Label>
                 {/* <Form.Control
                 type="text"
                 autoFocus

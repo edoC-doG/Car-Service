@@ -55,7 +55,7 @@ function ModalEdit(props) {
       );
       setValue(
         "productName",
-        `${proEdit.productDetailDescription}`
+        `${proEdit.productName}`
       );
       setValue(
         "productPrice",

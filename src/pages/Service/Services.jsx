@@ -165,23 +165,10 @@ const Services = () => {
           <div className="col-md-12">
             <div className="card">
               <div className="px-3 py-4">
-                <div className="row  align-items-center">
-                  <div className="col-lg-4">
-                    <Search
-                      label="Tìm kiếm "
-                      onChange={() => {}}
-                      size="small"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon fontSize="small" />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
+               
+                  
                   {role === "Admin" ? (
-                    <div className="col-lg-8 mt-3 mt-lg-0 d-flex flex-wrap gap-3 justify-content-lg-end">
+                    <div className="d-flex justify-content-sm-end">
                       <div>
                         <Button
                           className="add-button"
@@ -195,7 +182,7 @@ const Services = () => {
                   ) : (
                     <></>
                   )}
-                </div>
+               
               </div>
               {/* Table */}
               <div className="table-responsive">

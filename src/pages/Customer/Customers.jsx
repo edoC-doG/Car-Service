@@ -119,34 +119,7 @@ const Customers = () => {
         />
         <div className="card">
           <div className="px-3 py-4">
-            <div className="row gy-2 align-items-center">
-              <div className="col-sm-8 col-md-6 col-lg-4">
-                <Search
-                  label="Tìm kiếm bằng tên và số điện thoại"
-                  onChange={() => {}}
-                  size="small"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-              <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                <div className="d-flex justify-content-sm-end">
-                  <Button
-                    variant="outlined"
-                    className="export-button"
-                    size="large"
-                    onClick={() => {}}
-                    startIcon={<FileDownloadIcon fontSize="small" />}
-                    text="Xuất dữ liệu"
-                  />
-                </div>
-              </div>
-            </div>
+  
           </div>
           <div className="table-responsive">
             <TblContainer>

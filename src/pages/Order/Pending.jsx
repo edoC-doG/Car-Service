@@ -126,7 +126,7 @@ const Pending = () => {
         </div> */}
         <div className="card-body">
           {/* Search and export */}
-          <div className="px-3 py-4 light-bg">
+          {/* <div className="px-3 py-4 light-bg">
             <div className="row g-2 flex-grow-1">
               <div className="col-sm-8 col-md-6 col-lg-4">
                 <Search
@@ -143,7 +143,7 @@ const Pending = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Table */}
           <div className="table-responsive">

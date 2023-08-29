@@ -162,20 +162,7 @@ const Mechanics = () => {
             <div className="card">
               <div className="px-3 py-4">
                 <div className="row justify-content-between align-items-center gy-2">
-                  <div className="col-sm-8 col-md-6 col-lg-4">
-                    <Search
-                      label="Tìm kiếm tên thợ"
-                      onChange={() => {}}
-                      size="small"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon fontSize="small" />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
+                  
                   {role === "Manager" ? (
                     <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
                       <div className="d-flex justify-content-sm-end">

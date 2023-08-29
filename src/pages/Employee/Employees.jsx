@@ -135,22 +135,9 @@ const Employees = () => {
             <div className="card-header flex-wrap gap-10">
               <h5 className="mb-0 d-flex gap-2 align-items-center font-semibold">
                 Bảng danh sách
-                <span className="badge badge-soft-dark radius-50 fz-12">3</span>
+                <span className="badge badge-soft-dark radius-50 fz-12">{count}</span>
               </h5>
-              <div>
-                <Search
-                  label="Tìm kiếm"
-                  onChange={() => {}}
-                  size="small"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
+
 
               <div className="d-flex justify-content-end">
                 <Button

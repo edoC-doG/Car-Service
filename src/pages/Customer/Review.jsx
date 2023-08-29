@@ -146,7 +146,7 @@ const Review = () => {
                 </span>
               </h5>
             </div>
-            <div className="col-sm-8 col-md-6 col-lg-4">
+            {/* <div className="col-sm-8 col-md-6 col-lg-4">
               <Search
                 label="Tìm kiếm"
                 onChange={() => {}}
@@ -158,7 +158,7 @@ const Review = () => {
                   ),
                 }}
               />
-            </div>
+            </div> */}
           </div>
           {/* <form>
             <div className="row gy-3 align-items-end">

@@ -68,20 +68,7 @@ const EmployeeByGarage = () => {
                     </span>
                   </h5>
                 </div>
-                <div className="col-sm-8 col-md-6 col-lg-4">
-                  <Search
-                    label="Tìm kiếm nhân viên"
-                    onChange={() => {}}
-                    size="small"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon fontSize="small" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </div>
+                
               </div>
             </div>
             {/* Table */}

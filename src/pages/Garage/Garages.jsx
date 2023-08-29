@@ -11,11 +11,15 @@ import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useDispatch, useSelector } from "react-redux";
-import { getGarages, resetState,updateGarageStatus } from "../../features/garage/garageSlice";
+import {
+  getGarages,
+  resetState,
+  updateGarageStatus,
+} from "../../features/garage/garageSlice";
 import Switches from "../../components/table/Switches";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import Notification from "../../components/Notification";
-import ModalAdd from './ModalAdd';
+import ModalAdd from "./ModalAdd";
 
 const headCells = [
   { id: "garageId", label: "ID" },
@@ -50,11 +54,11 @@ const Onwers = () => {
       return items;
     },
   });
-   //Add
-   const [showModal, setShowModal] = useState(false);
-   const handleClose = () => {
-     setShowModal(false);
-   };
+  //Add
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+  };
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
     title: "",
@@ -66,8 +70,9 @@ const Onwers = () => {
     type: "",
   });
 
-
-  const updateSuccessAction = useSelector((state) => state.garage.isSuccessAction);
+  const updateSuccessAction = useSelector(
+    (state) => state.garage.isSuccessAction
+  );
   const gara = useSelector((state) => state.garage);
   const { isSuccessAdd, message } = gara;
   useEffect(() => {
@@ -114,9 +119,9 @@ const Onwers = () => {
   const handleSwitchToggle = (garageId, garageStatus) => {
     // Dispatch the updateCustomerStatus action
     // console.log("id and status", garageId, garageStatus);
-    dispatch(updateGarageStatus({garageId, garageStatus }));
+    dispatch(updateGarageStatus({ garageId, garageStatus }));
   };
-  
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsGarage,
@@ -142,33 +147,17 @@ const Onwers = () => {
           <div className="col-md-12">
             <div className="card">
               <div className="px-3 py-4">
-                <div className="row justify-content-between align-items-center gy-2">
-                  <div className="col-sm-8 col-md-6 col-lg-4">
-                    <Search
-                      label="Tìm kiếm bằng tên garage"
-                      onChange={() => {}}
-                      size="small"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon fontSize="small" />
-                          </InputAdornment>
-                        ),
-                      }}
+                
+                  <div className="d-flex justify-content-sm-end">
+                    <Button
+                      className="add-button"
+                      size="large"
+                      onClick={() => setShowModal(true)}
+                      startIcon={<AddIcon fontSize="small" />}
+                      text="Thêm mới garage"
                     />
                   </div>
-                  <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                    <div className="d-flex justify-content-sm-end">
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => setShowModal(true)}
-                        startIcon={<AddIcon fontSize="small" />}
-                        text="Thêm mới garage"
-                      />
-                    </div>
-                  </div>
-                </div>
+                
               </div>
 
               {/* Table Onwer */}

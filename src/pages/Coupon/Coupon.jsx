@@ -31,7 +31,6 @@ const headCells = [
   { id: "numberOfTimesToUse", label: "Số lượng" },
   { id: "garageNamee", label: "Garage" },
   { id: "couponStatus", label: "Trạng thái" },
-
 ];
 
 const headCellsManager = [
@@ -169,37 +168,21 @@ const Coupon = () => {
           <div className="col-md-12">
             <div className="card">
               <div className="px-3 py-4">
-                <div className="row justify-content-between align-items-center gy-2">
-                  <div className="col-sm-8 col-md-6 col-lg-4">
-                    <Search
-                      label="Tìm kiếm"
-                      onChange={() => {}}
-                      size="small"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon fontSize="small" />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
-                  {role === "Admin" ? (
-                    <div className="col-sm-4 col-md-6 col-lg-8 mb-2 mb-sm-0">
-                      <div className="d-flex justify-content-sm-end">
-                        <Button
-                          className="add-button"
-                          size="large"
-                          onClick={() => setShowModal(true)}
-                          startIcon={<AddIcon fontSize="small" />}
-                          text="Thêm mới khuyến mãi"
-                        />
-                      </div>
+                {role === "Admin" ? (
+                  <div className="d-flex justify-content-sm-end">
+                    <div className="d-flex justify-content-sm-end">
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => setShowModal(true)}
+                        startIcon={<AddIcon fontSize="small" />}
+                        text="Thêm mới khuyến mãi"
+                      />
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
 
               {/* Table */}
@@ -283,7 +266,6 @@ const Coupon = () => {
                         )}
 
                         {/* Action */}
-                      
                       </TableRow>
                     ))}
                   </TableBody>

@@ -150,13 +150,13 @@ const Order = () => {
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <Link to={``} className="text-body text-capitalize">
-                            <strong>{item.userBookingDto.fullName}</strong>
+                            <strong>{item.userBookingDto?.fullName}</strong>
                           </Link>
                           <Link
-                            to={`tel:${item.userBookingDto.userPhone}`}
+                            to={`tel:${item.userBookingDto?.userPhone}`}
                             className="d-block title-color"
                           >
-                            {item.userBookingDto.userPhone}
+                            {item.userBookingDto?.userPhone}
                           </Link>
                         </TableCell>
 

@@ -38,7 +38,7 @@ function ModalAdd(props) {
       garageId,
       numberOfTimesToUse: data.numberOfTimesToUse,
     };
-    // dispatch(addCoupon(coupon));
+    dispatch(addCoupon(coupon));
     console.log(coupon);
   };
   const {

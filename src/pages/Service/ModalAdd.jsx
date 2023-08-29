@@ -9,8 +9,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "./../../firebase";
 import {
   addServices,
-  getServices,
-  resetState,
 } from "./../../features/service/serviceSlide";
 import { useForm } from "react-hook-form";
 function ModalAdd(props) {
@@ -53,11 +51,12 @@ function ModalAdd(props) {
       serviceDuration: "",
     },
   });
+  const  isSuccessAdd =  useSelector((state) => state.service.isSuccessAdd)
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (isSuccessAdd) {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSuccessAdd, reset]);
   return (
     <div
       className="modal show"

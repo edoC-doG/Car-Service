@@ -96,7 +96,7 @@ const Review = () => {
       });
       setNotify({
         isOpen: true,
-        message: "Update Successfully",
+        message: "Thành Công",
         type: "success",
       });
     }

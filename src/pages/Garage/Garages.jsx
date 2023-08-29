@@ -103,7 +103,7 @@ const Onwers = () => {
       });
       setNotify({
         isOpen: true,
-        message: "Update Successfully",
+        message: "Thành công",
         type: "success",
       });
     }

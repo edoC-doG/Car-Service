@@ -54,13 +54,21 @@ function ModalAdd(props) {
       });
     });
   };
+  const  isSuccessAdd =  useSelector((state) => state.product.isSuccessAdd)
   useEffect(() => {
     dispatch(getServicesAdd())
-    if (isSubmitSuccessful) {
+    if (isSuccessAdd) {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
-  const category = useSelector((state) => state.category.categories);
+  }, [isSuccessAdd, reset]);
+  const category = [{
+    categoryId:1,
+    categoryName:"Sản phẩm vệ sinh",
+  },
+  {
+    categoryId:2,
+    categoryName:"Sản phẩm nâng cấp",
+  }]
   const service = useSelector((state) => state.service.servicesAdd);
   return (
     <div
@@ -92,7 +100,7 @@ function ModalAdd(props) {
                 name="productName"
                 {...register("productName", {
                   required: true,
-                  maxLength: 30,
+                  maxLength: 50,
                   minLength: 4,
                 })}
               />
@@ -103,7 +111,7 @@ function ModalAdd(props) {
               )}
               {errors.productName?.type === "maxLength" && (
                 <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Tên sản phẩm tối đa 30 ký tự !!!
+                  Tên sản phẩm tối đa 50 ký tự !!!
                 </p>
               )}
               {errors.productName?.type === "minLength" && (

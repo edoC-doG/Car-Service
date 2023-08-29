@@ -103,11 +103,11 @@ function ModalAddDetail(props) {
                   aria-label="Default select example"
                   onChange={(e) => setMin(e.target.value)}
                 >
-                  <option defaultValue={2} value="2">
-                    2
+                  <option defaultValue={4} value="4">
+                    4
                   </option>
-                  <option value="4">4</option>
                   <option value="5">5</option>
+                  <option value="6">6</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} md="6">
@@ -126,8 +126,8 @@ function ModalAddDetail(props) {
                   <option defaultValue={5} value="5">
                     5
                   </option>
+                  <option value="6">6</option>
                   <option value="7">7</option>
-                  <option value="12">12</option>
                 </Form.Select>
               </Form.Group>
             </Row>

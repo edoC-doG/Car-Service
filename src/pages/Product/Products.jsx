@@ -110,7 +110,7 @@ const Products = () => {
       if (message?.status === 400) {
         setNotify({
           isOpen: true,
-          message: message.title,
+          message: "Thất bại",
           type: "error",
         })
       }else if (message.status === 404){
@@ -129,7 +129,7 @@ const Products = () => {
       });
       setNotify({
         isOpen: true,
-        message: "Update Successfully",
+        message: "Thành công",
         type: "success",
       });
     }

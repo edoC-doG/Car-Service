@@ -106,7 +106,7 @@ const Services = () => {
       if (message?.status === 400) {
         setNotify({
           isOpen: true,
-          message: message.title,
+          message: "Thất bại",
           type: "error",
         });
       }else if (message.status === 404){
@@ -125,7 +125,7 @@ const Services = () => {
       });
       setNotify({
         isOpen: true,
-        message: "Update Successfully",
+        message: "Thành công",
         type: "success",
       });
     }

@@ -29,7 +29,6 @@ const headCells = [
 
   { id: "productName", label: "Tên sản phẩm" },
   { id: "productPrice", label: "Giá tiền" },
-  { id: "productQuantity", label: "Số lượng" },
   { id: "productStatus", label: "Trạng thái" },
   {
     id: "action",

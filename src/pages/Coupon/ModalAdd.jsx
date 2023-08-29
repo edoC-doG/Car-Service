@@ -59,7 +59,7 @@ function ModalAdd(props) {
     if (isSuccessAdd) {
       reset();
     }
-  },[]);
+  },[isSuccessAdd]);
   const garage = useSelector((state) => state.garage.garageAdd);
   return (
     <div

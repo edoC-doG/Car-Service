@@ -117,8 +117,6 @@ function ModalAdd(props) {
                 <option value={1}>1 Sao</option>
                 <option value={2}>2 Sao</option>
                 <option value={3}>3 Sao</option>
-                <option value={4}>4 Sao</option>
-                <option value={5}>5 Sao</option>
               </Form.Select>
             </Form.Group>
             <Row className="mb-3">

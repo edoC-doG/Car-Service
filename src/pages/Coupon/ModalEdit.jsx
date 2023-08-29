@@ -119,7 +119,7 @@ function ModalEdit(props) {
                 onChange={(e) => setValue(e.target.value)}
               /> */}
               <div className="mb-3">
-                <label>Giá trị giảm giá đơn hàng</label>
+                <label>Giá trị giảm giá đơn hàng (VD: 100 = 100.000 VND) <span style={{ color: "red" }}>*</span></label>
                 <input
                   type="text"
                   className="form-control form-control-lg"
@@ -173,7 +173,7 @@ function ModalEdit(props) {
                 onChange={(e) => setMin(e.target.value)}
               /> */}
               <div className="mb-1">
-                <label>Áp dụng giá trị đơn hàng tối thiểu</label>
+                <label>Áp dụng giá trị đơn hàng tối thiểu (VD: 100 = 100.000 VND)</label>
                 <input
                   type="text"
                   className="form-control form-control-lg"
@@ -193,7 +193,7 @@ function ModalEdit(props) {
                 onChange={(e) => setMax(e.target.value)}
               /> */}
                  <div className="mb-1">
-                <label>Áp dụng giá trị đơn hàng caothiểu</label>
+                <label>Áp dụng giá trị đơn hàng caothiểu (VD: 100 = 100.000 VND)</label>
                 <input
                   type="text"
                   className="form-control form-control-lg"

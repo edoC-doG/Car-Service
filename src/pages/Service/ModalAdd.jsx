@@ -33,6 +33,7 @@ function ModalAdd(props) {
           serviceDetailDescription: data.serviceDetailDescription,
           serviceDuration: data.serviceDuration,
         };
+        console.log(ser)
         dispatch(addServices(ser));
       });
     });

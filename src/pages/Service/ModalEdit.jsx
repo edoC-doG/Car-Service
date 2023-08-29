@@ -136,8 +136,8 @@ function ModalEdit(props) {
                   onChange={(e) => setUnit(e.target.value)}
                 >
                   <option>Chọn số lần</option>
-                  <option value={1}>Lần</option>
-                  <option value={2}>Gói</option>
+                  <option value={0}>Lần</option>
+                  <option value={1}>Gói</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} md="6">

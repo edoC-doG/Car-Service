@@ -25,9 +25,9 @@ import ModalEdit from "./ModalEdit";
 import authService from "../../features/auth/authService";
 const headCells = [
   { id: "productId", label: "ID" },
-  { id: "productImage", label: "Hình ảnh sản phẩm", align: "left" },
-
+  { id: "productImage", label: "Hình ảnh"  },
   { id: "productName", label: "Tên sản phẩm" },
+  { id: "productWarrantyPeriod", label: "Sô ngày BH",align: "center", },
   { id: "productPrice", label: "Giá tiền" },
   { id: "productStatus", label: "Trạng thái" },
   {
@@ -38,13 +38,13 @@ const headCells = [
   },
 ];
 const headCellsManager = [
-  { id: "productId", label: "ID" },
-  { id: "productImage", label: "Product Image", align: "left" },
+  { id: "productId", label: "ID " },
+  { id: "productImage", label: "Hình ảnh", align: "left" },
 
-  { id: "productName", label: "Name" },
-  { id: "productPrice", label: "Price" },
+  { id: "productName", label: "Tên Sản Phẩm" },
+  { id: "productPrice", label: "Gía" },
   // { id: "productQuantity", label: "Quantity" },
-  { id: "productStatus", label: "Status" },
+  { id: "productStatus", label: "Trạng thái" },
 ];
 
 const Products = () => {
@@ -192,7 +192,8 @@ const Products = () => {
                   <TblHead />
                   <TableBody>
                     {recordsAfterPagingAndSorting().map((item) => (
-                      <TableRow hover key={item.productId}>
+                    <TableRow hover key={item.productId}  sx={{whiteSpace: 'normal',
+                    wordBreak: 'break-word',}}>
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.productId}</div>
                         </TableCell>
@@ -207,6 +208,9 @@ const Products = () => {
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.productName}</div>
+                        </TableCell>
+                        <TableCell sx={{ border: "none", textAlign:"center", paddingRight:"50px" }}>
+                          <div>{item.productWarrantyPeriod}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.productPrice}</div>

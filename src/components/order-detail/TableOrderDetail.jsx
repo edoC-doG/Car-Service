@@ -85,7 +85,7 @@ const TableOrderDetail = ({
       dispatch(getDetailBooking(id));
       setNotify({
         isOpen: true,
-        message: "Add Successfully",
+        message: "Thành Công",
         type: "success",
       });
     }
@@ -119,11 +119,11 @@ const TableOrderDetail = ({
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <div className="media align-items-center gap-3">
-                      <img
+                      {/* <img
                         className="avatar avatar-60 rounded"
                         src={item.serviceBookingDetailDto?.serviceImage}
                         alt="Description"
-                      />
+                      /> */}
                       <div>
                         <h6 className="title-color font-semibold">
                           {item.serviceBookingDetailDto?.serviceName}
@@ -136,9 +136,12 @@ const TableOrderDetail = ({
                     {item.serviceCost}
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    {item.productCost}
+                    {item.serviceDuration}
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
+                    {item.serviceWarrantyPeriod}
+                  </TableCell>
+                  <TableCell sx={{ border: "none", }}>
                     <span
                       className={
                         item.bookingDetailStatus === "NotStart"
@@ -216,7 +219,22 @@ const TableOrderDetail = ({
                               >
                                 Sản phẩm đính kèm
                               </TableCell>
-
+                              <TableCell
+                                sx={{
+                                  fontSize: "12px",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Số ngày BH
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  fontSize: "12px",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Giá sản phẩm
+                              </TableCell>
                               {bookingStatus === "Canceled" ? (
                                 <></>
                               ) : item.bookingDetailStatus === "NotStart" ? (
@@ -224,6 +242,7 @@ const TableOrderDetail = ({
                                   sx={{
                                     fontSize: "12px",
                                     fontWeight: 600,
+                                    alignItems: "center",
                                   }}
                                 >
                                   Thao Tác
@@ -241,12 +260,22 @@ const TableOrderDetail = ({
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productName}
                               </TableCell>
-
+                              <TableCell sx={{ border: "none" }}>
+                                {
+                                  item.productBookingDetailDto
+                                    ?.productWarrantyPeriod
+                                }
+                              </TableCell>
+                              <TableCell sx={{ border: "none" }}>
+                                {item.productBookingDetailDto?.productCost}
+                              </TableCell>
                               {item.productBookingDetailDto !== null ? (
                                 bookingStatus === "Canceled" ? (
                                   <></>
                                 ) : item.bookingDetailStatus === "NotStart" ? (
-                                  <TableCell sx={{ border: "none" }}>
+                                  <TableCell
+                                    sx={{ border: "none", paddingLeft: "28px" }}
+                                  >
                                     <Tooltip title="Sửa sản phẩm" arrow>
                                       <Link
                                         onClick={() => {
@@ -303,7 +332,7 @@ const TableOrderDetail = ({
               <strong>{booking.totalPrice}</strong>
             </dd>
             <dt className="col-5 ">
-              <strong>Giá đơn hàng cuối cùng</strong>
+              <strong>Giá đơn hàng khách phải trả</strong>
             </dt>
             <dd className="col-6 title-color">
               <strong>{booking.finalPrice}</strong>

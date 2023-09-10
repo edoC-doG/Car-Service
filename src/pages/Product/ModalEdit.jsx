@@ -46,7 +46,14 @@ function ModalEdit(props) {
     setValue,
     formState: { errors },
   } = useForm();
-  const category = useSelector((state) => state.category.categories);
+  const category = [{
+    categoryId:1,
+    categoryName:"Sản phẩm vệ sinh",
+  },
+  {
+    categoryId:2,
+    categoryName:"Sản phẩm nâng cấp",
+  }]
   useEffect(() => {
     if (show) {
       setValue(

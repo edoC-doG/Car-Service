@@ -23,12 +23,13 @@ const headCells = [
 
   {
     id: "serviceBookingDetailDto",
-    label: "Chi tiết dịch vụ",
+    label: "Chi tiết ",
     disableSorting: true,
   },
-  { id: "serviceCost", label: "Giá dịch vụ" },
-  { id: "productCost", label: "Giá sản phẩm" },
-  { id: "bookingDetailStatus", label: "Trạng thái" },
+  { id: "serviceCost", label: "Giá DV" },
+  { id: "serviceDuration", label: "Thời gian" },
+  { id: "serviceWarrantyPeriod", label: "Số ngày BH", align: "center" },
+  { id: "bookingDetailStatus", label: "TT", align:"center"},
   {
     id: "action",
     label: "Thao tác",
@@ -152,8 +153,7 @@ const OrderDetail = () => {
                 <div className="text-sm-right">
                   <div className="d-flex flex-wrap gap-3">
                     <div>
-                      {statusPaid === "Paid"
-                     ? (
+                      {statusPaid === "Paid" ? (
                         <Button
                           disabled={true}
                           className="add-button"

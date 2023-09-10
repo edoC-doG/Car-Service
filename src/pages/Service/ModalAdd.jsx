@@ -16,6 +16,7 @@ function ModalAdd(props) {
   const { show, handleClose } = props;
   const [serviceGroup, setGroup] = useState("");
   const [serviceUnit, setUnit] = useState("");
+  const [servicePeriod, setPeriod] = useState("");
   const onHandleSubmit = (data) => {
     const imgSet = data.serviceImage;
     const img = imgSet[0];
@@ -30,6 +31,7 @@ function ModalAdd(props) {
           serviceImage: downloadURL,
           serviceGroup,
           serviceUnit,
+          servicePeriod,
           serviceDetailDescription: data.serviceDetailDescription,
           serviceDuration: data.serviceDuration,
         };
@@ -42,7 +44,7 @@ function ModalAdd(props) {
     register,
     reset,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       serviceName: "",
@@ -113,10 +115,23 @@ function ModalAdd(props) {
                 aria-label="Default select example"
                 onChange={(e) => setGroup(e.target.value)}
               >
-                <option>Chọn gói dịch vụ</option>
                 <option value={1}>Gói dịch vụ vệ sinh + Bảo dưỡng</option>
                 <option value={2}>Gói dịch vụ ngoại thất</option>
                 <option value={3}>Gói dịch vụ nội thất</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Loại dịch vụ</Form.Label>
+              <Form.Select
+                className="form-control"
+                aria-label="Default select example"
+                onChange={(e) => setPeriod(e.target.value)}
+              >
+                <option value={0}>Không bảo hành</option>
+                <option value={7}>7 Ngày</option>
+                <option value={15}>15 Ngày</option>
+                <option value={30}>1 Tháng</option>
+                <option value={90}>3 Tháng</option>
               </Form.Select>
             </Form.Group>
             <Row className="mb-3">
@@ -127,7 +142,6 @@ function ModalAdd(props) {
                   aria-label="Default select example"
                   onChange={(e) => setUnit(e.target.value)}
                 >
-                  <option>Chọn số lần</option>
                   <option value={0}>Gói</option>
                   <option value={1}>Lần</option>
                 </Form.Select>

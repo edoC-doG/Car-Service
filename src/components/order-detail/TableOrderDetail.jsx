@@ -85,7 +85,7 @@ const TableOrderDetail = ({
       dispatch(getDetailBooking(id));
       setNotify({
         isOpen: true,
-        message: "Add Successfully",
+        message: "Thành Công",
         type: "success",
       });
     }
@@ -100,7 +100,11 @@ const TableOrderDetail = ({
           <TableBody key={key}>
             {detail.map((item) => (
               <>
-                <TableRow hover key={item.bookingDetailId}>
+                <TableRow
+                  hover
+                  key={item.bookingDetailId}
+                  className={` ${item.isNew === false ? "line-through" : ""}`}
+                >
                   <TableCell sx={{ border: "none" }}>
                     <IconButton
                       aria-label="expand row"
@@ -119,11 +123,11 @@ const TableOrderDetail = ({
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <div className="media align-items-center gap-3">
-                      <img
+                      {/* <img
                         className="avatar avatar-60 rounded"
                         src={item.serviceBookingDetailDto?.serviceImage}
                         alt="Description"
-                      />
+                      /> */}
                       <div>
                         <h6 className="title-color font-semibold">
                           {item.serviceBookingDetailDto?.serviceName}
@@ -133,20 +137,29 @@ const TableOrderDetail = ({
                   </TableCell>
 
                   <TableCell sx={{ border: "none" }}>
-                    {item.serviceCost}
+                    {item.serviceBookingDetailDto?.serviceCost}
+                  </TableCell>
+                  <TableCell sx={{ border: "none", textAlign:"center" , paddingRight:"30px" }}>
+                    {item.serviceBookingDetailDto?.serviceDuration}
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    {item.productCost}
+                    {item.serviceBookingDetailDto?.serviceWarranty === ""
+                      ? "Không bảo hành"
+                      : `${item.serviceBookingDetailDto?.serviceWarranty}`}
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <span
-                      className={
+                      className={`${
                         item.bookingDetailStatus === "NotStart"
                           ? "badge badge-soft-warning fz-12"
                           : item.bookingDetailStatus === "Done"
                           ? "badge badge-soft-success fz-12"
                           : "badge badge-soft-danger fz-12"
-                      }
+                      } ${
+                        item.isNew === false
+                          ? "line-through decoration-black"
+                          : ""
+                      }`}
                     >
                       {item.bookingDetailStatus === "NotStart"
                         ? "Chưa bắt đầu"
@@ -176,6 +189,7 @@ const TableOrderDetail = ({
                   </TableCell>
                 </TableRow>
                 {/*  PRODUCT */}
+
                 {item.bookingDetailId === bid ? (
                   <TableRow key={item.productCost}>
                     <TableCell
@@ -216,7 +230,22 @@ const TableOrderDetail = ({
                               >
                                 Sản phẩm đính kèm
                               </TableCell>
-
+                              <TableCell
+                                sx={{
+                                  fontSize: "12px",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Bảo hành
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  fontSize: "12px",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                Giá sản phẩm
+                              </TableCell>
                               {bookingStatus === "Canceled" ? (
                                 <></>
                               ) : item.bookingDetailStatus === "NotStart" ? (
@@ -224,6 +253,7 @@ const TableOrderDetail = ({
                                   sx={{
                                     fontSize: "12px",
                                     fontWeight: 600,
+                                    alignItems: "center",
                                   }}
                                 >
                                   Thao Tác
@@ -234,19 +264,33 @@ const TableOrderDetail = ({
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            <TableRow hover>
+                            <TableRow
+                              hover
+                              className={` ${
+                                item.isNew === false ? "line-through" : ""
+                              }`}
+                            >
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productId}
                               </TableCell>
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productName}
                               </TableCell>
-
+                              <TableCell sx={{ border: "none" }}>
+                                {item.productBookingDetailDto?.productWarranty === ""
+                                  ? "Không bảo hành"
+                                  : `${item.productBookingDetailDto?.productWarranty}`}
+                              </TableCell>
+                              <TableCell sx={{ border: "none" }}>
+                                {item.productBookingDetailDto?.productCost}
+                              </TableCell>
                               {item.productBookingDetailDto !== null ? (
                                 bookingStatus === "Canceled" ? (
                                   <></>
                                 ) : item.bookingDetailStatus === "NotStart" ? (
-                                  <TableCell sx={{ border: "none" }}>
+                                  <TableCell
+                                    sx={{ border: "none", paddingLeft: "28px" }}
+                                  >
                                     <Tooltip title="Sửa sản phẩm" arrow>
                                       <Link
                                         onClick={() => {
@@ -303,7 +347,7 @@ const TableOrderDetail = ({
               <strong>{booking.totalPrice}</strong>
             </dd>
             <dt className="col-5 ">
-              <strong>Giá đơn hàng cuối cùng</strong>
+              <strong>Giá đơn hàng khách phải trả</strong>
             </dt>
             <dd className="col-6 title-color">
               <strong>{booking.finalPrice}</strong>

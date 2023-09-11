@@ -14,7 +14,11 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useDispatch, useSelector } from "react-redux";
-import { getServices, resetState, updateServiceStatus } from "../../features/service/serviceSlide";
+import {
+  getServices,
+  resetState,
+  updateServiceStatus,
+} from "../../features/service/serviceSlide";
 import ModalAdd from "./ModalAdd";
 import Notification from "../../components/Notification";
 import ModalEdit from "./ModalEdit";
@@ -26,8 +30,8 @@ const headCells = [
   { id: "serviceName", label: "Tên dịch vụ" },
   { id: "serviceGroup", label: "Loại dịch vụ" },
 
-  { id: "serviceUnit", label: "Số lần" },
-
+  { id: "serviceUnit", label: "Số lần",align: "center", },
+  { id: "serviceWarrantyPeriod", label: "Số tháng BH" ,align: "center",},
   { id: "serviceStatus", label: "Trạng thái" },
 
   {
@@ -40,7 +44,6 @@ const headCells = [
 ];
 
 const Services = () => {
-
   useEffect(() => {
     document.title = "Danh sách dịch vụ";
   }, []);
@@ -76,8 +79,7 @@ const Services = () => {
     setShowEdit(true);
   };
   const serState = useSelector((state) => state.service);
-  const {  isSuccessAdd, message, } =
-    serState;
+  const { isSuccessAdd, message } = serState;
   console.log(message);
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -88,7 +90,7 @@ const Services = () => {
   //Call API List
   const updateSuccessAction = useSelector(
     (state) => state.service.isSuccessAction
-  )
+  );
   const getData = () => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
     dispatch(getServices(data));
@@ -109,7 +111,7 @@ const Services = () => {
           message: "Thất bại",
           type: "error",
         });
-      }else if (message.status === 404){
+      } else if (message.status === 404) {
         setNotify({
           isOpen: true,
           message: message.title,
@@ -129,20 +131,18 @@ const Services = () => {
         type: "success",
       });
     }
-
   }, [page, rowsPerPage, isSuccessAdd, message, updateSuccessAction]);
 
   const handleSwitchToggle = (serviceId) => {
     dispatch(updateServiceStatus(serviceId));
   };
 
-
   const recordsService = useSelector((state) => state.service.services);
   const count = useSelector((state) => state.service.number);
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTableV2(
       recordsService,
-       headCells,
+      headCells,
       filterFn,
       pages,
       page,
@@ -165,24 +165,21 @@ const Services = () => {
           <div className="col-md-12">
             <div className="card">
               <div className="px-3 py-4">
-               
-                  
-                  {role === "Admin" ? (
-                    <div className="d-flex justify-content-sm-end">
-                      <div>
-                        <Button
-                          className="add-button"
-                          size="large"
-                          onClick={() => setShowModal(true)}
-                          startIcon={<AddIcon fontSize="small" />}
-                          text="Thêm mới dịch vụ"
-                        />
-                      </div>
+                {role === "Admin" ? (
+                  <div className="d-flex justify-content-sm-end">
+                    <div>
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => setShowModal(true)}
+                        startIcon={<AddIcon fontSize="small" />}
+                        text="Thêm mới dịch vụ"
+                      />
                     </div>
-                  ) : (
-                    <></>
-                  )}
-               
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
               {/* Table */}
               <div className="table-responsive">
@@ -225,10 +222,12 @@ const Services = () => {
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.serviceGroup}</div>
                         </TableCell>
-                        <TableCell sx={{ border: "none" }}>
+                        <TableCell sx={{ border: "none", textAlign: "center",paddingRight :"35px" }}>
                           <div>{item.serviceUnit}</div>
                         </TableCell>
-
+                        <TableCell sx={{ border: "none",textAlign: "center", paddingRight:"40px" }}>
+                          <div>{item.serviceWarrantyPeriod}</div>
+                        </TableCell>
                         {role === "Admin" ? (
                           <TableCell sx={{ border: "none" }}>
                             <Switches
@@ -240,7 +239,8 @@ const Services = () => {
                                   isOpen: true,
                                   title:
                                     "Bạn có chắc chắn muốn thay đổi trạng thái?",
-                                  subTitle: "Bạn không thể hoàn tác thao tác này",
+                                  subTitle:
+                                    "Bạn không thể hoàn tác thao tác này",
                                   onConfirm: () => {
                                     handleSwitchToggle(item.serviceId);
                                   },

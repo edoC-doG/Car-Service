@@ -30,7 +30,7 @@ function ModalMoney(props) {
         <Form>
           <Modal.Body>
             <Form.Group className="mb-3"></Form.Group>
-            <labe> Bạn có muốn cập nhật trạng thái đã thanh toán cho đơn hàng  # {money} ?</labe>
+            <label> Bạn có muốn cập nhật trạng thái đã thanh toán cho đơn hàng  # {money} ?</label>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

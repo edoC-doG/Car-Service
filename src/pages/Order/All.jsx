@@ -25,12 +25,13 @@ import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "bookingCode", label: "Mã ĐH" },
-  { id: "bookingTime", label: "Thời gian bắt đầu" },
+  { id: "bookingTime", label: "bắt đầu" },
+  { id: "bookingTime", label: "kết thúc" },
   { id: "userBookingDto", label: "Thông tin KH" },
 
   { id: "garageName", label: "Địa chỉ" },
   { id: "total", label: "Giá trị ĐH", align: "right" },
-  { id: "bookingStatus", label: "Trạng thái ĐH",  align: "center" },
+  { id: "bookingStatus", label: "Trạng thái",  align: "center" },
   {
     id: "action",
     label: "Thao tác",
@@ -210,6 +211,9 @@ const All = () => {
                           {item.bookingCode}
                         </Link>
                       )}
+                    </TableCell>
+                    <TableCell sx={{ border: "none" }}>
+                      <div>{item.bookingTime}</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <div>{item.bookingTime}</div>

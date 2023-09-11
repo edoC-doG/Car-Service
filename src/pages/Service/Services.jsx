@@ -31,7 +31,7 @@ const headCells = [
   { id: "serviceGroup", label: "Loại dịch vụ" },
 
   { id: "serviceUnit", label: "Số lần",align: "center", },
-  { id: "serviceWarrantyPeriod", label: "Số ngày BH" ,align: "center",},
+  { id: "serviceWarrantyPeriod", label: "Số tháng BH" ,align: "center",},
   { id: "serviceStatus", label: "Trạng thái" },
 
   {
@@ -225,7 +225,7 @@ const Services = () => {
                         <TableCell sx={{ border: "none", textAlign: "center",paddingRight :"35px" }}>
                           <div>{item.serviceUnit}</div>
                         </TableCell>
-                        <TableCell sx={{ border: "none",textAlign: "center", paddingRight:"30px" }}>
+                        <TableCell sx={{ border: "none",textAlign: "center", paddingRight:"40px" }}>
                           <div>{item.serviceWarrantyPeriod}</div>
                         </TableCell>
                         {role === "Admin" ? (

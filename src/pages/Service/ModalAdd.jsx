@@ -7,9 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-bootstrap";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "./../../firebase";
-import {
-  addServices,
-} from "./../../features/service/serviceSlide";
+import { addServices } from "./../../features/service/serviceSlide";
 import { useForm } from "react-hook-form";
 function ModalAdd(props) {
   const dispatch = useDispatch();
@@ -31,11 +29,11 @@ function ModalAdd(props) {
           serviceImage: downloadURL,
           serviceGroup,
           serviceUnit,
-          servicePeriod,
+          serviceWarrantyPeriod: servicePeriod,
           serviceDetailDescription: data.serviceDetailDescription,
           serviceDuration: data.serviceDuration,
         };
-        console.log(ser)
+        console.log(ser);
         dispatch(addServices(ser));
       });
     });
@@ -54,7 +52,7 @@ function ModalAdd(props) {
       serviceDuration: "",
     },
   });
-  const  isSuccessAdd =  useSelector((state) => state.service.isSuccessAdd)
+  const isSuccessAdd = useSelector((state) => state.service.isSuccessAdd);
   useEffect(() => {
     if (isSuccessAdd) {
       reset();
@@ -121,17 +119,17 @@ function ModalAdd(props) {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Loại dịch vụ</Form.Label>
+              <Form.Label>Thời gian bảo hành</Form.Label>
               <Form.Select
                 className="form-control"
                 aria-label="Default select example"
                 onChange={(e) => setPeriod(e.target.value)}
               >
                 <option value={0}>Không bảo hành</option>
-                <option value={7}>7 Ngày</option>
-                <option value={15}>15 Ngày</option>
-                <option value={30}>1 Tháng</option>
-                <option value={90}>3 Tháng</option>
+                <option value={1}>1 Tháng</option>
+                <option value={3}>3 Tháng</option>
+                <option value={6}>6 Tháng</option>
+                <option value={12}>1 Năm</option>
               </Form.Select>
             </Form.Group>
             <Row className="mb-3">
@@ -168,9 +166,8 @@ function ModalAdd(props) {
               <Form.Label>Mô tả dịch vụ</Form.Label>
               <Form.Control
                 type="text"
+                as="textarea"
                 autoFocus
-                // value={serviceDetailDescription}
-                // onChange={(e) => setDes(e.target.value)}
                 {...register("serviceDetailDescription", {
                   required: true,
                 })}

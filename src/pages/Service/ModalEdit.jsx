@@ -12,12 +12,9 @@ import { useForm } from "react-hook-form";
 function ModalEdit(props) {
   const dispatch = useDispatch();
   const { show, handleClose, serEdit } = props;
-  const [serviceGroup, setGroup] = useState("");
   const [serviceUnit, setUnit] = useState("");
   const [serviceId, setId] = useState("");
-  const [serviceName, setName] = useState("");
-  const [serviceDetailDescription, setDes] = useState("");
-  const [serviceDuration, setDuration] = useState("");
+  const [serviceWarrantyPeriod, setPeriod] = useState("");
   const onHandleSubmit = (data) => {
     const imgSet = data.serviceImage;
     const img = imgSet[0];
@@ -31,7 +28,7 @@ function ModalEdit(props) {
         const ser = {
           serviceName: data.serviceName,
           serviceImage: downloadURL,
-          serviceGroup,
+          serviceWarrantyPeriod,
           serviceUnit,
           serviceDetailDescription: data.serviceDetailDescription,
           serviceDuration: data.serviceDuration,
@@ -115,16 +112,17 @@ function ModalEdit(props) {
               )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Loại dịch vụ</Form.Label>
+              <Form.Label>Thời gian bảo hành</Form.Label>
               <Form.Select
                 className="form-control"
                 aria-label="Default select example"
-                onChange={(e) => setGroup(e.target.value)}
+                onChange={(e) => setPeriod(e.target.value)}
               >
-                <option>Chọn gói dịch vụ</option>
-                <option value={1}>Gói dịch vụ vệ sinh + Bảo dưỡng</option>
-                <option value={2}>Gói dịch vụ ngoại thất</option>
-                <option value={3}>Gói dịch vụ nội thất</option>
+                <option value={0}>Không bảo hành</option>
+                <option value={1}>1 Tháng</option>
+                <option value={3}>3 Tháng</option>
+                <option value={6}>6 Tháng</option>
+                <option value={12}>1 Năm</option>
               </Form.Select>
             </Form.Group>
             <Row className="mb-3">
@@ -161,6 +159,7 @@ function ModalEdit(props) {
               <Form.Control
                 type="text"
                 autoFocus
+                as="textarea"
                 {...register("serviceDetailDescription", {
                   required: true,
                 })}

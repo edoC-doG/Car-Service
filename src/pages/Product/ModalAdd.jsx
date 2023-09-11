@@ -41,10 +41,10 @@ function ModalAdd(props) {
         const ser = {
           productName: data.productName,
           productImage: downloadURL,
-          productQuantity: data.productQuantity,
           productDetailDescription: data.productDetailDescription,
           categoryId,
           serviceId,
+          productWarrantyPeriod: servicePeriod,
           productPrice: data.productPrice,
         };
         dispatch(addProducts(ser));
@@ -142,40 +142,21 @@ function ModalAdd(props) {
                 </Form.Select>
               </Form.Group>
               <Form.Group as={Col} md="6">
-                <Form.Label>
-                  Số lượng sản phẩm <span style={{ color: "red" }}>*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  autoFocus
-                  name="productQuantity"
-                  {...register("productQuantity", {
-                    required: true,
-                  })}
-                />
-                {errors.productQuantity?.type === "required" && (
-                  <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                    Không được để trống số lượng !!!
-                  </p>
-                )}
-              </Form.Group>
-            </Row>
-            <Row className="mb-3">
-              <Form.Group as={Col} md="6">
-                <Form.Label>Loại dịch vụ</Form.Label>
+                <Form.Label>Thời gian bảo hành <span style={{ color: "red" }}>*</span></Form.Label>
                 <Form.Select
                   className="form-control"
                   aria-label="Default select example"
                   onChange={(e) => setPeriod(e.target.value)}
                 >
                   <option value={0}>Không bảo hành</option>
-                  <option value={7}>7 Ngày</option>
-                  <option value={15}>15 Ngày</option>
-                  <option value={30}>1 Tháng</option>
-                  <option value={90}>3 Tháng</option>
+                  <option value={1}>1 Tháng</option>
+                  <option value={3}>3 Tháng</option>
+                  <option value={6}>6 Tháng</option>
+                  <option value={12}>1 Năm</option>
                 </Form.Select>
               </Form.Group>
-            <Form.Group as={Col} md="6">
+            </Row>
+            <Form.Group className="mb-3">
                 <Form.Label>
                   Giá sản phẩm 
                   <span style={{ color: "red" }}>*</span>
@@ -195,7 +176,6 @@ function ModalAdd(props) {
                   </p>
                 )}
               </Form.Group>
-            </Row>
             <Form.Group className="mb-3">
               <Form.Label>
                 Dịch vụ sản phẩm cung ứng{" "}
@@ -222,6 +202,7 @@ function ModalAdd(props) {
                 Mô tả sản phẩm <span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Control
+                as="textarea"
                 type="text"
                 autoFocus
                 {...register("productDetailDescription", { required: true })}

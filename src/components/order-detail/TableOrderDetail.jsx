@@ -100,7 +100,11 @@ const TableOrderDetail = ({
           <TableBody key={key}>
             {detail.map((item) => (
               <>
-                <TableRow hover key={item.bookingDetailId}>
+                <TableRow
+                  hover
+                  key={item.bookingDetailId}
+                  className={` ${item.isNew === false ? "line-through" : ""}`}
+                >
                   <TableCell sx={{ border: "none" }}>
                     <IconButton
                       aria-label="expand row"
@@ -133,23 +137,29 @@ const TableOrderDetail = ({
                   </TableCell>
 
                   <TableCell sx={{ border: "none" }}>
-                    {item.serviceCost}
+                    {item.serviceBookingDetailDto?.serviceCost}
+                  </TableCell>
+                  <TableCell sx={{ border: "none", textAlign:"center" , paddingRight:"30px" }}>
+                    {item.serviceBookingDetailDto?.serviceDuration}
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    {item.serviceDuration}
+                    {item.serviceBookingDetailDto?.serviceWarranty === ""
+                      ? "Không bảo hành"
+                      : `${item.serviceBookingDetailDto?.serviceWarranty}`}
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
-                    {item.serviceWarrantyPeriod}
-                  </TableCell>
-                  <TableCell sx={{ border: "none", }}>
                     <span
-                      className={
+                      className={`${
                         item.bookingDetailStatus === "NotStart"
                           ? "badge badge-soft-warning fz-12"
                           : item.bookingDetailStatus === "Done"
                           ? "badge badge-soft-success fz-12"
                           : "badge badge-soft-danger fz-12"
-                      }
+                      } ${
+                        item.isNew === false
+                          ? "line-through decoration-black"
+                          : ""
+                      }`}
                     >
                       {item.bookingDetailStatus === "NotStart"
                         ? "Chưa bắt đầu"
@@ -179,6 +189,7 @@ const TableOrderDetail = ({
                   </TableCell>
                 </TableRow>
                 {/*  PRODUCT */}
+
                 {item.bookingDetailId === bid ? (
                   <TableRow key={item.productCost}>
                     <TableCell
@@ -225,7 +236,7 @@ const TableOrderDetail = ({
                                   fontWeight: 600,
                                 }}
                               >
-                                Số ngày BH
+                                Bảo hành
                               </TableCell>
                               <TableCell
                                 sx={{
@@ -253,7 +264,12 @@ const TableOrderDetail = ({
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            <TableRow hover>
+                            <TableRow
+                              hover
+                              className={` ${
+                                item.isNew === false ? "line-through" : ""
+                              }`}
+                            >
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productId}
                               </TableCell>
@@ -261,10 +277,9 @@ const TableOrderDetail = ({
                                 {item.productBookingDetailDto?.productName}
                               </TableCell>
                               <TableCell sx={{ border: "none" }}>
-                                {
-                                  item.productBookingDetailDto
-                                    ?.productWarrantyPeriod
-                                }
+                                {item.productBookingDetailDto?.productWarranty === ""
+                                  ? "Không bảo hành"
+                                  : `${item.productBookingDetailDto?.productWarranty}`}
                               </TableCell>
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productCost}

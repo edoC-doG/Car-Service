@@ -27,7 +27,7 @@ const headCells = [
   { id: "productId", label: "ID" },
   { id: "productImage", label: "Hình ảnh"  },
   { id: "productName", label: "Tên sản phẩm" },
-  { id: "productWarrantyPeriod", label: "Sô ngày BH",align: "center", },
+  { id: "productWarrantyPeriod", label: "Sô tháng BH",align: "center", },
   { id: "productPrice", label: "Giá tiền" },
   { id: "productStatus", label: "Trạng thái" },
   {

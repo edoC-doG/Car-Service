@@ -18,12 +18,13 @@ import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "bookingCode", label: "Mã ĐH" },
-  { id: "bookingTime", label: "Thời gian bắt đầu" },
+  { id: "bookingTime", label: "bắt đầu" },
+  { id: "duration", label: "Thực hiện" },
   { id: "userBookingDto", label: "Thông tin KH" },
 
   { id: "garageName", label: "Garage" },
   { id: "total", label: "Giá trị ĐH", align: "right" },
-  { id: "bookingStatus", label: "Trạng thái ĐH", align: "center" },
+  { id: "bookingStatus", label: "Trạng thái", align: "center" },
   {
     id: "action",
     label: "Thao tác",
@@ -154,6 +155,9 @@ const Confirm = () => {
                     <TableCell sx={{ border: "none" }}>
                       <div>{item.bookingTime}</div>
                     </TableCell>
+                    <TableCell sx={{ border: "none", textAlign:"center", paddingRight:"40px" }}>
+                      <div>{item.duration} giờ</div>
+                    </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <Link to={``} className="text-body text-capitalize">
                         <strong>{item.userBookingDto?.fullName}</strong>
@@ -186,7 +190,7 @@ const Confirm = () => {
                       </span>
                     </TableCell>
 
-                    <TableCell sx={{ border: "none", textAlign: "center" }}>
+                    <TableCell sx={{ border: "none", textAlign: "center",paddingRight:"35px" }}>
                       <span className="badge badge-soft-success fz-12">
                       {" "}
                               {item.bookingStatus === "Pending"

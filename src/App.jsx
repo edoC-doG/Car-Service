@@ -33,6 +33,7 @@ import StaffDetail from "./pages/Staff/StaffDetail";
 import Staffs from "./pages/Staff/Staffs";
 import authService from "./features/auth/authService";
 import CarParking from "./pages/CarParking/CarParking";
+import Warranty from "./pages/Order/Warranty";
 
 function App() {
   const currentUser = authService.getCurrentUser();
@@ -89,11 +90,11 @@ function App() {
               <Route path="all-orders" element={<All />} />
 
               <Route path="orders/details/:id" element={<OrderDetail />} />
-
               <Route path="pending-order" element={<Pending />} />
               <Route path="checkin-order" element={<Checkin />} />
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
+              <Route path="warranty-order" element={<Warranty/>} />
             </Route>
           ) : role === "Manager" || user?.roleName === "Manager" ? (
             <Route path="manager" element={<MainLayout />}>

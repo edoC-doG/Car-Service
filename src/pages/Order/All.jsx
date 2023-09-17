@@ -26,11 +26,11 @@ import authService from "../../features/auth/authService";
 const headCells = [
   { id: "bookingCode", label: "Mã ĐH" },
   { id: "bookingTime", label: "bắt đầu" },
-  { id: "bookingTime", label: "kết thúc" },
+  { id: "duration", label: "Thực hiện" },
   { id: "userBookingDto", label: "Thông tin KH" },
 
   { id: "garageName", label: "Địa chỉ" },
-  { id: "total", label: "Giá trị ĐH", align: "right" },
+  { id: "total", label: "Giá trị ĐH", align: "left" },
   { id: "bookingStatus", label: "Trạng thái",  align: "center" },
   {
     id: "action",
@@ -215,8 +215,8 @@ const All = () => {
                     <TableCell sx={{ border: "none" }}>
                       <div>{item.bookingTime}</div>
                     </TableCell>
-                    <TableCell sx={{ border: "none" }}>
-                      <div>{item.bookingTime}</div>
+                    <TableCell sx={{ border: "none", textAlign:"center", paddingRight:"40px" }}>
+                      <div>{item.duration} giờ</div>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <strong className="text-body text-capitalize">
@@ -235,7 +235,7 @@ const All = () => {
                       <div>{item.garageBookingDto?.garageName}</div>
                     </TableCell>
 
-                    <TableCell sx={{ border: "none", textAlign: "right" }}>
+                    <TableCell sx={{ border: "none", textAlign: "left", }}>
                       <div>{item.totalPrice}</div>
                       <span
                         className={
@@ -256,6 +256,7 @@ const All = () => {
                         border: "none",
                         textDecoration: "capitalize",
                         textAlign: "center",
+                        paddingRight:"35px"
                       }}
                     >
                       <span

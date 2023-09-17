@@ -12,6 +12,7 @@ import "../../styles/button.scss";
 import { TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineSharp";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookingsStatus } from "../../features/book/bookingSlide";
 import useTableV2 from "../../components/table/useTableV2";
@@ -25,7 +26,7 @@ const headCells = [
 
   { id: "garageName", label: "Garage" },
   { id: "total", label: "Giá trị ĐH", align: "left" },
-  { id: "bookingStatus", label: "Trạng thái", align: "center " },
+  { id: "bookingStatus", label: "Trạng thái", align: "center" },
   {
     id: "action",
     label: "Thao tác",
@@ -35,9 +36,9 @@ const headCells = [
   },
 ];
 
-const Pending = () => {
+const Warranty = () => {
   useEffect(() => {
-    document.title = "Danh sách đơn hàng sắp tới";
+    document.title = "Danh sách đơn hàng đã hủy";
   }, []);
   const user = authService.getCurrentUser();
   const role = user?.roleName;
@@ -62,7 +63,7 @@ const Pending = () => {
     const data = {
       pageIndex: page + 1,
       pageSize: rowsPerPage,
-      bookingStatus: 0,
+      bookingStatus: 5,
     };
     if (role === "Admin") dispatch(getBookingsStatus(data));
     else if (role === "Manager")
@@ -89,7 +90,7 @@ const Pending = () => {
         icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
         size={20}
         alt="all"
-        title="Đơn hàng sắp tới"
+        title="Đơn hàng có dịch vụ được bảo hành"
         number={count}
       />
 
@@ -127,24 +128,7 @@ const Pending = () => {
         </div> */}
         <div className="card-body">
           {/* Search and export */}
-          {/* <div className="px-3 py-4 light-bg">
-            <div className="row g-2 flex-grow-1">
-              <div className="col-sm-8 col-md-6 col-lg-4">
-                <Search
-                  label="Tìm kiếm bằng ID đơn hàng"
-                  onChange={() => {}}
-                  size="small"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-            </div>
-          </div> */}
+          
 
           {/* Table */}
           <div className="table-responsive">
@@ -201,28 +185,29 @@ const Pending = () => {
                             : "badge text-success fz-12 px-0"
                         }
                       >
-                         {" "}
-                              {item.paymentStatus === "Unpaid"
-                                ? "Chưa thanh toán"
-                                : "Đã thanh toán"}{" "}
+                        {" "}
+                        {item.paymentStatus === "Unpaid"
+                          ? "Chưa thanh toán"
+                          : "Đã thanh toán"}{" "}
                       </span>
                     </TableCell>
 
-                    <TableCell sx={{ border: "none", textAlign: "center" ,paddingRight:"45px"}}>
-                      <span className="badge badge-soft-danger fz-12">
-                      {" "}
-                              {item.bookingStatus === "Pending"
-                                ? "Sắp tới"
-                                : item.bookingStatus === "CheckIn"
-                                ? "Đang làm"
-                                : item.bookingStatus === "Completed"
-                                ? "Hoàn thành"
-                                : item.bookingStatus === "CheckOut"
-                                ? "Đã xong"
-                                :item.bookingStatus === "Processing"
-                                ? "Đang tiến hành"
-                                : "Hủy Bỏ"
-                              }{" "}
+                    <TableCell sx={{ border: "none", textAlign: "center", paddingRight:"35px" }}>
+                      <span className="badge badge-info fz-12">
+                        {" "}
+                        {item.bookingStatus === "Pending"
+                          ? "Sắp tới"
+                          : item.bookingStatus === "CheckIn"
+                          ? "Đang làm"
+                          : item.bookingStatus === "Completed"
+                          ? "Hoàn thành"
+                          : item.bookingStatus === "CheckOut"
+                          ? "Đã xong"
+                          : item.bookingStatus === "Processing"
+                          ? "Đang tiến hành"
+                          : item.bookingStatus === "Cancel"
+                          ? "Hủy Bỏ"
+                          :"Bảo Hành"}{" "}
                       </span>
                     </TableCell>
 
@@ -259,4 +244,4 @@ const Pending = () => {
   );
 };
 
-export default Pending;
+export default Warranty;

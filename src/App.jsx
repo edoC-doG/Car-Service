@@ -95,6 +95,9 @@ function App() {
               <Route path="checkin-order" element={<Checkin />} />
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
+              <Route path="warranty-order" element={<Warranty/>} />
+              <Route path="calendar" element={<Calendars />} />
+
             </Route>
           ) : role === "Manager" || user?.roleName === "Manager" ? (
             <Route path="manager" element={<MainLayout />}>
@@ -126,6 +129,7 @@ function App() {
 
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
+              <Route path="warranty-order" element={<Warranty/>} />
               {/* CAR PARKING  */}
               <Route path="car-parking" element={<CarParking />} />
               {/* CALENDAR */}

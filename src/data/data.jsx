@@ -8,7 +8,7 @@ import { RxDotFilled } from "react-icons/rx";
 import { MdFilterList } from "react-icons/md";
 import SensorOccupiedIcon from '@mui/icons-material/SensorOccupied';
 import NoCrashIcon from '@mui/icons-material/NoCrash';
-
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 export const userProfileData = [
   {
@@ -79,6 +79,21 @@ export const sidebarManager = [
         ],
       },
     ],
+  },
+  {
+    key: "cp",
+    icon: null,
+    label: "LỊCH ĐẶT DỊCH VỤ",
+    type: "group",
+  
+    children: [
+      {
+        key: "calendar",
+        icon: <EventAvailableIcon />,
+        label: "Calendar",
+      },
+
+    ]
   },
   {
     key: "um",
@@ -258,6 +273,21 @@ export const sidebarDataAdmin = [
         ],
       },
     ],
+  },
+  {
+    key: "cp",
+    icon: null,
+    label: "LỊCH ĐẶT DỊCH VỤ",
+    type: "group",
+  
+    children: [
+      {
+        key: "calendar",
+        icon: <EventAvailableIcon />,
+        label: "Calendar",
+      },
+
+    ]
   },
   // USER MANAGEMENT
   {

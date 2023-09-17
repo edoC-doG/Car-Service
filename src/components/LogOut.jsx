@@ -5,7 +5,7 @@ import authService from "../features/auth/authService.js";
 import { useDispatch } from "react-redux";
 import { resetStateAuth } from "../features/auth/authSlide";
 import { resetState } from "../features/customer/customerSilde";
-
+import { resetStateBooking } from "../features/book/bookingSlide";
 const LogOut = ({
   icon,
   bgColor,
@@ -25,6 +25,7 @@ const LogOut = ({
     user !== null ? authService.logout() : navigate("/login");
     dispatch(resetStateAuth());
     dispatch(resetState());
+    dispatch(resetStateBooking());
     navigate("/");
 
     setIsClicked(initialState);

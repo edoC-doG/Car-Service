@@ -110,6 +110,15 @@ const updateProductForBookingDetailBookingDetail = async (data) => {
   return response.data;
 }
 
+const getCalendar = async (id) => {
+  const response = await instance.get(
+    `${base_url}booking/get-booking-by-garage-calendar`,
+    { params: { garageId: id } },
+    instance
+  );
+  // console.log(response.data);
+  return response.data;
+  }
 const bookingService = {
   getBookingDetail,
   getBookings,
@@ -121,7 +130,8 @@ const bookingService = {
   updatePaid,
   updateStt,
   updateDetail, 
-  updateProductForBookingDetailBookingDetail
+  updateProductForBookingDetailBookingDetail, 
+  getCalendar
 };
 
 export default bookingService;

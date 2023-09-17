@@ -33,6 +33,7 @@ import StaffDetail from "./pages/Staff/StaffDetail";
 import Staffs from "./pages/Staff/Staffs";
 import authService from "./features/auth/authService";
 import CarParking from "./pages/CarParking/CarParking";
+import Calendars from "./pages/Calendar/Calendar";
 
 function App() {
   const currentUser = authService.getCurrentUser();
@@ -94,6 +95,8 @@ function App() {
               <Route path="checkin-order" element={<Checkin />} />
               <Route path="confirm-order" element={<Confirm />} />
               <Route path="cancel-order" element={<Cancel />} />
+              <Route path="calendar" element={<Calendars />} />
+
             </Route>
           ) : role === "Manager" || user?.roleName === "Manager" ? (
             <Route path="manager" element={<MainLayout />}>
@@ -127,6 +130,9 @@ function App() {
               <Route path="cancel-order" element={<Cancel />} />
               {/* CAR PARKING  */}
               <Route path="car-parking" element={<CarParking />} />
+              {/* CALENDAR */}
+              <Route path="calendar" element={<Calendars />} />
+
             </Route>
           ) : (
             <Route path="403" element={<Authorization />} />

@@ -13,7 +13,7 @@ import {
 import {
   updateProductForBookingDetailBookingDetail,
   getDetailBooking,
-  resetState,
+  resetStateBooking,
 } from "../../features/book/bookingSlide";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -70,6 +70,7 @@ const TableOrderDetail = ({
     setOpenPopup(true);
   };
 
+  console.log(recordForEdit);
   const updateSuccessAction = useSelector(
     (state) => state.mechanic.isSuccessAdd
   );
@@ -81,7 +82,7 @@ const TableOrderDetail = ({
     resetForm();
     setOpenPopup(false);
     if (updateSuccessAction) {
-      dispatch(resetState());
+      dispatch(resetStateBooking());
       dispatch(getDetailBooking(id));
       setNotify({
         isOpen: true,
@@ -311,7 +312,7 @@ const TableOrderDetail = ({
           </dl>
         </div>
       </div>
-      <Popup
+      <Popup 
         title="Sửa sản phẩm"
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}

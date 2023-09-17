@@ -1,0 +1,34 @@
+.fc {
+  .fc-daygrid-day-number {
+    font-weight: 600;
+  }
+
+  .fc-timegrid-slot-label-cushion,
+  .fc-timegrid-axis-cushion {
+    font-weight: 550;
+  }
+
+  .fc-list-day-text {
+    font-weight: 550;
+  }
+  .fc-popover{
+    position: absolute;
+    // z-index: 11;
+  } 
+}
+
+.fc-theme-standard .fc-list .fc-list-day-side-text {
+  font-weight: 700;
+}
+
+.fc-timegrid-event .fc-event-main{
+  margin: 5px;
+  font-size: 14px;
+  font-weight: 550;
+
+}
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start{
+  padding: 3px 5px;
+  border-radius: .5rem;
+  cursor: pointer;
+}

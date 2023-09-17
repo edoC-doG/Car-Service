@@ -19,7 +19,7 @@ import {
   getBookings,
   getCountBookingStatus,
   getBookingsByGarage,
-  resetState,
+  resetStateBooking,
 } from "../../features/book/bookingSlide";
 import authService from "../../features/auth/authService";
 

@@ -114,6 +114,18 @@ export const updateDetail = createAsyncThunk(
   }
 );
 
+export const getCalendarBooking = createAsyncThunk(
+  "booking/booking-calendar",
+  async (id, thunkAPI) => {
+    try {
+      // console.log("id: ", id);
+      return await bookingService.getCalendar(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const updateProductForBookingDetailBookingDetail = createAsyncThunk(
   "booking/update-product-booking",
   async (data, thunkAPI) => {
@@ -125,7 +137,7 @@ export const updateProductForBookingDetailBookingDetail = createAsyncThunk(
   }
 );
 
-export const resetState = createAction("Reset_all_booking");
+export const resetStateBooking = createAction("Reset_all_booking");
 
 const initialState = {
   bookings: [],
@@ -335,8 +347,24 @@ export const bookingSlice = createSlice({
         state.message = action.payload.response.data;
         state.isLoading = false;
       })
-
-      .addCase(resetState, () => initialState);
+      .addCase(getCalendarBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCalendarBooking.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = false;
+        state.bookings = action.payload;
+        state.message = "success";
+      })
+      .addCase(getCalendarBooking.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(resetStateBooking, () => initialState);
 
   },
 });

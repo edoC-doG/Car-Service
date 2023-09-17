@@ -20,12 +20,13 @@ import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "bookingCode", label: "Mã ĐH" },
-  { id: "bookingTime", label: "Thời gian bắt đầu" },
+  { id: "bookingTime", label: "bắt đầu" },
+  { id: "duration", label: "Thực hiện" },
   { id: "userBookingDto", label: "Thông tin KH" },
 
   { id: "garageName", label: "Garage" },
-  { id: "total", label: "Giá trị ĐH", align: "right" },
-  { id: "bookingStatus", label: "Trạng thái ĐH", align: "center" },
+  { id: "total", label: "Giá trị ĐH", align: "left" },
+  { id: "bookingStatus", label: "Trạng thái", align: "center" },
   {
     id: "action",
     label: "Thao tác",
@@ -156,6 +157,9 @@ const Cancel = () => {
                     <TableCell sx={{ border: "none" }}>
                       <div>{item.bookingTime}</div>
                     </TableCell>
+                    <TableCell sx={{ border: "none", textAlign:"center", paddingRight:"40px" }}>
+                      <div>{item.duration} giờ</div>
+                    </TableCell>
                     <TableCell sx={{ border: "none" }}>
                       <Link to={``} className="text-body text-capitalize">
                         <strong>{item.userBookingDto?.fullName}</strong>
@@ -172,7 +176,7 @@ const Cancel = () => {
                       <div>{item.garageBookingDto?.garageName}</div>
                     </TableCell>
 
-                    <TableCell sx={{ border: "none", textAlign: "right" }}>
+                    <TableCell sx={{ border: "none", textAlign: "left" }}>
                       <div>{item.totalPrice}</div>
                       <span
                         className={
@@ -188,7 +192,7 @@ const Cancel = () => {
                       </span>
                     </TableCell>
 
-                    <TableCell sx={{ border: "none", textAlign: "center" }}>
+                    <TableCell sx={{ border: "none", textAlign: "center",paddingRight:"40px" }}>
                       <span className="badge badge-danger fz-12">
                         {" "}
                         {item.bookingStatus === "Pending"

@@ -76,6 +76,11 @@ export const sidebarManager = [
             label: "Hủy bỏ",
             
           },
+          {
+            key: "warranty-order",
+            icon: <RxDotFilled  color="violet"/>,
+            label: "Bảo hành",
+          },
         ],
       },
     ],
@@ -269,6 +274,11 @@ export const sidebarDataAdmin = [
             icon: <RxDotFilled  color="red"/>,
             label: "Hủy bỏ",
             
+          },
+          {
+            key: "warranty-order",
+            icon: <RxDotFilled  color="blue"/>,
+            label: "Bảo hành",
           },
         ],
       },

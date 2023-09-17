@@ -12,12 +12,9 @@ import { useForm } from "react-hook-form";
 function ModalEdit(props) {
   const dispatch = useDispatch();
   const { show, handleClose, proEdit } = props;
-  const [productName, setName] = useState("");
   const [productId, setServiceId] = useState("");
-  const [productQuantity, setQuantity] = useState("");
-  const [productDes, setDes] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [productPrice, setPrice] = useState("");
+  const [servicePeriod, setPeriod] = useState("");
   const onHandleSubmit = (data) => {
     const imgSet = data.productImage;
     const img = imgSet[0];
@@ -29,10 +26,10 @@ function ModalEdit(props) {
         const ser = {
           productName: data.productName,
           productImage: downloadURL,
-          productQuantity: data.productQuantity,
           productDetailDescription: data.productDetailDescription,
           categoryId,
           productId ,
+          productWarrantyPeriod: servicePeriod,
           productPrice: data.productPrice,
         };
         dispatch(editProducts(ser));
@@ -46,7 +43,6 @@ function ModalEdit(props) {
     setValue,
     formState: { errors },
   } = useForm();
-  const category = useSelector((state) => state.category.categories);
   useEffect(() => {
     if (show) {
       setValue(
@@ -60,10 +56,6 @@ function ModalEdit(props) {
       setValue(
         "productPrice",
         `${proEdit.productPrice}`
-      );
-      setValue(
-        "productQuantity",
-        `${proEdit.productQuantity}`
       );
       setServiceId(proEdit.productId);
       // setName(proEdit.productName);
@@ -128,52 +120,27 @@ function ModalEdit(props) {
               )}
               </Form.Group>
               <Form.Group as={Col} md="6">
-                <Form.Label>Số lượng sản phẩm <span style={{ color: "red" }}>*</span></Form.Label>
-                <Form.Control
-                  type="text"
-                  autoFocus
-                  // value={productQuantity}
-                  // onChange={(e) => setQuantity(e.target.value)}
-                  name="productQuantity"
-                  {...register("productQuantity", { required: true })}
-                />
-                {errors.productQuantity?.type === "required" && (
-                <p role="alert" style={{ color: "red", marginTop: "5px" }}>
-                  Không được để số lượng sản phẩm !!!
-                </p>
-              )}
+                <Form.Label>Thời gian bảo hành <span style={{ color: "red" }}>*</span></Form.Label>
+                <Form.Select
+                  className="form-control"
+                  aria-label="Default select example"
+                  onChange={(e) => setPeriod(e.target.value)}
+                >
+                  <option value={0}>Không bảo hành</option>
+                  <option value={1}>1 Tháng</option>
+                  <option value={3}>3 Tháng</option>
+                  <option value={6}>6 Tháng</option>
+                  <option value={12}>1 Năm</option>
+                </Form.Select>
               </Form.Group>
             </Row>
-            <Form.Group className="mb-3">
-              <Form.Label>Loại sản phẩm <span style={{ color: "red" }}>*</span></Form.Label>
-              {/* <Form.Control
-                type="text"
-                autoFocus
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              /> */}
-              <Form.Select
-                className="form-control"
-                aria-label="Default select example"
-                onChange={(e) => setCategoryId(e.target.value)}
-              >
-                {category
-                  ? category.map((cate) => {
-                      return (
-                        <option key={cate.categoryId} value={cate.categoryId}>
-                          {cate.categoryName}
-                        </option>
-                      );
-                    })
-                  : null}
-              </Form.Select>
-            </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>
                 Mô tả sản phẩm <span style={{ color: "red" }}>*</span>
               </Form.Label>
               <Form.Control
                 type="text"
+                as="textarea"
                 autoFocus
                 name="productDetailDescription"
                 {...register("productDetailDescription", { required: true })}

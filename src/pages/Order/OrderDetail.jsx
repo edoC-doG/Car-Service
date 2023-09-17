@@ -23,12 +23,13 @@ const headCells = [
 
   {
     id: "serviceBookingDetailDto",
-    label: "Chi tiết dịch vụ",
+    label: "Chi tiết ",
     disableSorting: true,
   },
-  { id: "serviceCost", label: "Giá dịch vụ" },
-  { id: "productCost", label: "Giá sản phẩm" },
-  { id: "bookingDetailStatus", label: "Trạng thái" },
+  { id: "serviceCost", label: "Giá DV" },
+  { id: "serviceDuration", label: "Thời gian" },
+  { id: "serviceWarrantyPeriod", label: "Bảo Hành", align: "center" },
+  { id: "bookingDetailStatus", label: "TT", align: "center" },
   {
     id: "action",
     label: "Thao tác",
@@ -152,8 +153,7 @@ const OrderDetail = () => {
                 <div className="text-sm-right">
                   <div className="d-flex flex-wrap gap-3">
                     <div>
-                      {statusPaid === "Paid"
-                     ? (
+                      {statusPaid === "Paid" ? (
                         <Button
                           disabled={true}
                           className="add-button"
@@ -260,6 +260,31 @@ const OrderDetail = () => {
                           : "Đã thanh toán"}{" "}
                       </span>
                     </div>
+                    {booking.waitForAccept === true ? (
+                      <div className="payment-status d-flex justify-content-sm-end gap-3">
+                        <span className="title-color">
+                          Trạng thái chỉnh sửa:{" "}
+                        </span>
+                        <span
+                          className={
+                            booking.waitForAccept === true
+                              ? "text-warning font-weight-bold "
+                              : booking.waitForAccept === false
+                              ? "text-success font-weight-bold"
+                              : ""
+                          }
+                        >
+                          {" "}
+                          {booking.waitForAccept === true
+                            ? "Chưa đồng ý"
+                            : booking.waitForAccept === false
+                            ? "Đồng ý"
+                            : "Không chỉnh sửa"}{" "}
+                        </span>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
               </div>

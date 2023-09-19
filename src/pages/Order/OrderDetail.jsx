@@ -162,7 +162,7 @@ const OrderDetail = () => {
                           startIcon={<PaidIcon fontSize="small" />}
                           text="Thanh toán"
                         />
-                      ) : statusPaid === "Paid" ? (
+                      ) : booking.bookingStatus === "Canceled" ? (
                         <Button
                           disabled={true}
                           className="add-button"
@@ -225,7 +225,9 @@ const OrderDetail = () => {
                             ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                             : booking.bookingStatus === "CheckOut"
                             ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : "badge badge-danger fz-12"
+                            :  booking.bookingStatus === "Canceled"
+                            ? "badge badge-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : "badge badge-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                         }
                       >
                         {" "}
@@ -239,7 +241,9 @@ const OrderDetail = () => {
                           ? "Đã xong"
                           : booking.bookingStatus === "Processing"
                           ? "Đang tiến hành"
-                          : "Hủy Bỏ"}{" "}
+                          : booking.bookingStatus === "Canceled"
+                          ? "Hủy Bỏ"
+                          :"Bảo Hành"}{" "}
                       </span>
                     </div>
                     {/* Payment status */}

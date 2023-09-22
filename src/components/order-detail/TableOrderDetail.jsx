@@ -175,7 +175,8 @@ const TableOrderDetail = ({
                           onClick={() => handleDetail(item.bookingDetailId)}
                           className={`btn btn-outline--primary btn-sm edit square-btn ${
                             bookingStatus === "Canceled" ||
-                            bookingStatus === "Pending"
+                            bookingStatus === "Pending" ||
+                            item.isNew === false
                               ? "pointer-events-none opacity-50"
                               : item.bookingDetailStatus === "NotStart"
                               ? ""
@@ -304,7 +305,15 @@ const TableOrderDetail = ({
                                             item.bookingDetailId
                                           );
                                         }}
-                                        className="btn btn-outline-danger btn-sm delete square-btn"
+                                        className={`btn btn-outline-danger btn-sm delete square-btn ${
+                                          bookingStatus === "Canceled" ||
+                                          bookingStatus === "Pending"  ||
+                                          item.isNew === false
+                                            ? "pointer-events-none opacity-50"
+                                            : item.bookingDetailStatus === "NotStart"
+                                            ? ""
+                                            : "pointer-events-none opacity-50"
+                                        }`}
                                       >
                                         <EditIcon fontSize="small" />
                                       </Link>

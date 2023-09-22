@@ -284,6 +284,7 @@ const OrderDetail = () => {
                             : booking.waitForAccept === false
                             ? "Đồng ý"
                             : "Không chỉnh sửa"}{" "}
+                            
                         </span>
                       </div>
                     ) : (

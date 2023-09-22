@@ -271,7 +271,9 @@ const All = () => {
                             ? "badge badge-soft-success fz-12"
                             : item.bookingStatus === "CheckOut"
                             ? "badge badge-soft-success fz-12"
-                            : "badge badge-danger fz-12"
+                            :  item.bookingStatus === "Canceled"
+                            ? "badge badge-danger fz-12"
+                            : "badge badge-info fz-12"
                         }
                       >
                         {" "}
@@ -285,8 +287,9 @@ const All = () => {
                                 ? "Đã xong"
                                 :item.bookingStatus === "Processing"
                                 ? "Đang tiến hành"
-                                : "Hủy Bỏ"
-                              }{" "}
+                                : item.bookingStatus === "Canceled"
+                                ? "Hủy Bỏ"
+                                :"Bảo Hành"}{" "}
                       </span>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>

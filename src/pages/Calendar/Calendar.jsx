@@ -174,6 +174,7 @@ const Calendars = () => {
                 eventClick={handleEventSelect}
                 // eventDrop={handleEventDrop}
                 // eventResize={handleEventResize}
+                even
                 eventResizableFromStart
                 headerToolbar={false}
                 height={800}

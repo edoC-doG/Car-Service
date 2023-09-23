@@ -16,10 +16,11 @@ import useTableV2 from "../table/useTableV2";
 const headCells = [
   { id: "bookingCode", label: "Mã đơn hàng" },
   { id: "bookingTime", label: "Giờ bắt đầu" },
-  { id: "userBookingDto", label: "Thông tin khách hàng" },
+  { id: "serviceDuration", label: "Thời gian" ,align: "center",},
+  { id: "userBookingDto", label: "Thông tin khách hàng"  ,align: "center", },
 
   { id: "total", label: "Giá trị đơn hàng" },
-  { id: "bookingStatus", label: "Trạng thái" },
+  { id: "bookingStatus", label: "Trạng thái" ,align: "center",},
   {
     id: "action",
     label: "Thao tác",
@@ -71,7 +72,7 @@ const Order = () => {
   return (
     <div className="tab-content">
       <div className="tab-pane fade show active">
-        <div className="row pt-2">  
+        <div className="row pt-2">
           <div className="col-md-12">
             <div className="card w-100">
               {/* Title */}
@@ -148,7 +149,16 @@ const Order = () => {
                         <TableCell sx={{ border: "none" }}>
                           <div>{item.bookingTime}</div>
                         </TableCell>
-                        <TableCell sx={{ border: "none" }}>
+                        <TableCell
+                          sx={{
+                            border: "none",
+                            textAlign: "center",
+                            paddingRight: "50px",
+                          }}
+                        >
+                          {item.duration} giờ
+                        </TableCell>
+                        <TableCell sx={{ border: "none",textAlign: "center", paddingRight: "40px" }}>
                           <Link to={``} className="text-body text-capitalize">
                             <strong>{item.userBookingDto?.fullName}</strong>
                           </Link>
@@ -177,23 +187,28 @@ const Order = () => {
                           sx={{
                             border: "none",
                             textDecoration: "capitalize",
-                           
+                            textAlign: "center",
+                            paddingRight: "30px",
                           }}
                         >
-                          <span
-                            className={
-                              item.bookingStatus === "Pending"
-                                ? "badge badge-soft-danger fz-12"
-                                : item.bookingStatus === "CheckIn"
-                                ? "badge badge-soft-warning fz-12"
-                                : item.bookingStatus === "Processing"
-                                ? "badge badge-soft-info fz-12"
-                                : item.bookingStatus === "Completed"
-                                ? "badge badge-soft-success fz-12"
-                                : "badge badge-danger fz-12"
-                            }
-                          >
-                            {" "}
+                           <span
+                        className={
+                          item.bookingStatus === "Pending"
+                            ? "badge badge-soft-danger fz-12"
+                            : item.bookingStatus === "CheckIn"
+                            ? "badge badge-soft-warning fz-12"
+                            : item.bookingStatus === "Processing"
+                            ? "badge badge-soft-info fz-12"
+                            : item.bookingStatus === "Completed"
+                            ? "badge badge-soft-success fz-12"
+                            : item.bookingStatus === "CheckOut"
+                            ? "badge badge-soft-success fz-12"
+                            :  item.bookingStatus === "Canceled"
+                            ? "badge badge-danger fz-12"
+                            : "badge badge-info fz-12"
+                        }
+                      >
+                        {" "}
                               {item.bookingStatus === "Pending"
                                 ? "Sắp tới"
                                 : item.bookingStatus === "CheckIn"
@@ -204,9 +219,10 @@ const Order = () => {
                                 ? "Đã xong"
                                 :item.bookingStatus === "Processing"
                                 ? "Đang tiến hành"
-                                : "Hủy Bỏ"
-                              }{" "}
-                          </span>
+                                : item.bookingStatus === "Canceled"
+                                ? "Hủy Bỏ"
+                                :"Bảo Hành"}{" "}
+                      </span>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
                           <div className="d-flex justify-content-center gap-2">

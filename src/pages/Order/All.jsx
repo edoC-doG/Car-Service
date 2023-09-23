@@ -260,33 +260,36 @@ const All = () => {
                       }}
                     >
                       <span
-                        className={
-                          item.bookingStatus === "Pending"
-                            ? "badge badge-soft-danger fz-12"
-                            : item.bookingStatus === "CheckIn"
-                            ? "badge badge-soft-warning fz-12"
-                            : item.bookingStatus === "Processing"
-                            ? "badge badge-soft-info fz-12"
-                            : item.bookingStatus === "Completed"
-                            ? "badge badge-soft-success fz-12"
-                            : item.bookingStatus === "CheckOut"
-                            ? "badge badge-soft-success fz-12"
-                            : "badge badge-danger fz-12"
-                        }
-                      >
-                        {" "}
-                              {item.bookingStatus === "Pending"
-                                ? "Sắp tới"
-                                : item.bookingStatus === "CheckIn"
-                                ? "Đang làm"
-                                : item.bookingStatus === "Completed"
-                                ? "Hoàn thành"
-                                : item.bookingStatus === "CheckOut"
-                                ? "Đã xong"
-                                :item.bookingStatus === "Processing"
-                                ? "Đang tiến hành"
-                                : "Hủy Bỏ"
-                              }{" "}
+                         className={
+                           item.bookingStatus === "Pending"
+                             ? "badge badge-soft-danger fz-12"
+                             : item.bookingStatus === "CheckIn"
+                             ? "badge badge-soft-warning fz-12"
+                             : item.bookingStatus === "Processing"
+                             ? "badge badge-soft-info fz-12"
+                             : item.bookingStatus === "Completed"
+                             ? "badge badge-soft-success fz-12"
+                             : item.bookingStatus === "CheckOut"
+                             ? "badge badge-soft-success fz-12"
+                             :  item.bookingStatus === "Canceled"
+                             ? "badge badge-danger fz-12"
+                             : "badge badge-info fz-12"
+                         }
+                       >
+                         {" "}
+                               {item.bookingStatus === "Pending"
+                                 ? "Sắp tới"
+                                 : item.bookingStatus === "CheckIn"
+                                 ? "Đang làm"
+                                 : item.bookingStatus === "Completed"
+                                 ? "Hoàn thành"
+                                 : item.bookingStatus === "CheckOut"
+                                 ? "Đã xong"
+                                 :item.bookingStatus === "Processing"
+                                 ? "Đang tiến hành"
+                                 : item.bookingStatus === "Canceled"
+                                 ? "Hủy Bỏ"
+                                 :"Bảo Hành"}{" "}
                       </span>
                     </TableCell>
                     <TableCell sx={{ border: "none" }}>

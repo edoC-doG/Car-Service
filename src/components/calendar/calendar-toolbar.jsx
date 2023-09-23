@@ -15,15 +15,15 @@ import authService from "../../features/auth/authService";
 
 const viewOptions = [
   {
-    label: "Month",
+    label: "Tháng",
     value: "dayGridMonth",
   },
   {
-    label: "Week",
+    label: "Tuần",
     value: "timeGridWeek",
   },
   {
-    label: "Day",
+    label: "Ngày",
     value: "timeGridDay",
   },
   {
@@ -103,7 +103,7 @@ export const CalendarToolbar = (props) => {
           </SvgIcon>
         </IconButton>
         <TextField
-          label="View"
+          label="Lọc dữ liệu"
           name="view"
           onChange={handleViewChange}
           select
@@ -137,7 +137,7 @@ export const CalendarToolbar = (props) => {
             options={recordGarage}
             sx={{ width: 300 }}
             renderInput={(params) => (
-              <TextField {...params} key={params.key} label="Filter garage" />
+              <TextField {...params} key={params.key} label="Lọc dữ liệu theo garage" />
             )}
             getOptionLabel={(option) => option?.name}
             isOptionEqualToValue={(option, value) => option.id === value.id}

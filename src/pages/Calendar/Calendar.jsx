@@ -16,7 +16,8 @@ import { getCalendarBooking } from "../../features/book/bookingSlide";
 import { useDialog } from "../../components/calendar/use-dialog";
 import CalendarEventDialog from "../../components/calendar/calendar-event-dialog";
 import authService from "../../features/auth/authService";
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { viVN } from '@mui/material/locale';
 const useEvents = (garage) => {
   const user = authService.getCurrentUser();
   const role = user?.roleName;
@@ -24,7 +25,6 @@ const useEvents = (garage) => {
   const dispatch = useDispatch();
 
   const events = useSelector((state) => state.booking.bookings);
-
   const handleEventsGet = useCallback(() => {
     role === "Admin"
       ? garage === 0
@@ -43,7 +43,6 @@ const useEvents = (garage) => {
 
   return events;
 };
-
 const useCurrentEvent = (events, dialogData) => {
   return useMemo(() => {
     if (!dialogData) {

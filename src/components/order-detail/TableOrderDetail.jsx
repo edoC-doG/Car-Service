@@ -123,11 +123,6 @@ const TableOrderDetail = ({
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <div className="media align-items-center gap-3">
-                      {/* <img
-                        className="avatar avatar-60 rounded"
-                        src={item.serviceBookingDetailDto?.serviceImage}
-                        alt="Description"
-                      /> */}
                       <div>
                         <h6 className="title-color font-semibold">
                           {item.serviceBookingDetailDto?.serviceName}
@@ -191,8 +186,8 @@ const TableOrderDetail = ({
                   </TableCell>
                 </TableRow>
                 {/*  PRODUCT */}
-
-                {item.bookingDetailId === bid ? (
+                 
+                {item.productBookingDetailDto !== null && item.bookingDetailId === bid ? (
                   <TableRow key={item.productCost}>
                     <TableCell
                       style={{
@@ -281,7 +276,7 @@ const TableOrderDetail = ({
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productWarranty === ""
                                   ? "Không bảo hành"
-                                  : `${item.productBookingDetailDto?.productWarranty}`}
+                                  : item.productBookingDetailDto?.productWarranty !== null ?`${item.productBookingDetailDto?.productWarranty}`: ""}
                               </TableCell>
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productCost}

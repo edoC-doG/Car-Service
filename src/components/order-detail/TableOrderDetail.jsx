@@ -61,7 +61,6 @@ const TableOrderDetail = ({
   const bookingStatus = useSelector(
     (state) => state.booking.booking?.bookingStatus
   );
-  console.log(bookingStatus);
   const openInPopup = (id, name, serviceId, bookingDetailId) => {
     // console.log(id, name);
     setRecordForEdit({ productId: id, productName: name });
@@ -177,6 +176,7 @@ const TableOrderDetail = ({
                           className={`btn btn-outline--primary btn-sm edit square-btn ${
                             bookingStatus === "Canceled" ||
                             bookingStatus === "Pending" ||
+                            bookingStatus === "Warranty" ||
                             item.isNew === false
                               ? "pointer-events-none opacity-50"
                               : item.bookingDetailStatus === "NotStart"
@@ -309,6 +309,7 @@ const TableOrderDetail = ({
                                         className={`btn btn-outline-danger btn-sm delete square-btn ${
                                           bookingStatus === "Canceled" ||
                                           bookingStatus === "Pending"  ||
+                                          bookingStatus === "Warranty" ||
                                           item.isNew === false
                                             ? "pointer-events-none opacity-50"
                                             : item.bookingDetailStatus === "NotStart"

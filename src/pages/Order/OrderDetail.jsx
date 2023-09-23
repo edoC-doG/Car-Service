@@ -18,6 +18,7 @@ import Notification from "../../components/Notification";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import ModalStatus from "./ModalStatus";
 import ModalDetail from "./ModalDetail";
+import ModalWarranty from "./ModalWarranty";
 const headCells = [
   { id: "bookingDetailId", label: "Id" },
 
@@ -99,14 +100,21 @@ const OrderDetail = () => {
   //Add
   const [showModal, setShowModal] = useState(false);
   const [money, setMoney] = useState("");
+  const [warranty, setWarranty] = useState("");
+  const [showWarranty, setModalWarranty] = useState(false);
   const handleClose = () => {
     setShowModal(false);
     setShowStt(false);
     setShowDetail(false);
+    setModalWarranty(false);
   };
   const handleMoney = (orderId) => {
     setShowModal(true);
     setMoney(orderId);
+  };
+  const handleWarranty = (orderId) => {
+    setModalWarranty(true);
+    setWarranty(orderId);
   };
   //STT
   const [showStt, setShowStt] = useState(false);
@@ -153,16 +161,8 @@ const OrderDetail = () => {
                 <div className="text-sm-right">
                   <div className="d-flex flex-wrap gap-3">
                     <div>
-                      {statusPaid === "Paid" ? (
-                        <Button
-                          disabled={true}
-                          className="add-button"
-                          size="large"
-                          onClick={() => handleMoney(orderId)}
-                          startIcon={<PaidIcon fontSize="small" />}
-                          text="Thanh toán"
-                        />
-                      ) : booking.bookingStatus === "Canceled" ? (
+                      {statusPaid === "Paid" ||
+                      booking.bookingStatus === "Canceled" ? (
                         <Button
                           disabled={true}
                           className="add-button"
@@ -197,6 +197,14 @@ const OrderDetail = () => {
                         startIcon={<NoteAltIcon fontSize="small" />}
                         text="Cập nhật trạng thái"
                       />
+                    ) : booking.bookingStatus === "Completed" ? (
+                      <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => handleWarranty(orderId)}
+                        startIcon={<NoteAltIcon fontSize="small" />}
+                        text="Bảo Hành"
+                      />
                     ) : (
                       <Button
                         disabled={true}
@@ -225,7 +233,7 @@ const OrderDetail = () => {
                             ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                             : booking.bookingStatus === "CheckOut"
                             ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            :  booking.bookingStatus === "Canceled"
+                            : booking.bookingStatus === "Canceled"
                             ? "badge badge-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                             : "badge badge-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                         }
@@ -243,7 +251,7 @@ const OrderDetail = () => {
                           ? "Đang tiến hành"
                           : booking.bookingStatus === "Canceled"
                           ? "Hủy Bỏ"
-                          :"Bảo Hành"}{" "}
+                          : "Bảo Hành"}{" "}
                       </span>
                     </div>
                     {/* Payment status */}
@@ -373,6 +381,11 @@ const OrderDetail = () => {
           show={showStt}
           handleClose={handleClose}
           orderSta={orderSta}
+        />
+        <ModalWarranty
+          show={showWarranty}
+          handleClose={handleClose}
+          warranty={warranty}
         />
         <Notification notify={notify} setNotify={setNotify} />
         {statusData === "Pending" ? (

@@ -95,7 +95,7 @@ export const sidebarManager = [
       {
         key: "calendar",
         icon: <EventAvailableIcon />,
-        label: "Calendar",
+        label: "Lịch",
       },
 
     ]
@@ -294,7 +294,7 @@ export const sidebarDataAdmin = [
       {
         key: "calendar",
         icon: <EventAvailableIcon />,
-        label: "Calendar",
+        label: "Lịch",
       },
 
     ]

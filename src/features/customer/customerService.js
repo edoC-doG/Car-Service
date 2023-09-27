@@ -14,6 +14,17 @@ const getCustomers = async (page) => {
   return response.data;
 };
 
+const getCustomersForManager = async (page) => {
+  const response = await instance.post(
+    `${base_url}user/filter-by-role/1&1`,
+    page,
+    instance
+  );
+  // console.log(response.data);
+
+  return response.data;
+};
+
 const getNumberCustomers = async () => {
   const response = await instance.get(`${base_url}authentication/count/Customer`);
   console.log("the number of customer: ", response.data);
@@ -47,6 +58,7 @@ const updateCustomerStatus = async (data) => {
 
 
 const customerService = {
+  getCustomersForManager,
   getCustomers,
   getNumberCustomers,
   getDetailCustomer, 

@@ -49,6 +49,18 @@ export const getBookingsCustomer = createAsyncThunk(
   }
 );
 
+export const getWarrantiesCustomer = createAsyncThunk(
+  "customer_/booking-customer",
+  async (data, thunkAPI) => {
+    try {
+      console.log("page and id: ", data);
+      return await bookingService.getWarrantiesOfCustomer(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const getBookingsByGarage = createAsyncThunk(
   "booking/booking-garage",
   async (data, thunkAPI) => {
@@ -228,6 +240,23 @@ export const bookingSlice = createSlice({
         state.message = "success";
       })
       .addCase(getBookingsCustomer.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(getWarrantiesCustomer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getWarrantiesCustomer.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.warranties = action.payload.list;
+        state.warrnumber = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getWarrantiesCustomer.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.payload.response.data;

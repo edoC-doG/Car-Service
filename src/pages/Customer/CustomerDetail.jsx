@@ -13,6 +13,7 @@ import DownloadForOfflineSharpIcon from "@mui/icons-material/DownloadForOfflineS
 import CustomerInfo from "../../components/card-info/CustomerInfo";
 import CarInfo from "../../components/card-info/CarInfo";
 import { useDispatch, useSelector } from "react-redux";
+import { getWarrantiesCustomer } from "../../features/book/bookingSlide";
 import { getDetailCustomer } from "../../features/customer/customerSilde";
 import { getBookingsCustomer } from "../../features/book/bookingSlide";
 const headCells = [
@@ -53,6 +54,7 @@ const CustomerDetail = () => {
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage, userId: id };
+    dispatch(getWarrantiesCustomer(data));
     dispatch(getBookingsCustomer(data));
     dispatch(getDetailCustomer(id));
   }, [page, rowsPerPage, dispatch, id]);
@@ -67,7 +69,13 @@ const CustomerDetail = () => {
     (state) => state.booking.bookings
   );
 
+  const recordsWarrantyOfCustomer = useSelector(
+    (state) => state.booking.warranties
+  );
+
   const count = useSelector((state) => state.booking.number);
+
+  const count_ = useSelector((state) => state.booking.warrnumber);
 
   const detail = useSelector((state) => state.customer.customer);
 
@@ -76,8 +84,17 @@ const CustomerDetail = () => {
   console.log(detail);
   // console.log("car", detail.userCustomerDto);
 
+  function useCustomTable1(records, headCells, filterFn, pages, page, rowsPerPage, setPage, setRowsPerPage, count) {
+    return useTableV2(records, headCells, filterFn, pages, page, rowsPerPage, setPage, setRowsPerPage, count);
+  }
+
+  // Create a custom hook for the second table
+  function useCustomTable2(records, headCells, filterFn, pages, page, rowsPerPage, setPage, setRowsPerPage, count) {
+    return useTableV2(records, headCells, filterFn, pages, page, rowsPerPage, setPage, setRowsPerPage, count);
+  }
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTableV2(
+    useCustomTable1(
       recordsBookingOfCustomer,
       headCells,
       filterFn,
@@ -88,8 +105,23 @@ const CustomerDetail = () => {
       setRowsPerPage,
       count
     );
+
+  const { TblContainerWarranty, TblHeadWarranty, TblPaginationWarranty, recordsAfterPagingAndSortingWarranty } =
+    useCustomTable2(
+      recordsWarrantyOfCustomer,
+      headCells,
+      filterFn,
+      pages,
+      page,
+      rowsPerPage,
+      setPage,
+      setRowsPerPage,
+      count_
+    );
+
   return (
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
+
       <div className="pb-2">
         <div className="row align-items-center">
           <div className="col-sm mb-2 mb-sm-0">
@@ -114,14 +146,19 @@ const CustomerDetail = () => {
       <div className="row">
         {/* Table & Search input */}
         <div className="col-lg-8 mb-3 mb-lg-0">
-          <div className="card">
+          <div className="card" >
             {/* Search */}
             <div className="p-3">
-              <div className="row justify-content-end">
+              <div className="column justify-content-end">
+                <div className="col-auto" style={{ paddingBottom: '10px', marginTop: '5px' }}>
+                  <h3 className="text-lg font-semibold">
+                    Danh sách đơn hàng
+                  </h3>
+                </div>
                 <div className="col-auto">
                   <Search
                     label="Tìm kiếm"
-                    onChange={() => {}}
+                    onChange={() => { }}
                     size="small"
                     InputProps={{
                       startAdornment: (
@@ -162,26 +199,30 @@ const CustomerDetail = () => {
                                 item.bookingStatus === "Pending"
                                   ? "badge badge-soft-danger fz-12"
                                   : item.bookingStatus === "CheckIn"
-                                  ? "badge badge-soft-warning fz-12"
-                                  : item.bookingStatus === "Processing"
-                                  ? "badge badge-soft-info fz-12"
-                                  : item.bookingStatus === "Completed"
-                                  ? "badge badge-soft-success fz-12"
-                                  : "badge badge-danger fz-12"
+                                    ? "badge badge-soft-warning fz-12"
+                                    : item.bookingStatus === "Processing"
+                                      ? "badge badge-soft-info fz-12"
+                                      : item.bookingStatus === "Completed"
+                                        ? "badge badge-soft-success fz-12"
+                                        : item.bookingStatus === "Canceled"
+                                          ? "badge badge-danger fz-12"
+                                          : "badge badge-info fz-12"
                               }
                             >
                               {" "}
                               {item.bookingStatus === "Pending"
                                 ? "Sắp tới"
                                 : item.bookingStatus === "CheckIn"
-                                ? "Đang làm"
-                                : item.bookingStatus === "Completed"
-                                ? "Hoàn thành"
-                                : item.bookingStatus === "CheckOut"
-                                ? "Đã xong"
-                                :item.bookingStatus === "Processing"
-                                ? "Đang tiến hành"
-                                : "Hủy Bỏ"
+                                  ? "Đang làm"
+                                  : item.bookingStatus === "Completed"
+                                    ? "Hoàn thành"
+                                    : item.bookingStatus === "CheckOut"
+                                      ? "Đã xong"
+                                      : item.bookingStatus === "Processing"
+                                        ? "Đang tiến hành"
+                                        : item.bookingStatus === "Canceled"
+                                          ? "Hủy Bỏ"
+                                          : "Bảo Hành"
                               }{" "}
                             </div>
                           </TableCell>
@@ -209,30 +250,150 @@ const CustomerDetail = () => {
                   </TblContainer>
                   <TblPagination />
                 </>
-              ):
-              (
-                <>
-                  <TblContainer>
-                    <TblHead />
-                  </TblContainer>
+              ) :
+                (
+                  <>
+                    <TblContainer>
+                      <TblHead />
+                    </TblContainer>
 
-                  <div className="flex flex-col items-center p-4">
-                    <img
-                      src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
-                      alt=""
-                      className="mb-3 w-160"
-                    />
-                  <p>No Data</p>
-                   
-                  </div>
-                </>
-              )
-              
+                    <div className="flex flex-col items-center p-4">
+                      <img
+                        src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
+                        alt=""
+                        className="mb-3 w-160"
+                      />
+                      <p>No Data</p>
+
+                    </div>
+                  </>
+                )
+
               }
-             
+
 
               <div className="card-footer"></div>
             </div>
+
+
+          </div>
+
+          <div className="card" style={{ top: '10px' }}>
+            {/* Search */}
+            <div className="p-3">
+              <div className="column justify-content-end">
+                <div className="col-auto" style={{ marginTop: '5px' }}>
+                  <h3 className="text-lg font-semibold">
+                    Danh sách đơn bảo hành
+                  </h3>
+                </div>
+              </div>
+            </div>
+            {/* Table */}
+            <div className="table-responsive">
+              {recordsBookingOfCustomer.length > 0 ? (
+                <>
+                  <TblContainerWarranty>
+                    <TblHeadWarranty />
+                    <TableBody>
+                      {recordsAfterPagingAndSortingWarranty()?.map((item) => (
+                        <TableRow hover key={item.bookingId}>
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            <Link
+                              to={`/admin/orders/details/${item.bookingId}`}
+                              className="title-color hover-c1 d-flex align-items-center gap-3 "
+                            >
+                              {item.bookingId}
+                            </Link>
+                          </TableCell>
+                          {/* Order ID */}
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            {item.bookingCode}
+                          </TableCell>
+
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            <div
+                              className={
+                                item.bookingStatus === "Pending"
+                                  ? "badge badge-soft-danger fz-12"
+                                  : item.bookingStatus === "CheckIn"
+                                    ? "badge badge-soft-warning fz-12"
+                                    : item.bookingStatus === "Processing"
+                                      ? "badge badge-soft-info fz-12"
+                                      : item.bookingStatus === "Completed"
+                                        ? "badge badge-soft-success fz-12"
+                                        : item.bookingStatus === "Canceled"
+                                          ? "badge badge-danger fz-12"
+                                          : "badge badge-info fz-12"
+                              }
+                            >
+                              {" "}
+                              {item.bookingStatus === "Pending"
+                                ? "Sắp tới"
+                                : item.bookingStatus === "CheckIn"
+                                  ? "Đang làm"
+                                  : item.bookingStatus === "Completed"
+                                    ? "Hoàn thành"
+                                    : item.bookingStatus === "CheckOut"
+                                      ? "Đã xong"
+                                      : item.bookingStatus === "Processing"
+                                        ? "Đang tiến hành"
+                                        : item.bookingStatus === "Canceled"
+                                          ? "Hủy Bỏ"
+                                          : "Bảo Hành"
+                              }{" "}
+                            </div>
+                          </TableCell>
+                          {/* Total */}
+                          <TableCell sx={{ border: "none", fontSize: "14px" }}>
+                            {item.totalPrice}
+                          </TableCell>
+
+                          {/* Action */}
+                          <TableCell sx={{ border: "none" }}>
+                            <div className="d-flex justify-content-center gap-2">
+                              <Tooltip title="Chi tiết" arrow>
+                                <Link
+                                  to={`/admin/orders/details/${item.bookingId}`}
+                                  className="btn btn-outline--primary btn-sm edit square-btn"
+                                >
+                                  <VisibilityIcon fontSize="small" />
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </TblContainerWarranty>
+                  <TblPaginationWarranty />
+                </>
+              ) :
+                (
+                  <>
+                    <TblContainerWarranty>
+                      <TblHeadWarranty />
+                    </TblContainerWarranty>
+
+                    <div className="flex flex-col items-center p-4">
+                      <img
+                        src="https://6valley.6amtech.com/public/assets/back-end/svg/illustrations/sorry.svg"
+                        alt=""
+                        className="mb-3 w-160"
+                      />
+                      <p>No Data</p>
+
+                    </div>
+                  </>
+                )
+
+              }
+
+
+              <div className="card-footer"></div>
+            </div>
+
+
           </div>
         </div>
         {/* Info of Customer */}

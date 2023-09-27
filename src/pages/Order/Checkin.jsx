@@ -134,7 +134,7 @@ const Checkin = () => {
               <TblHead />
               <TableBody>
                 {recordsAfterPagingAndSorting().map((item) => (
-                  <TableRow hover key={item.bookingCode}>
+                  <TableRow hover key={item.bookingId}>
                     <TableCell sx={{ border: "none" }}>
                       {role === "Admin" ? (
                         <Link

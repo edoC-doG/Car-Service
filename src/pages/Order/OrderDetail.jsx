@@ -30,9 +30,9 @@ const headCells = [
     disableSorting: true,
   },
   { id: "serviceCost", label: "Giá DV (VND)" },
-  { id: "serviceDuration", label: "Thời gian (Giờ)" },
+  { id: "serviceDuration", label: "Thời gian" },
   { id: "serviceWarrantyPeriod", label: "Bảo Hành", align: "center" },
-  { id: "bookingDetailStatus", label: "Trạng Thái", align: "center" },
+  { id: "bookingDetailStatus", label: "TT", align: "center" },
   {
     id: "action",
     label: "Thao tác",
@@ -201,7 +201,7 @@ const OrderDetail = () => {
                   <div className="d-flex flex-wrap gap-3">
                     <div>
                       {statusPaid === "Paid" ||
-                        booking.bookingStatus === "Canceled" ? (
+                      booking.bookingStatus === "Canceled" ? (
                         <Button
                           disabled={true}
                           className="add-button"
@@ -236,9 +236,9 @@ const OrderDetail = () => {
                         startIcon={<NoteAltIcon fontSize="small" />}
                         text="Cập nhật trạng thái"
                       />
-                    ) : booking.warrantyReason !== null ? (
+                    ) : booking.bookingStatus === "Completed" ? (
                       <Button
-                        disabled={true}
+                        disabled={ booking.warrantyReason !== null ? true : false}
                         className="add-button"
                         size="large"
                         onClick={() => {
@@ -247,24 +247,16 @@ const OrderDetail = () => {
                         startIcon={<NoteAltIcon fontSize="small" />}
                         text="Bảo Hành"
                       />
-                    ) : booking.bookingStatus === "Completed" ? (
-                        <Button
-                          className="add-button"
-                          size="large"
-                          onClick={() => handleWarranty(orderId)}
-                          startIcon={<NoteAltIcon fontSize="small" />}
-                          text="Bảo Hành"
-                        />
-                      ) : (
-                        <Button
-                          disabled={true}
-                          className="add-button"
-                          size="large"
-                          onClick={() => handleStt(orderId)}
-                          startIcon={<NoteAltIcon fontSize="small" />}
-                          text="Cập nhật trạng thái"
-                        />
-                      )}
+                    ) : (
+                      <Button
+                        disabled={true}
+                        className="add-button"
+                        size="large"
+                        onClick={() => handleStt(orderId)}
+                        startIcon={<NoteAltIcon fontSize="small" />}
+                        text="Cập nhật trạng thái"
+                      />
+                    )}
                   </div>
                   {/* Status */}
                   <div className="d-flex flex-column gap-2 mt-3">
@@ -276,32 +268,32 @@ const OrderDetail = () => {
                           booking.bookingStatus === "Pending"
                             ? "badge badge-soft-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm "
                             : booking.bookingStatus === "CheckIn"
-                              ? "badge badge-soft-warning fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                              : booking.bookingStatus === "Processing"
-                                ? "badge badge-soft-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                                : booking.bookingStatus === "Completed"
-                                  ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                                  : booking.bookingStatus === "CheckOut"
-                                    ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                                    : booking.bookingStatus === "Canceled"
-                                      ? "badge badge-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                                      : "badge badge-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            ? "badge badge-soft-warning fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : booking.bookingStatus === "Processing"
+                            ? "badge badge-soft-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : booking.bookingStatus === "Completed"
+                            ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : booking.bookingStatus === "CheckOut"
+                            ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : booking.bookingStatus === "Canceled"
+                            ? "badge badge-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                            : "badge badge-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                         }
                       >
                         {" "}
                         {booking.bookingStatus === "Pending"
                           ? "Sắp tới"
                           : booking.bookingStatus === "CheckIn"
-                            ? "Đang làm"
-                            : booking.bookingStatus === "Completed"
-                              ? "Hoàn thành"
-                              : booking.bookingStatus === "CheckOut"
-                                ? "Đã xong"
-                                : booking.bookingStatus === "Processing"
-                                  ? "Đang tiến hành"
-                                  : booking.bookingStatus === "Canceled"
-                                    ? "Hủy Bỏ"
-                                    : "Bảo Hành"}{" "}
+                          ? "Đang làm"
+                          : booking.bookingStatus === "Completed"
+                          ? "Hoàn thành"
+                          : booking.bookingStatus === "CheckOut"
+                          ? "Đã xong"
+                          : booking.bookingStatus === "Processing"
+                          ? "Đang tiến hành"
+                          : booking.bookingStatus === "Canceled"
+                          ? "Hủy Bỏ"
+                          : "Bảo Hành"}{" "}
                       </span>
                     </div>
                     {/* Payment status */}
@@ -333,16 +325,16 @@ const OrderDetail = () => {
                             booking.waitForAccept === true
                               ? "text-warning font-weight-bold "
                               : booking.waitForAccept === false
-                                ? "text-success font-weight-bold"
-                                : ""
+                              ? "text-success font-weight-bold"
+                              : ""
                           }
                         >
                           {" "}
                           {booking.waitForAccept === true
                             ? "Chưa đồng ý"
                             : booking.waitForAccept === false
-                              ? "Đồng ý"
-                              : "Không chỉnh sửa"}{" "}
+                            ? "Đồng ý"
+                            : "Không chỉnh sửa"}{" "}
                         </span>
                       </div>
                     ) : (

@@ -44,6 +44,17 @@ const getBookingsOfCustomer = async (pageAndId) => {
   return response.data;
 };
 
+const getWarrantiesOfCustomer = async (pageAndId) => {
+  const response = await instance.post(
+    `${base_url}booking/filter-warranty-by-customer`,
+    pageAndId,
+    instance
+  );
+
+  // console.log(`booking of customer id ${pageAndId.userId}:  `, response.data);
+  return response.data;
+};
+
 const getBookingsByGarage = async (pageAndId) => {
   const response = await instance.post(
     `${base_url}booking/filter-booking-by-garage/`,
@@ -119,10 +130,31 @@ const getCalendar = async (id) => {
   // console.log(response.data);
   return response.data;
   }
+
+const AddWarrantyBooking = async (data) => {
+  const response = await instance.post(
+    `${base_url}booking/create-warranty-by-booking`,
+    data,
+    instance
+  );
+  console.log(response.data);
+  return response.data;
+  } 
+
+const GetTimeBooking = async (data) => {
+  const response = await instance.post(
+    `${base_url}booking/check-booking`,
+    data,
+    instance
+  );
+  // console.log(response.data);
+  return response.data 
+}  
 const bookingService = {
   getBookingDetail,
   getBookings,
   getBookingsOfCustomer,
+  getWarrantiesOfCustomer,
   getBookingStatus,
   getBookingsByGarage,
   getCountBookingStatus,
@@ -131,7 +163,9 @@ const bookingService = {
   updateStt,
   updateDetail, 
   updateProductForBookingDetailBookingDetail, 
-  getCalendar
+  getCalendar, 
+  AddWarrantyBooking, 
+  GetTimeBooking
 };
 
 export default bookingService;

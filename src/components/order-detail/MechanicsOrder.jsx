@@ -21,7 +21,8 @@ import AddNewMechanicForBooking from "./AddNewMechanicForBooking";
 const headCells = [
   { id: "fullName", label: "Thợ phụ trách" },
   { id: "contact", label: "Thông tin thợ" },
-  { id: "userStatus", label: "Trạng thái" },
+  { id: "level", label: "Cấp bậc" },
+  //{ id: "userStatus", label: "Trạng thái" },
 
   {
     id: "action",
@@ -41,7 +42,8 @@ const MechanicsOrder = ({ bookingId, status }) => {
   const headCellsCompleted = [
     { id: "fullName", label: "Thợ phụ trách" },
     { id: "contact", label: "Thông tin thợ" },
-    { id: "userStatus", label: "Trạng thái" },
+    { id: "level", label: "Cấp bậc" },
+    //{ id: "userStatus", label: "Trạng thái" },
   ];
   const dispatch = useDispatch();
   const [openPopup, setOpenPopup] = useState(false);
@@ -187,9 +189,17 @@ const MechanicsOrder = ({ bookingId, status }) => {
                       {item.userMechanicDto?.userPhone}
                     </Link>
                   </TableCell>
+                  <TableCell sx={{ border: "none" }}>
+                    <Link
+                      to={`tel:${item.level}`}
+                      className="title-color hover-c1 lowercase "
+                    >
+                      {item.level}
+                    </Link>
+                  </TableCell>
                   {/* status */}
 
-                  <TableCell sx={{ border: "none" }}>
+                  {/* <TableCell sx={{ border: "none" }}>
                     <span
                       className={
                         item.userMechanicDto?.userStatus === 1
@@ -203,7 +213,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
                         : "Không Khả Dụng"}
                       {""}
                     </span>
-                  </TableCell>
+                  </TableCell> */}
 
                   {/* Action */}
                   {status === "Completed" || status === "Canceled" ? (

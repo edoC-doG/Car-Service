@@ -144,8 +144,8 @@ const OrderDetail = () => {
   );
   // THÊM ĐƠN BẢO HÀNH 
   const addWarrantyBooking = (data, resetForm) => {
-     
-      // console.log({bookingId:id , ...data});
+
+    // console.log({bookingId:id , ...data});
     dispatch(AddWarrantyBookingg({bookingId:id , ...data}))
     resetForm();
     setOpenPopup(false);
@@ -161,28 +161,28 @@ const OrderDetail = () => {
   };
   return (
     <>
-    <div className="min-[620px]:pt-24 min-[620px]:px-8">
-      <Header
-        icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
-        size={20}
-        alt="order-detail"
-        title="Chi tiết đơn hàng"
-      />
-      {/* Info Invoice */}
-      <div className="row gy-3">
-        <div className="col-lg-8 col-xl-9">
-          <div className="card h-100">
-            <div className="card-body">
-              {/* Info of Order */}
-              <div className="d-flex flex-wrap gap-3 justify-content-between mb-4">
-                <div className="d-flex flex-column gap-3">
-                  <h4 className="capitalize font-semibold">
-                    ID Đơn hàng #{booking.bookingId}
-                  </h4>
-                  <div>
-                    <EventNoteIcon fontSize="inherit" /> {booking.bookingTime}
-                  </div>
-                  {booking.warrantyReason !== null ? (
+      <div className="min-[620px]:pt-24 min-[620px]:px-8">
+        <Header
+          icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
+          size={20}
+          alt="order-detail"
+          title="Chi tiết đơn hàng"
+        />
+        {/* Info Invoice */}
+        <div className="row gy-3">
+          <div className="col-lg-8 col-xl-9">
+            <div className="card h-100">
+              <div className="card-body">
+                {/* Info of Order */}
+                <div className="d-flex flex-wrap gap-3 justify-content-between mb-4">
+                  <div className="d-flex flex-column gap-3">
+                    <h4 className="capitalize font-semibold">
+                      ID Đơn hàng #{booking.bookingId}
+                    </h4>
+                    <div>
+                      <EventNoteIcon fontSize="inherit" /> {booking.bookingTime}
+                    </div>
+                    {booking.warrantyReason !== null ? (
                       <div className="payment-status d-flex justify-content-sm-end gap-3">
                         <span className="text-info title-color">
                           Lý do bảo hành:{" "}
@@ -337,124 +337,123 @@ const OrderDetail = () => {
                             : "Không chỉnh sửa"}{" "}
                         </span>
                       </div>
-                    ) : (
-                      <></>
-                    )}
+                    ) :<></>}
+                  
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="mb-7">
-                <div
-                  className="js-nav-scroller hs-nav-scroller-horizontal"
-                  style={{ backgroundColor: "#f9f9fb", margin: "0 -1.315rem" }}
-                >
-                  <ul className="nav nav-tabs flex-wrap page-header-tabs">
-                    {tabs.map((tap) => (
-                      <li
-                        style={{ backgroundColor: "#f9f9fb" }}
-                        className="nav-item"
-                        key={tap}
-                      >
-                        <Link
-                          className={
-                            tap === type
-                              ? "nav-link active"
-                              : "nav-link capitalize"
-                          }
-                          onClick={() => setType(tap)}
+                <div className="mb-7">
+                  <div
+                    className="js-nav-scroller hs-nav-scroller-horizontal"
+                    style={{ backgroundColor: "#f9f9fb", margin: "0 -1.315rem" }}
+                  >
+                    <ul className="nav nav-tabs flex-wrap page-header-tabs">
+                      {tabs.map((tap) => (
+                        <li
+                          style={{ backgroundColor: "#f9f9fb" }}
+                          className="nav-item"
+                          key={tap}
                         >
-                          {tap}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                          <Link
+                            className={
+                              tap === type
+                                ? "nav-link active"
+                                : "nav-link capitalize"
+                            }
+                            onClick={() => setType(tap)}
+                          >
+                            {tap}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
+                {type === "Chi tiết" && (
+                  <TableOrderDetail
+                    detail={recordsAfterPagingAndSorting()}
+                    booking={booking}
+                    TblContainer={TblContainer}
+                    TblHead={TblHead}
+                    setBid={setBid}
+                    bid={bid}
+                    setOpen={setOpen}
+                    open={open}
+                    key={booking}
+                    show={showDetail}
+                    handleDetail={handleDetail}
+                    handleClose={handleClose}
+                    setDetail={setDetail}
+                    detailService={detailService}
+                    statusData={statusData}
+                  />
+                )}
+                {type === "Thợ phụ trách" && (
+                  <MechanicsOrder bookingId={id} status={booking.bookingStatus} />
+                )}
               </div>
-              {type === "Chi tiết" && (
-                <TableOrderDetail
-                  detail={recordsAfterPagingAndSorting()}
-                  booking={booking}
-                  TblContainer={TblContainer}
-                  TblHead={TblHead}
-                  setBid={setBid}
-                  bid={bid}
-                  setOpen={setOpen}
-                  open={open}
-                  key={booking}
-                  show={showDetail}
-                  handleDetail={handleDetail}
-                  handleClose={handleClose}
-                  setDetail={setDetail}
-                  detailService={detailService}
-                  statusData={statusData}
-                />
-              )}
-              {type === "Thợ phụ trách" && (
-                <MechanicsOrder bookingId={id} status={booking.bookingStatus} />
-              )}
             </div>
           </div>
+          {/* Info customer mechanic and garage */}
+          <div className="col-lg-4 col-xl-3 d-flex flex-column gap-3">
+            <CustomerInfo
+              title={"Khách hàng"}
+              srcIcon={
+                "https://6valley.6amtech.com/public/assets/back-end/img/seller-information.png"
+              }
+              src={customer.userImage}
+              name={customer.fullName}
+              phone={customer.userPhone}
+              email={customer.userEmail}
+            />
+            <CustomerInfo
+              title={"Thông tin garage"}
+              srcIcon={
+                "https://6valley.6amtech.com/public/assets/back-end/img/shop-information.png"
+              }
+              src={garage.garageImage}
+              name={garage.garageName}
+              phone={garage.garageStatus}
+              icon={<LocationOnIcon fontSize="inherit" />}
+              location={garage.fullAddress}
+            />
+          </div>
+          <ModalMoney show={showModal} handleClose={handleClose} money={money} />
+          <ModalStatus
+            show={showStt}
+            handleClose={handleClose}
+            orderSta={orderSta}
+          />
+          <ModalWarranty
+            show={showWarranty}
+            handleClose={handleClose}
+            warranty={warranty}
+          />
+          <Notification notify={notify} setNotify={setNotify} />
+          {statusData === "Pending" ? (
+            <ModalDetail
+              show={showDetail}
+              handleClose={handleClose}
+              detailService={detailService}
+              setDetail={setDetail}
+            />
+          ) : statusData === "CheckIn" ? (
+            <ModalDetail
+              show={showDetail}
+              handleClose={handleClose}
+              detailService={detailService}
+              setDetail={setDetail}
+            />
+          ) : (
+            <ModalDetail
+              handleClose={handleClose}
+              detailService={detailService}
+              setDetail={setDetail}
+            />
+          )}
         </div>
-        {/* Info customer mechanic and garage */}
-        <div className="col-lg-4 col-xl-3 d-flex flex-column gap-3">
-          <CustomerInfo
-            title={"Khách hàng"}
-            srcIcon={
-              "https://6valley.6amtech.com/public/assets/back-end/img/seller-information.png"
-            }
-            src={customer.userImage}
-            name={customer.fullName}
-            phone={customer.userPhone}
-            email={customer.userEmail}
-          />
-          <CustomerInfo
-            title={"Thông tin garage"}
-            srcIcon={
-              "https://6valley.6amtech.com/public/assets/back-end/img/shop-information.png"
-            }
-            src={garage.garageImage}
-            name={garage.garageName}
-            phone={garage.garageStatus}
-            icon={<LocationOnIcon fontSize="inherit" />}
-            location={garage.fullAddress}
-          />
-        </div>
-        <ModalMoney show={showModal} handleClose={handleClose} money={money} />
-        <ModalStatus
-          show={showStt}
-          handleClose={handleClose}
-          orderSta={orderSta}
-        />
-        <ModalWarranty
-          show={showWarranty}
-          handleClose={handleClose}
-          warranty={warranty}
-        />
-        <Notification notify={notify} setNotify={setNotify} />
-        {statusData === "Pending" ? (
-          <ModalDetail
-            show={showDetail}
-            handleClose={handleClose}
-            detailService={detailService}
-            setDetail={setDetail}
-          />
-        ) : statusData === "CheckIn" ? (
-          <ModalDetail
-            show={showDetail}
-            handleClose={handleClose}
-            detailService={detailService}
-            setDetail={setDetail}
-          />
-        ) : (
-          <ModalDetail
-            handleClose={handleClose}
-            detailService={detailService}
-            setDetail={setDetail}
-          />
-        )}
       </div>
-    </div>
-    <Popup title="Thêm mới bảo hành" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+      <Popup title="Thêm mới bảo hành" openPopup={openPopup} setOpenPopup={setOpenPopup}>
         <AddWarrantyBooking addWarrantyBooking={addWarrantyBooking} />
       </Popup>
     </>

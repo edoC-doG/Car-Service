@@ -44,6 +44,17 @@ const getBookingsOfCustomer = async (pageAndId) => {
   return response.data;
 };
 
+const getWarrantiesOfCustomer = async (pageAndId) => {
+  const response = await instance.post(
+    `${base_url}booking/filter-warranty-by-customer`,
+    pageAndId,
+    instance
+  );
+
+  // console.log(`booking of customer id ${pageAndId.userId}:  `, response.data);
+  return response.data;
+};
+
 const getBookingsByGarage = async (pageAndId) => {
   const response = await instance.post(
     `${base_url}booking/filter-booking-by-garage/`,
@@ -143,6 +154,7 @@ const bookingService = {
   getBookingDetail,
   getBookings,
   getBookingsOfCustomer,
+  getWarrantiesOfCustomer,
   getBookingStatus,
   getBookingsByGarage,
   getCountBookingStatus,

@@ -16,6 +16,10 @@ const headCells = [
   { id: "serviceId", label: "ID Dịch vụ" },
   { id: "serviceImage", label: "Hình ảnh" },
   { id: "serviceName", label: "Tên dịch vụ" },
+  { id: "serviceGroup", label: "Loại dịch vụ" },
+
+  { id: "serviceUnit", label: "Số lần", align: "center", },
+  { id: "serviceWarrantyPeriod", label: "Số tháng BH", align: "center", },
 
   { id: "createdAt", label: "Ngày thêm vào" },
   { id: "serviceStatus", label: "Trạng thái" },
@@ -169,17 +173,26 @@ const Service = () => {
                             {item.serviceName}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
+                            <div>{item.serviceGroup}</div>
+                          </TableCell>
+                          <TableCell sx={{ border: "none", textAlign: "center", paddingRight: "35px" }}>
+                            <div>{item.serviceUnit}</div>
+                          </TableCell>
+                          <TableCell sx={{ border: "none", textAlign: "center", paddingRight: "40px" }}>
+                            <div>{item.serviceWarrantyPeriod}</div>
+                          </TableCell>
+                          <TableCell sx={{ border: "none" }}>
                             {item.createdAt}
                           </TableCell>
                           <TableCell sx={{ border: "none" }}>
-                          <span
+                            <span
                               className={
                                 item.serviceStatus === "Activate"
                                   ? "badge badge-soft-success fz-12"
                                   : "badge badge-soft-danger fz-12"
                               }
                             >
-                               {" "}
+                              {" "}
                               {item.serviceStatus === "Activate"
                                 ? "Hoạt động"
                                 : "Không hoạt động"
@@ -191,7 +204,7 @@ const Service = () => {
                             <div className="d-flex justify-content-center gap-2">
                               <Tooltip title="Cập nhật" arrow>
                                 <Link
-                                
+
                                   className="btn btn-outline--primary btn-sm edit"
                                 >
                                   <EditIcon fontSize="small" />
@@ -207,7 +220,7 @@ const Service = () => {
                                         "Bạn có chắc chắn muốn thay đổi trạng thái ?",
                                       subTitle:
                                         "Bạn không thể hoàn tác thao tác này",
-                                      onConfirm: () => {},
+                                      onConfirm: () => { },
                                     });
                                   }}
                                 >

@@ -29,7 +29,7 @@ const headCells = [
     label: "Chi tiết ",
     disableSorting: true,
   },
-  { id: "serviceCost", label: "Giá DV" },
+  { id: "serviceCost", label: "Giá DV (VND)" },
   { id: "serviceDuration", label: "Thời gian" },
   { id: "serviceWarrantyPeriod", label: "Bảo Hành", align: "center" },
   { id: "bookingDetailStatus", label: "TT", align: "center" },

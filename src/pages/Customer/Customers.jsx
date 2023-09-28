@@ -15,11 +15,13 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCustomers,
+  getCustomersForManager,
   getNumberCustomer,
   updateCustomerStatus,
   resetState,
 } from "../../features/customer/customerSilde";
 import Notification from "../../components/Notification";
+import authService from "../../features/auth/authService";
 
 const headCells = [
   { id: "userId", label: "ID" },
@@ -38,6 +40,8 @@ const headCells = [
 
 const Customers = () => {
 
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const dispatch = useDispatch();
   const pages = [5, 10, 25]; // page size
   const [page, setPage] = useState(0); // page index
@@ -55,13 +59,17 @@ const Customers = () => {
   });
 
   const updateSuccessAction = useSelector((state) => state.customer.isSuccessAction);
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Danh sách khách hàng"
   })
 
   useEffect(() => {
     const data = { pageIndex: page + 1, pageSize: rowsPerPage };
-    dispatch(getCustomers(data));
+
+    if (role === "Admin") dispatch(getCustomers(data));
+    else if (role === "Manager")
+    dispatch(getCustomersForManager(data));
+
     dispatch(getNumberCustomer());
 
     if (updateSuccessAction) {
@@ -119,7 +127,7 @@ const Customers = () => {
         />
         <div className="card">
           <div className="px-3 py-4">
-  
+
           </div>
           <div className="table-responsive">
             <TblContainer>
@@ -132,18 +140,35 @@ const Customers = () => {
                     </TableCell>
                     {/* NAME AND IMAGE */}
                     <TableCell sx={{ border: "none" }}>
-                      <Link
-                        to={`/admin/customer/view/${item.userId}`}
-                        className="title-color hover-c1 d-flex align-items-center gap-3 "
-                      >
-                        <img
-                          src={item.userImage}
-                          alt="avatar"
-                          width="40"
-                          className="rounded-circle"
-                        />
-                        {item.fullName}
-                      </Link>
+                      {role === "Admin" ? (
+                        <Link
+
+                          to={`/admin/customer/view/${item.userId}`}
+                          className="title-color hover-c1 d-flex align-items-center gap-3 "
+                        >
+                          <img
+                            src={item.userImage}
+                            alt="avatar"
+                            width="40"
+                            className="rounded-circle"
+                          />
+                          {item.fullName}
+                        </Link>
+                      ) : (
+                        <Link
+
+                          to={`/manager/customer/view/${item.userId}`}
+                          className="title-color hover-c1 d-flex align-items-center gap-3 "
+                        >
+                          <img
+                            src={item.userImage}
+                            alt="avatar"
+                            width="40"
+                            className="rounded-circle"
+                          />
+                          {item.fullName}
+                        </Link>
+                      )}
                     </TableCell>
                     {/* EMAIL AND PHONE */}
                     <TableCell sx={{ border: "none" }}>
@@ -193,12 +218,21 @@ const Customers = () => {
                     <TableCell sx={{ border: "none" }}>
                       <div className="d-flex justify-content-center gap-2">
                         <Tooltip title="Chi tiết" arrow>
-                          <Link
-                            to={`/admin/customer/view/${item.userId}`}
-                            className="btn btn-outline-info btn-sm square-btn"
-                          >
-                            <VisibilityIcon fontSize="small" />
-                          </Link>
+                          {role === "Admin" ? (
+                            <Link
+                              to={`/admin/customer/view/${item.userId}`}
+                              className="btn btn-outline-info btn-sm square-btn"
+                            >
+                              <VisibilityIcon fontSize="small" />
+                            </Link>
+                          ) : (
+                            <Link
+                              to={`/manager/customer/view/${item.userId}`}
+                              className="btn btn-outline-info btn-sm square-btn"
+                            >
+                              <VisibilityIcon fontSize="small" />
+                            </Link>
+                          )}
                         </Tooltip>
                       </div>
                     </TableCell>
@@ -214,7 +248,7 @@ const Customers = () => {
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
-      <Notification notify={notify} setNotify={setNotify} severity="success"/>
+      <Notification notify={notify} setNotify={setNotify} severity="success" />
     </>
   );
 };

@@ -82,13 +82,13 @@ const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setP
 
   function stableSort(array, comparator) {
     
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
+    const stabilizedThis = array?.map((el, index) => [el, index]);
+    stabilizedThis?.sort((a, b) => {
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map((el) => el[0]);
+    return stabilizedThis?.map((el) => el[0]);
   }
 
   function descendingComparator(a, b, orderBy) {
@@ -116,6 +116,71 @@ const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setP
     // .slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   };
 
+  const TblContainerWarranty = (props) => <Table aria-label='collapsible table'>{props.children}</Table>;
+
+  const TblHeadWarranty = (props) => {
+    return (
+      <TableHead>
+        <TableRow>
+          {headCells.map((headCell) => (
+            <TableCell
+              key={headCell.id}
+              sortDirection={orderBy === headCell.id ? order : false}
+              align={headCell.align}
+              style={{
+                minWidth: headCell.minWidth,
+                backgroundColor: "#f7faff",
+                color: "#334257",
+                textTransform: "capitalize",
+                fontSize: "14px",
+                fontWeight: 600,
+                borderBottom: "1px solid rgba(1,119,205,.1)",
+                borderTop: "1px solid rgba(1,119,205,.1)",
+              }}
+            >
+              {headCell.disableSorting ? (
+                headCell.label
+              ) : (
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={() => {
+                    handleSortRequest(headCell.id);
+                  }}
+                >
+                  {headCell.label}
+                </TableSortLabel>
+              )}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+    );
+  };
+
+  const recordsAfterPagingAndSortingWarranty = () => {
+    return stableSort(
+      filterFn.fn(records),
+      getComparator(order, orderBy)
+    )
+    
+    // .slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  };
+
+  const TblPaginationWarranty = () => (
+    <ThemeProvider theme={theme}>
+        <TablePagination
+      component="div"
+      page={page}
+      rowsPerPageOptions={pages}
+      rowsPerPage={rowsPerPage}
+      count={count}
+      onPageChange={handleChangePage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
+    </ThemeProvider>
+  );
+
   const TblPagination = () => (
     <ThemeProvider theme={theme}>
         <TablePagination
@@ -135,6 +200,10 @@ const useTableV2 = (records, headCells, filterFn, pages, page, rowsPerPage, setP
     TblHead,
     TblPagination,
     recordsAfterPagingAndSorting,
+    TblContainerWarranty,
+    TblHeadWarranty,
+    TblPaginationWarranty,
+    recordsAfterPagingAndSortingWarranty
   };
 };
 

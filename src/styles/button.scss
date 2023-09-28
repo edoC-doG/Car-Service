@@ -54,3 +54,25 @@
   }
 }
 
+
+.warrancy-btn{
+  .export-button {
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    text-transform: capitalize;
+
+    &:hover {
+      color: #fff;
+      background-color: #0177cd;
+    }
+  }
+
+  .add-button {
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    text-transform: capitalize;
+    &:hover {
+      background-color: #04a3e7;
+    }
+  }
+}

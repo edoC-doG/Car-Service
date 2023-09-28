@@ -137,6 +137,29 @@ export const updateProductForBookingDetailBookingDetail = createAsyncThunk(
   }
 );
 
+export const AddWarrantyBookingg = createAsyncThunk(
+  "booking/add-warranty-booking",
+  async (data, thunkAPI) => {
+    try {
+      return await bookingService.AddWarrantyBooking(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const GetTimeBooking = createAsyncThunk(
+  "booking/time-booking",
+  async (data, thunkAPI) => {
+    try {
+      return await bookingService.GetTimeBooking(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+
 export const resetStateBooking = createAction("Reset_all_booking");
 
 const initialState = {
@@ -146,6 +169,7 @@ const initialState = {
   detail: [],
   customer: {},
   products: [],
+  durations: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -359,6 +383,39 @@ export const bookingSlice = createSlice({
         state.message = "success";
       })
       .addCase(getCalendarBooking.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(AddWarrantyBookingg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(AddWarrantyBookingg.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = true;
+        state.message = "success";
+        state.isLoading = false;
+      })
+      .addCase(AddWarrantyBookingg.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessAdd = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
+      .addCase(GetTimeBooking.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(GetTimeBooking.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isSuccessAdd = false;
+        state.durations = action.payload;
+        state.message = "success";
+      })
+      .addCase(GetTimeBooking.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.payload.response.data;

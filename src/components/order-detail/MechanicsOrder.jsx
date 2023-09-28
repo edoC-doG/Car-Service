@@ -22,7 +22,7 @@ const headCells = [
   { id: "fullName", label: "Thợ phụ trách" },
   { id: "contact", label: "Thông tin thợ" },
   { id: "level", label: "Cấp bậc" },
-  { id: "userStatus", label: "Trạng thái" },
+  //{ id: "userStatus", label: "Trạng thái" },
 
   {
     id: "action",
@@ -43,7 +43,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
     { id: "fullName", label: "Thợ phụ trách" },
     { id: "contact", label: "Thông tin thợ" },
     { id: "level", label: "Cấp bậc" },
-    { id: "userStatus", label: "Trạng thái" },
+    //{ id: "userStatus", label: "Trạng thái" },
   ];
   const dispatch = useDispatch();
   const [openPopup, setOpenPopup] = useState(false);
@@ -199,7 +199,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
                   </TableCell>
                   {/* status */}
 
-                  <TableCell sx={{ border: "none" }}>
+                  {/* <TableCell sx={{ border: "none" }}>
                     <span
                       className={
                         item.userMechanicDto?.userStatus === 1
@@ -213,7 +213,7 @@ const MechanicsOrder = ({ bookingId, status }) => {
                         : "Không Khả Dụng"}
                       {""}
                     </span>
-                  </TableCell>
+                  </TableCell> */}
 
                   {/* Action */}
                   {status === "Completed" || status === "Canceled" ? (

@@ -28,9 +28,9 @@ const headCells = [
     disableSorting: true,
   },
   { id: "serviceCost", label: "Giá DV (VND)" },
-  { id: "serviceDuration", label: "Thời gian" },
+  { id: "serviceDuration", label: "Thời gian (Giờ)" },
   { id: "serviceWarrantyPeriod", label: "Bảo Hành", align: "center" },
-  { id: "bookingDetailStatus", label: "TT", align: "center" },
+  { id: "bookingDetailStatus", label: "Trạng Thái", align: "center" },
   {
     id: "action",
     label: "Thao tác",

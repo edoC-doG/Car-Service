@@ -68,8 +68,6 @@ const TableOrderDetail = ({
     setServiceId(serviceId);
     setOpenPopup(true);
   };
-
-  console.log(recordForEdit);
   const updateSuccessAction = useSelector(
     (state) => state.mechanic.isSuccessAdd
   );

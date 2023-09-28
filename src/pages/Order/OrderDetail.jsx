@@ -8,7 +8,7 @@ import useTableV2 from "../../components/table/useTableV2";
 import { Link, useLocation } from "react-router-dom";
 import CustomerInfo from "../../components/card-info/CustomerInfo";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { getDetailBooking } from "../../features/book/bookingSlide";
+import { getDetailBooking, AddWarrantyBookingg, resetStateBooking } from "../../features/book/bookingSlide";
 import { useDispatch, useSelector } from "react-redux";
 import TableOrderDetail from "../../components/order-detail/TableOrderDetail";
 import MechanicsOrder from "../../components/order-detail/MechanicsOrder";
@@ -19,6 +19,8 @@ import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import ModalStatus from "./ModalStatus";
 import ModalDetail from "./ModalDetail";
 import ModalWarranty from "./ModalWarranty";
+import Popup from "../../components/Popup";
+import AddWarrantyBooking from "../../components/order-detail/AddWarrantyBooking";
 const headCells = [
   { id: "bookingDetailId", label: "Id" },
 
@@ -50,6 +52,7 @@ const OrderDetail = () => {
   const [bid, setBid] = useState("");
   const [statusData, setStatusData] = useState("");
   const [statusPaid, setStatusPaid] = useState("");
+  const [openPopup, setOpenPopup] = useState(false);
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -74,6 +77,7 @@ const OrderDetail = () => {
   const orderId = booking.bookingId;
   const garage = useSelector((state) => state.booking.garage);
   const detail = useSelector((state) => state.booking.detail);
+  // console.log(detail);
   const customer = useSelector((state) => state.booking.customer);
   const status = useSelector((state) => state.booking);
   const { message, isSuccessAdd } = status;
@@ -135,7 +139,28 @@ const OrderDetail = () => {
     headCells,
     filterFn
   );
+  const addSuccessAction = useSelector(
+    (state) => state.booking?.isSuccessAdd
+  );
+  // THÊM ĐƠN BẢO HÀNH 
+  const addWarrantyBooking = (data, resetForm) => {
+     
+      // console.log({bookingId:id , ...data});
+    dispatch(AddWarrantyBookingg({bookingId:id , ...data}))
+    resetForm();
+    setOpenPopup(false);
+    if(addSuccessAction) {
+      dispatch(resetStateBooking());
+      dispatch(getDetailBooking(id))
+      setNotify({
+        isOpen: true,
+        message: "Add Successfully",
+        type: "success",
+      });
+    }
+  };
   return (
+    <>
     <div className="min-[620px]:pt-24 min-[620px]:px-8">
       <Header
         icon="https://6valley.6amtech.com/public/assets/back-end/img/all-orders.png"
@@ -216,7 +241,9 @@ const OrderDetail = () => {
                         disabled={true}
                         className="add-button"
                         size="large"
-                        onClick={() => handleWarranty(orderId)}
+                        onClick={() => {
+                          setOpenPopup(true);
+                        }}
                         startIcon={<NoteAltIcon fontSize="small" />}
                         text="Bảo Hành"
                       />
@@ -435,6 +462,10 @@ const OrderDetail = () => {
         )}
       </div>
     </div>
+    <Popup title="Thêm mới bảo hành" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <AddWarrantyBooking addWarrantyBooking={addWarrantyBooking} />
+      </Popup>
+    </>
   );
 };
 

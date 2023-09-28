@@ -130,6 +130,26 @@ const getCalendar = async (id) => {
   // console.log(response.data);
   return response.data;
   }
+
+const AddWarrantyBooking = async (data) => {
+  const response = await instance.post(
+    `${base_url}booking/create-warranty-by-booking`,
+    data,
+    instance
+  );
+  console.log(response.data);
+  return response.data;
+  } 
+
+const GetTimeBooking = async (data) => {
+  const response = await instance.post(
+    `${base_url}booking/check-booking`,
+    data,
+    instance
+  );
+  // console.log(response.data);
+  return response.data 
+}  
 const bookingService = {
   getBookingDetail,
   getBookings,
@@ -143,7 +163,9 @@ const bookingService = {
   updateStt,
   updateDetail, 
   updateProductForBookingDetailBookingDetail, 
-  getCalendar
+  getCalendar, 
+  AddWarrantyBooking, 
+  GetTimeBooking
 };
 
 export default bookingService;

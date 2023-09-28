@@ -15,6 +15,7 @@ const DateTime = ({
   orther,
   onError,
   errorMessage,
+  defaultValue
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} dapterLocale={"en-gb"}>
@@ -22,7 +23,7 @@ const DateTime = ({
         <DatePicker
           className="w-full"
           minDate={today}
-          defaultValue={today}
+          defaultValue={defaultValue}
           format="DD/MM/YYYY"
           value={value}
           label={label}

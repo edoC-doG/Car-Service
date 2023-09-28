@@ -171,7 +171,7 @@ const TableOrderDetail = ({
                           className={`btn btn-outline--primary btn-sm edit square-btn ${
                             bookingStatus === "Canceled" ||
                             bookingStatus === "Pending" ||
-                            bookingStatus === "Warranty" ||
+                            //bookingStatus === "Warranty" ||
                             item.isNew === false
                               ? "pointer-events-none opacity-50"
                               : item.bookingDetailStatus === "NotStart"
@@ -303,8 +303,8 @@ const TableOrderDetail = ({
                                         }}
                                         className={`btn btn-outline-danger btn-sm delete square-btn ${
                                           bookingStatus === "Canceled" ||
-                                          bookingStatus === "Pending"  ||
-                                          bookingStatus === "Warranty" ||
+                                          //bookingStatus === "Pending"  ||
+                                          //bookingStatus === "Warranty" ||
                                           item.isNew === false
                                             ? "pointer-events-none opacity-50"
                                             : item.bookingDetailStatus === "NotStart"

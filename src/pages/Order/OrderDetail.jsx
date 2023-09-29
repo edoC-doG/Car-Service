@@ -146,10 +146,10 @@ const OrderDetail = () => {
   const addWarrantyBooking = (data, resetForm) => {
 
     // console.log({bookingId:id , ...data});
-    dispatch(AddWarrantyBookingg({bookingId:id , ...data}))
+    dispatch(AddWarrantyBookingg({ bookingId: id, ...data }))
     resetForm();
     setOpenPopup(false);
-    if(addSuccessAction) {
+    if (addSuccessAction) {
       dispatch(resetStateBooking());
       dispatch(getDetailBooking(id))
       setNotify({
@@ -196,150 +196,156 @@ const OrderDetail = () => {
                     ) : (
                       <></>
                     )}
-                </div>
-                <div className="text-sm-right">
-                  <div className="d-flex flex-wrap gap-3">
-                    <div>
-                      {statusPaid === "Paid" ||
-                      booking.bookingStatus === "Canceled" ? (
+                  </div>
+                  <div className="text-sm-right">
+                    <div className="d-flex flex-wrap gap-3">
+                      <div>
+                        {statusPaid === "Paid" ||
+                          booking.bookingStatus === "Canceled" ? (
+                          <Button
+                            disabled={true}
+                            className="add-button"
+                            size="large"
+                            onClick={() => handleMoney(orderId)}
+                            startIcon={<PaidIcon fontSize="small" />}
+                            text="Thanh toán"
+                          />
+                        ) : (
+                          <Button
+                            className="add-button"
+                            size="large"
+                            onClick={() => handleMoney(orderId)}
+                            startIcon={<PaidIcon fontSize="small" />}
+                            text="Thanh toán"
+                          />
+                        )}
+                      </div>
+                      {statusData === "Pending" ? (
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => handleStt(orderId)}
+                          startIcon={<NoteAltIcon fontSize="small" />}
+                          text="Cập nhật trạng thái"
+                        />
+                      ) : statusData === "CheckIn" ? (
+                        <Button
+                          className="add-button"
+                          size="large"
+                          onClick={() => handleStt(orderId)}
+                          startIcon={<NoteAltIcon fontSize="small" />}
+                          text="Cập nhật trạng thái"
+                        />
+                      ) : booking.bookingStatus === "Completed"
+                        && statusPaid === "Paid" ? (
+                        <Button
+                          disabled={booking.warrantyReason !== null ? true : false}
+                          className="add-button"
+                          size="large"
+                          onClick={() => {
+                            setOpenPopup(true);
+                          }}
+                          startIcon={<NoteAltIcon fontSize="small" />}
+                          text="Bảo Hành"
+                        />
+                      ) : booking.bookingStatus === "Warranty" ? (  <Button
+                        className="add-button"
+                        size="large"
+                        onClick={() => handleStt(orderId)}
+                        startIcon={<NoteAltIcon fontSize="small" />}
+                        text="Cập nhật trạng thái"
+                      />) : (
                         <Button
                           disabled={true}
                           className="add-button"
                           size="large"
-                          onClick={() => handleMoney(orderId)}
-                          startIcon={<PaidIcon fontSize="small" />}
-                          text="Thanh toán"
-                        />
-                      ) : (
-                        <Button
-                          className="add-button"
-                          size="large"
-                          onClick={() => handleMoney(orderId)}
-                          startIcon={<PaidIcon fontSize="small" />}
-                          text="Thanh toán"
+                          onClick={() => handleStt(orderId)}
+                          startIcon={<NoteAltIcon fontSize="small" />}
+                          text="Cập nhật trạng thái"
                         />
                       )}
                     </div>
-                    {statusData === "Pending" ? (
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => handleStt(orderId)}
-                        startIcon={<NoteAltIcon fontSize="small" />}
-                        text="Cập nhật trạng thái"
-                      />
-                    ) : statusData === "CheckIn" ? (
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => handleStt(orderId)}
-                        startIcon={<NoteAltIcon fontSize="small" />}
-                        text="Cập nhật trạng thái"
-                      />
-                    ) : booking.bookingStatus === "Completed" 
-                    && statusPaid === "Paid" ? (
-                      <Button
-                        disabled={ booking.warrantyReason !== null ? true : false}
-                        className="add-button"
-                        size="large"
-                        onClick={() => {
-                          setOpenPopup(true);
-                        }}
-                        startIcon={<NoteAltIcon fontSize="small" />}
-                        text="Bảo Hành"
-                      />
-                    ) : (
-                      <Button
-                        disabled={true}
-                        className="add-button"
-                        size="large"
-                        onClick={() => handleStt(orderId)}
-                        startIcon={<NoteAltIcon fontSize="small" />}
-                        text="Cập nhật trạng thái"
-                      />
-                    )}
-                  </div>
-                  {/* Status */}
-                  <div className="d-flex flex-column gap-2 mt-3">
-                    <div className="order-status d-flex justify-content-sm-end gap-3 text-capitalize">
-                      <span className="title-color">Trạng thái: </span>
+                    {/* Status */}
+                    <div className="d-flex flex-column gap-2 mt-3">
+                      <div className="order-status d-flex justify-content-sm-end gap-3 text-capitalize">
+                        <span className="title-color">Trạng thái: </span>
 
-                      <span
-                        className={
-                          booking.bookingStatus === "Pending"
-                            ? "badge badge-soft-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm "
-                            : booking.bookingStatus === "CheckIn"
-                            ? "badge badge-soft-warning fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : booking.bookingStatus === "Processing"
-                            ? "badge badge-soft-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : booking.bookingStatus === "Completed"
-                            ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : booking.bookingStatus === "CheckOut"
-                            ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : booking.bookingStatus === "Canceled"
-                            ? "badge badge-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                            : "badge badge-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
-                        }
-                      >
-                        {" "}
-                        {booking.bookingStatus === "Pending"
-                          ? "Sắp tới"
-                          : booking.bookingStatus === "CheckIn"
-                          ? "Đang làm"
-                          : booking.bookingStatus === "Completed"
-                          ? "Hoàn thành"
-                          : booking.bookingStatus === "CheckOut"
-                          ? "Đã xong"
-                          : booking.bookingStatus === "Processing"
-                          ? "Đang tiến hành"
-                          : booking.bookingStatus === "Canceled"
-                          ? "Hủy Bỏ"
-                          : "Bảo Hành"}{" "}
-                      </span>
-                    </div>
-                    {/* Payment status */}
-                    <div className="payment-status d-flex justify-content-sm-end gap-3">
-                      <span className="title-color">
-                        Trạng thái thanh toán:{" "}
-                      </span>
-                      <span
-                        className={
-                          booking.paymentStatus === "Paid"
-                            ? "text-success font-weight-bold"
-                            : "text-danger font-weight-bold"
-                        }
-                      >
-                        {" "}
-                        {booking.paymentStatus === "Unpaid"
-                          ? "Chưa thanh toán"
-                          : "Đã thanh toán"}{" "}
-                      </span>
-                    </div>
-                    {/* Accepted status */}
-                    {booking.waitForAccept === true ? (
-                      <div className="payment-status d-flex justify-content-sm-end gap-3">
-                        <span className="title-color">
-                          Trạng thái chỉnh sửa:{" "}
-                        </span>
                         <span
                           className={
-                            booking.waitForAccept === true
-                              ? "text-warning font-weight-bold "
-                              : booking.waitForAccept === false
-                              ? "text-success font-weight-bold"
-                              : ""
+                            booking.bookingStatus === "Pending"
+                              ? "badge badge-soft-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm "
+                              : booking.bookingStatus === "CheckIn"
+                                ? "badge badge-soft-warning fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                                : booking.bookingStatus === "Processing"
+                                  ? "badge badge-soft-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                                  : booking.bookingStatus === "Completed"
+                                    ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                                    : booking.bookingStatus === "CheckOut"
+                                      ? "badge badge-soft-success fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                                      : booking.bookingStatus === "Canceled"
+                                        ? "badge badge-danger fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
+                                        : "badge badge-info fz-12 font-weight-bold radius-50 d-flex align-items-center py-1 px-2 text-sm"
                           }
                         >
                           {" "}
-                          {booking.waitForAccept === true
-                            ? "Chưa đồng ý"
-                            : booking.waitForAccept === false
-                            ? "Đồng ý"
-                            : "Không chỉnh sửa"}{" "}
+                          {booking.bookingStatus === "Pending"
+                            ? "Sắp tới"
+                            : booking.bookingStatus === "CheckIn"
+                              ? "Đang làm"
+                              : booking.bookingStatus === "Completed"
+                                ? "Hoàn thành"
+                                : booking.bookingStatus === "CheckOut"
+                                  ? "Đã xong"
+                                  : booking.bookingStatus === "Processing"
+                                    ? "Đang tiến hành"
+                                    : booking.bookingStatus === "Canceled"
+                                      ? "Hủy Bỏ"
+                                      : "Bảo Hành"}{" "}
                         </span>
                       </div>
-                    ) :<></>}
-                  
+                      {/* Payment status */}
+                      <div className="payment-status d-flex justify-content-sm-end gap-3">
+                        <span className="title-color">
+                          Trạng thái thanh toán:{" "}
+                        </span>
+                        <span
+                          className={
+                            booking.paymentStatus === "Paid"
+                              ? "text-success font-weight-bold"
+                              : "text-danger font-weight-bold"
+                          }
+                        >
+                          {" "}
+                          {booking.paymentStatus === "Unpaid"
+                            ? "Chưa thanh toán"
+                            : "Đã thanh toán"}{" "}
+                        </span>
+                      </div>
+                      {/* Accepted status */}
+                      {booking.waitForAccept === true ? (
+                        <div className="payment-status d-flex justify-content-sm-end gap-3">
+                          <span className="title-color">
+                            Trạng thái chỉnh sửa:{" "}
+                          </span>
+                          <span
+                            className={
+                              booking.waitForAccept === true
+                                ? "text-warning font-weight-bold "
+                                : booking.waitForAccept === false
+                                  ? "text-success font-weight-bold"
+                                  : ""
+                            }
+                          >
+                            {" "}
+                            {booking.waitForAccept === true
+                              ? "Chưa đồng ý"
+                              : booking.waitForAccept === false
+                                ? "Đồng ý"
+                                : "Không chỉnh sửa"}{" "}
+                          </span>
+                        </div>
+                      ) : <></>}
+
                     </div>
                   </div>
                 </div>
@@ -447,6 +453,7 @@ const OrderDetail = () => {
             />
           ) : (
             <ModalDetail
+              show={showDetail}
               handleClose={handleClose}
               detailService={detailService}
               setDetail={setDetail}

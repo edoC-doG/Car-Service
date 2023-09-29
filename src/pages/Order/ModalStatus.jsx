@@ -65,7 +65,8 @@ function ModalStatus(props) {
                 value={stt}
                 onChange={(e) => setStt(e.target.value)}
               >
-                <option value={4}>Hoàn thành</option>
+                 <option value={1}>Hủy đơn hàng</option>
+                <option defaultValue={4} value={4}>Hoàn thành</option>
               </Form.Select>
             ) : (<></>)}
           </Modal.Body>

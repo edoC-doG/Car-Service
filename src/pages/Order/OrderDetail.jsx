@@ -236,7 +236,8 @@ const OrderDetail = () => {
                         startIcon={<NoteAltIcon fontSize="small" />}
                         text="Cập nhật trạng thái"
                       />
-                    ) : booking.bookingStatus === "Completed" ? (
+                    ) : booking.bookingStatus === "Completed" 
+                    && statusPaid === "Paid" ? (
                       <Button
                         disabled={ booking.warrantyReason !== null ? true : false}
                         className="add-button"

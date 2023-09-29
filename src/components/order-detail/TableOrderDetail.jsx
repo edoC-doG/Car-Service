@@ -173,7 +173,7 @@ const TableOrderDetail = ({
                             item.isNew === false
                               ? "pointer-events-none opacity-50"
                               : item.bookingDetailStatus === "NotStart"
-                              ? ""
+                              ? ""  
                               : "pointer-events-none opacity-50"
                           }`}
                         >
@@ -302,7 +302,7 @@ const TableOrderDetail = ({
                                         className={`btn btn-outline-danger btn-sm delete square-btn ${
                                           bookingStatus === "Canceled" ||
                                           bookingStatus === "Pending"  ||
-                                          //bookingStatus === "Warranty" ||
+                                          bookingStatus === "Warranty" ||
                                           item.isNew === false
                                             ? "pointer-events-none opacity-50"
                                             : item.bookingDetailStatus === "NotStart"

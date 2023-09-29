@@ -301,7 +301,7 @@ const TableOrderDetail = ({
                                         }}
                                         className={`btn btn-outline-danger btn-sm delete square-btn ${
                                           bookingStatus === "Canceled" ||
-                                          //bookingStatus === "Pending"  ||
+                                          bookingStatus === "Pending"  ||
                                           //bookingStatus === "Warranty" ||
                                           item.isNew === false
                                             ? "pointer-events-none opacity-50"

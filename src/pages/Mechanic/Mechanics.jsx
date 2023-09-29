@@ -29,6 +29,7 @@ const headCells = [
   { id: "fullName", label: "Tên thợ" },
 
   { id: "contact", label: "Thông tin liện hệ" },
+  { id: "level", label: "Cấp bậc" },
   { id: "totalOrders", label: "SL đơn" },
   { id: "userStatus", label: "Trạng thái" },
   {
@@ -161,21 +162,21 @@ const Mechanics = () => {
           <div className="col-md-12 mb-3">
             <div className="card">
               <div className="px-3 py-4">
-               
-                  {role === "Manager" ? (
-                    <div className="d-flex justify-content-sm-end">
-                      <Button
-                        className="add-button"
-                        size="large"
-                        onClick={() => setShowModal(true)}
-                        startIcon={<AddIcon fontSize="small" />}
-                        text="Thêm thợ sửa chữa"
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                
+
+                {role === "Manager" ? (
+                  <div className="d-flex justify-content-sm-end">
+                    <Button
+                      className="add-button"
+                      size="large"
+                      onClick={() => setShowModal(true)}
+                      startIcon={<AddIcon fontSize="small" />}
+                      text="Thêm thợ sửa chữa"
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+
               </div>
 
               {/* Table  */}
@@ -228,6 +229,9 @@ const Mechanics = () => {
                             {item.userMechanicDto?.userPhone}
                           </Link>
                         </TableCell>
+                        <TableCell sx={{ border: "none" }}>
+                          <div>{item.level}</div>
+                        </TableCell>
                         {/* Total Ordered */}
                         <TableCell
                           sx={{
@@ -244,27 +248,42 @@ const Mechanics = () => {
                         {/* status */}
 
                         <TableCell sx={{ border: "none" }}>
-                          <Switches
-                            checked={
-                              item.userMechanicDto?.userStatus === 1
-                                ? true
-                                : false
-                            }
-                            onChange={(event) => {
-                              setConfirmDialog({
-                                isOpen: true,
-                                title:
-                                  "Bạn có chắc chắn muốn thay đổi trạng thái?",
-                                subTitle: "Bạn không thể hoàn tác thao tác này",
-                                onConfirm: () => {
-                                  handleSwitchToggle(
-                                    item.userId,
-                                    event.target.checked ? 1 : 0
-                                  );
-                                },
-                              });
-                            }}
-                          />
+                          {role === "Admin" ? (
+                            <Switches
+                              checked={
+                                item.userMechanicDto?.userStatus === 1
+                                  ? true
+                                  : false
+                              }
+                              onChange={(event) => {
+                                setConfirmDialog({
+                                  isOpen: true,
+                                  title:
+                                    "Bạn có chắc chắn muốn thay đổi trạng thái?",
+                                  subTitle: "Bạn không thể hoàn tác thao tác này",
+                                  onConfirm: () => {
+                                    handleSwitchToggle(
+                                      item.userId,
+                                      event.target.checked ? 1 : 0
+                                    );
+                                  },
+                                });
+                              }}
+                            />
+                          ) : (
+                            <span
+                              className={
+                                item.mechanicStatus === "Available"
+                                  ? "badge badge-soft-success fz-12"
+                                  : "badge badge-soft-danger fz-12"
+                              }
+                            >
+                              {" "}
+                              {item.mechanicStatus === "Available"
+                                ? "Khả Dụng"
+                                : "Không Khả Dụng"}{" "}
+                            </span>
+                          )}
                         </TableCell>
 
                         {/* Action */}

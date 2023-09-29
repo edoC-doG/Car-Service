@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getWarrantiesCustomer } from "../../features/book/bookingSlide";
 import { getDetailCustomer } from "../../features/customer/customerSilde";
 import { getBookingsCustomer } from "../../features/book/bookingSlide";
+import authService from "../../features/auth/authService";
 const headCells = [
   { id: "bookingId", label: "ID" },
   { id: "bookingCode", label: "Mã đơn hàng" },
@@ -32,6 +33,8 @@ const headCells = [
 ];
 
 const CustomerDetail = () => {
+  const user = authService.getCurrentUser();
+  const role = user?.roleName;
   const rows = [
     {
       id: 1,
@@ -181,12 +184,22 @@ const CustomerDetail = () => {
                       {recordsAfterPagingAndSorting().map((item) => (
                         <TableRow hover key={item.bookingId}>
                           <TableCell sx={{ border: "none", fontSize: "14px" }}>
-                            <Link
-                              to={`/admin/orders/details/${item.bookingId}`}
-                              className="title-color hover-c1 d-flex align-items-center gap-3 "
-                            >
-                              {item.bookingId}
-                            </Link>
+                            {role === "Admin" ? (
+                              <Link
+                                to={`/admin/orders/details/${item.bookingId}`}
+                                className="title-color hover-c1 d-flex align-items-center gap-3 "
+                              >
+                                {item.bookingId}
+                              </Link>
+                            ) : (
+                              <Link
+                                to={`/manager/orders/details/${item.bookingId}`}
+                                className="title-color hover-c1 d-flex align-items-center gap-3 "
+                              >
+                                {item.bookingId}
+                              </Link>
+                            )}
+
                           </TableCell>
                           {/* Order ID */}
                           <TableCell sx={{ border: "none", fontSize: "14px" }}>
@@ -235,12 +248,22 @@ const CustomerDetail = () => {
                           <TableCell sx={{ border: "none" }}>
                             <div className="d-flex justify-content-center gap-2">
                               <Tooltip title="Chi tiết" arrow>
-                                <Link
-                                  to={`/admin/orders/details/${item.bookingId}`}
-                                  className="btn btn-outline--primary btn-sm edit square-btn"
-                                >
-                                  <VisibilityIcon fontSize="small" />
-                                </Link>
+                                {role === "Admin" ? (
+                                  <Link
+                                    to={`/admin/orders/details/${item.bookingId}`}
+                                    className="btn btn-outline--primary btn-sm edit square-btn"
+                                  >
+                                    <VisibilityIcon fontSize="small" />
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    to={`/manager/orders/details/${item.bookingId}`}
+                                    className="btn btn-outline--primary btn-sm edit square-btn"
+                                  >
+                                    <VisibilityIcon fontSize="small" />
+                                  </Link>
+                                )}
+
                               </Tooltip>
                             </div>
                           </TableCell>
@@ -299,12 +322,21 @@ const CustomerDetail = () => {
                       {recordsAfterPagingAndSortingWarranty()?.map((item) => (
                         <TableRow hover key={item.bookingId}>
                           <TableCell sx={{ border: "none", fontSize: "14px" }}>
-                            <Link
-                              to={`/admin/orders/details/${item.bookingId}`}
-                              className="title-color hover-c1 d-flex align-items-center gap-3 "
-                            >
-                              {item.bookingId}
-                            </Link>
+                            {role === "Admin" ? (
+                              <Link
+                                to={`/admin/orders/details/${item.bookingId}`}
+                                className="title-color hover-c1 d-flex align-items-center gap-3 "
+                              >
+                                {item.bookingId}
+                              </Link>
+                            ) : (
+                              <Link
+                                to={`/manager/orders/details/${item.bookingId}`}
+                                className="title-color hover-c1 d-flex align-items-center gap-3 "
+                              >
+                                {item.bookingId}
+                              </Link>
+                            )}
                           </TableCell>
                           {/* Order ID */}
                           <TableCell sx={{ border: "none", fontSize: "14px" }}>
@@ -353,12 +385,21 @@ const CustomerDetail = () => {
                           <TableCell sx={{ border: "none" }}>
                             <div className="d-flex justify-content-center gap-2">
                               <Tooltip title="Chi tiết" arrow>
-                                <Link
-                                  to={`/admin/orders/details/${item.bookingId}`}
-                                  className="btn btn-outline--primary btn-sm edit square-btn"
-                                >
-                                  <VisibilityIcon fontSize="small" />
-                                </Link>
+                                {role === "Admin" ? (
+                                  <Link
+                                    to={`/admin/orders/details/${item.bookingId}`}
+                                    className="btn btn-outline--primary btn-sm edit square-btn"
+                                  >
+                                    <VisibilityIcon fontSize="small" />
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    to={`/manager/orders/details/${item.bookingId}`}
+                                    className="btn btn-outline--primary btn-sm edit square-btn"
+                                  >
+                                    <VisibilityIcon fontSize="small" />
+                                  </Link>
+                                )}
                               </Tooltip>
                             </div>
                           </TableCell>

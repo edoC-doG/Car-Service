@@ -13,6 +13,18 @@ export const getCustomers = createAsyncThunk(
   }
 );
 
+export const getCustomersForManager = createAsyncThunk(
+  "customer_/customers",
+  async (data, thunkAPI) => {
+    try {
+      // console.log(data);
+      return await customerService.getCustomersForManager(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const getNumberCustomer = createAsyncThunk(
   "customer/number",
   async (thunkAPI) => {
@@ -67,6 +79,23 @@ export const customerSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getCustomersForManager.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCustomersForManager.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.customers = action.payload.list;
+        state.number = action.payload.count;
+        state.message = "success";
+      })
+      .addCase(getCustomersForManager.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload.response.data;
+        state.isLoading = false;
+      })
       .addCase(getCustomers.pending, (state) => {
         state.isLoading = true;
       })

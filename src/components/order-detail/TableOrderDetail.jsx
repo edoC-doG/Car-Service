@@ -68,8 +68,6 @@ const TableOrderDetail = ({
     setServiceId(serviceId);
     setOpenPopup(true);
   };
-
-  console.log(recordForEdit);
   const updateSuccessAction = useSelector(
     (state) => state.mechanic.isSuccessAdd
   );
@@ -123,11 +121,6 @@ const TableOrderDetail = ({
                   </TableCell>
                   <TableCell sx={{ border: "none" }}>
                     <div className="media align-items-center gap-3">
-                      {/* <img
-                        className="avatar avatar-60 rounded"
-                        src={item.serviceBookingDetailDto?.serviceImage}
-                        alt="Description"
-                      /> */}
                       <div>
                         <h6 className="title-color font-semibold">
                           {item.serviceBookingDetailDto?.serviceName}
@@ -176,11 +169,11 @@ const TableOrderDetail = ({
                           className={`btn btn-outline--primary btn-sm edit square-btn ${
                             bookingStatus === "Canceled" ||
                             bookingStatus === "Pending" ||
-                            bookingStatus === "Warranty" ||
+                            //bookingStatus === "Warranty" ||
                             item.isNew === false
                               ? "pointer-events-none opacity-50"
                               : item.bookingDetailStatus === "NotStart"
-                              ? ""
+                              ? ""  
                               : "pointer-events-none opacity-50"
                           }`}
                         >
@@ -191,8 +184,8 @@ const TableOrderDetail = ({
                   </TableCell>
                 </TableRow>
                 {/*  PRODUCT */}
-
-                {item.bookingDetailId === bid ? (
+                 
+                {item.productBookingDetailDto !== null && item.bookingDetailId === bid ? (
                   <TableRow key={item.productCost}>
                     <TableCell
                       style={{
@@ -281,7 +274,7 @@ const TableOrderDetail = ({
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productWarranty === ""
                                   ? "Không bảo hành"
-                                  : `${item.productBookingDetailDto?.productWarranty}`}
+                                  : item.productBookingDetailDto?.productWarranty !== null ?`${item.productBookingDetailDto?.productWarranty}`: ""}
                               </TableCell>
                               <TableCell sx={{ border: "none" }}>
                                 {item.productBookingDetailDto?.productCost}

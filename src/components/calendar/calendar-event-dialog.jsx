@@ -33,7 +33,7 @@ const CalendarEventDialog = (props) => {
         </Box>
         <Stack spacing={2} sx={{ p: 3 }}>
           <TextField fullWidth label="Info" name="title" value={title} />
-          <TextField fullWidth label="Trạng thái đơn hàng" name='bookingStatus' value={status === "Pending" ? "Đang chờ check-in" : ""} />
+          <TextField fullWidth label="Trạng thái đơn hàng" name='bookingStatus' value={status === "Pending" ? "Đang chờ check-in" : status === "CheckIn" ?  "Check In" : status === "Warranty" ? "Bảo hành" : ""} />
           <TextField fullWidth label="Check-in" value={startDate} />
           <TextField fullWidth label="Check-out" value={endDate} />
         </Stack>

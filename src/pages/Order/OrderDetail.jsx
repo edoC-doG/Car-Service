@@ -305,11 +305,11 @@ const OrderDetail = () => {
                   className="js-nav-scroller hs-nav-scroller-horizontal"
                   style={{ backgroundColor: "#f9f9fb", margin: "0 -1.315rem" }}
                 >
-                  <ul className="nav nav-tabs flex-wrap page-header-tabs">
+                  <ul className="nav nav-tabs flex-wrap page-header-tabs z-10">
                     {tabs.map((tap) => (
                       <li
-                        style={{ backgroundColor: "#f9f9fb" }}
-                        className="nav-item"
+                        style={{ backgroundColor: "#f9f9fb", zIndex: 10 }}
+                        className="nav-item"      
                         key={tap}
                       >
                         <Link
@@ -317,7 +317,7 @@ const OrderDetail = () => {
                             tap === type
                               ? "nav-link active"
                               : "nav-link capitalize"
-                          }
+                          } 
                           onClick={() => setType(tap)}
                         >
                           {tap}

@@ -58,7 +58,17 @@ function ModalStatus(props) {
                 <option value={1}>Hủy đơn hàng</option>
                 <option value={4}>Hoàn thành</option>
               </Form.Select>
-            ): (<></>)}
+            ) : statusData === "Warranty" ? (
+              <Form.Select
+                className="form-control"
+                aria-label="Default select example"
+                value={stt}
+                onChange={(e) => setStt(e.target.value)}
+              >
+                 <option value={1}>Hủy đơn hàng</option>
+                <option defaultValue={4} value={4}>Hoàn thành</option>
+              </Form.Select>
+            ) : (<></>)}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

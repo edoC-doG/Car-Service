@@ -113,7 +113,12 @@ export const sidebarManager = [
         label: "Khách hàng",
        
         children: [
-         
+          {
+            key: "list-customer",
+            icon: <RxDotFilled />,
+            label: "Danh sách khách hàng",
+            
+          },
           {
             key: "review-list-customer",
             icon: <RxDotFilled />,

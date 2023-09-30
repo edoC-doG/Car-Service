@@ -14,7 +14,8 @@ const headCells = [
   { id: "userEmail", label: "Email" },
   { id: "userPhone", label: "SĐT" },
   { id: "roleName", label: "Vai trò" },
-  { id: "userStatus", label: "Trạng thái" },
+  { id: "mechanicLevel", label: "Cấp Bậc" },
+  { id: "mechanicStatus", label: "Trạng thái" },
 ];
 const EmployeeByGarage = () => {
   useEffect(() => {
@@ -95,17 +96,20 @@ const EmployeeByGarage = () => {
                           <div>{item.roleDto?.roleName}</div>
                         </TableCell>
                         <TableCell sx={{ border: "none" }}>
+                          <div>{item.mechanicLevel}</div>
+                        </TableCell>
+                        <TableCell sx={{ border: "none" }}>
                           <span
                             className={
-                              item.userStatus === "Activate"
+                              item.mechanicStatus === "Available"
                                 ? "badge badge-soft-success fz-12"
                                 : "badge badge-soft-danger fz-12"
                             }
                           >
                             {" "}
-                            {item.userStatus === "Activate"
-                              ? "Hoạt động"
-                              : "Không hoạt động"}{" "}
+                            {item.mechanicStatus === "Available"
+                              ? "Khả Dụng"
+                              : "Không Khả Dụng"}{" "}
                           </span>
                         </TableCell>
                       </TableRow>
